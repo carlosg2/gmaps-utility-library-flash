@@ -1,0 +1,65 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>LineString.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre>
+<span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">kml</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">Namespaces</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">ParsingTools</span>;
+
+
+    <span class="ActionScriptASDoc">/**
+    *    Class that represents an Entry element within an Atom feed
+    * 
+    *     @langversion ActionScript 3.0
+    *    @playerversion Flash 8.5
+    *    @tiptext
+    * 
+    *     @see http://www.atomenabled.org/developers/syndication/atom-format-spec.php#rfc.section.4.1.2
+    */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">LineString</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">Geometry</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptComment">//todo: add constants for the enum values?
+</span>        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">kml</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Namespace</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Namespaces</span>.<span class="ActionScriptDefault_Text">KML_NS</span>;
+        
+        <span class="ActionScriptComment">// Can contain: &lt;extrude&gt;, &lt;tessellate&gt;, &lt;altitudeMode&gt;, &lt;coordinates&gt;
+</span>        <span class="ActionScriptComment">// We support coordinates only
+</span>        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_coordinates</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Coordinates</span>;        
+  
+        <span class="ActionScriptASDoc">/**
+        *    Constructor for class.
+        * 
+        *    @param x An XML document that contains an individual Entry element from 
+        *    an Aton XML feed.
+        *
+        */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">LineString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">XMLList</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">kml</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">coordinates</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">_coordinates</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Coordinates</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">kml</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">coordinates</span><span class="ActionScriptBracket/Brace">))</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+         
+        <span class="ActionScriptASDoc">/**
+        *    A String that contains the title for the entry.
+        */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">coordinates</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Coordinates</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">_coordinates</span>;
+         <span class="ActionScriptBracket/Brace">}</span>
+         
+         <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">override</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">toString</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+             <span class="ActionScriptReserved">return</span> <span class="ActionScriptString">&quot;LineString: &quot;</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptReserved">super</span>.<span class="ActionScriptDefault_Text">toString</span><span class="ActionScriptBracket/Brace">()</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">&quot; coordinates&quot;</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">_coordinates</span>;
+         <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+</pre></body>
+</html>

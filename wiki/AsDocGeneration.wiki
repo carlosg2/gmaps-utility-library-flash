@@ -9,5 +9,5 @@ Add your content here.
 
 Add your content here.  Format your content with:
   # add flex sdk to your environment PATH variable (C:\Program Files\Adobe\Flex Builder 3\sdks\3.0.0\bin)
-  # navigate to library folder
-  # asdoc -output docs -doc-sources ./ -source-path ./ -external-library-path "C:\Documents and Settings\pamelafox\My Documents\Flex Builder 3\lib\map_flex_1_6.swc"
+  # navigate to Library/src
+  # asdoc -output ../docs -doc-sources ./ -source-path ./ -external-library-path "C:\Documents and Settings\pamelafox\My Documents\Flex Builder 3\lib\map_flex_1_6.swc"

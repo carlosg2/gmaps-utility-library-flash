@@ -1,0 +1,13 @@
+#summary List of libraries here and quick links to relevant source and examples files.
+#labels Featured
+
+Below is a list of the libraries being worked on in this project.
+
+
+== MarkerManager ==
+
+This is the open-source ActionScript3 version of MarkerManager, with improvements.
+
+== KMLParser ==
+
+This is an ActionScript3 port of the dom classes in [http://code.google.com/p/libkml libkml], and only supports elements which can be rendered by the Google Maps API for Flash.

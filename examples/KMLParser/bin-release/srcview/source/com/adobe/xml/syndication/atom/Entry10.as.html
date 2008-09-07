@@ -1,0 +1,304 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Entry10.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">/*
+    Adobe Systems Incorporated(r) Source Code License Agreement
+    Copyright(c) 2005 Adobe Systems Incorporated. All rights reserved.
+    
+    Please read this Source Code License Agreement carefully before using
+    the source code.
+    
+    Adobe Systems Incorporated grants to you a perpetual, worldwide, non-exclusive, 
+    no-charge, royalty-free, irrevocable copyright license, to reproduce,
+    prepare derivative works of, publicly display, publicly perform, and
+    distribute this source code and such derivative works in source or 
+    object code form without any attribution requirements.  
+    
+    The name &quot;Adobe Systems Incorporated&quot; must not be used to endorse or promote products
+    derived from the source code without prior written permission.
+    
+    You agree to indemnify, hold harmless and defend Adobe Systems Incorporated from and
+    against any loss, damage, claims or lawsuits, including attorney&apos;s 
+    fees that arise or result from your use or distribution of the source 
+    code.
+    
+    THIS SOURCE CODE IS PROVIDED &quot;AS IS&quot; AND &quot;WITH ALL FAULTS&quot;, WITHOUT 
+    ANY TECHNICAL SUPPORT OR ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  ALSO, THERE IS NO WARRANTY OF 
+    NON-INFRINGEMENT, TITLE OR QUIET ENJOYMENT.  IN NO EVENT SHALL MACROMEDIA
+    OR ITS SUPPLIERS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOURCE CODE, EVEN IF
+    ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/</span>
+
+<span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">atom</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">Namespaces</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">XmlElement</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">utils</span>.<span class="ActionScriptDefault_Text">DateUtil</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">ParsingTools</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">generic</span>.<span class="ActionScriptDefault_Text">Geo</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">generic</span>.<span class="ActionScriptDefault_Text">Media</span>;
+
+
+    <span class="ActionScriptASDoc">/**
+    *    Class that represents an Entry element within an Atom feed
+    * 
+    *     @langversion ActionScript 3.0
+    *    @playerversion Flash 8.5
+    *    @tiptext
+    * 
+    *     @see http://www.atomenabled.org/developers/syndication/atom-format-spec.php#rfc.section.4.1.2
+    */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">Entry</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">XmlElement</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Namespace</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Namespaces</span>.<span class="ActionScriptDefault_Text">ATOM_NS</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">xhtml</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Namespace</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Namespaces</span>.<span class="ActionScriptDefault_Text">XHTML_NS</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">georss</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Namespace</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Namespaces</span>.<span class="ActionScriptDefault_Text">GEORSS_NS</span>;
+
+        <span class="ActionScriptASDoc">/**
+        *    Constructor for class.
+        * 
+        *    @param x An XML document that contains an individual Entry element from 
+        *    an Aton XML feed.
+        *
+        *     @langversion ActionScript 3.0
+        *    @playerversion Flash 8.5
+        *    @tiptext
+        */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">Entry</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">XMLList</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+        *    A String that contains the title for the entry.
+        *
+        *     @langversion ActionScript 3.0
+        *    @playerversion Flash 8.5
+        *    @tiptext
+        */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">title</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">title</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+        *    An array containing one or more link objects relating to this entry.
+        *
+        *     @langversion ActionScript 3.0
+        *    @playerversion Flash 8.5
+        *    @tiptext
+        */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">links</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span>
+        <span class="ActionScriptBracket/Brace">{</span>    
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">links</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">XML</span>;
+            <span class="ActionScriptReserved">for</span> <span class="ActionScriptReserved">each</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptReserved">in</span> <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">link</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">link</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Link</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Link</span><span class="ActionScriptBracket/Brace">()</span>;
+                <span class="ActionScriptDefault_Text">link</span>.<span class="ActionScriptDefault_Text">rel</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.@<span class="ActionScriptDefault_Text">rel</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">link</span>.<span class="ActionScriptDefault_Text">type</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.@<span class="ActionScriptDefault_Text">type</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">link</span>.<span class="ActionScriptDefault_Text">hreflang</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.@<span class="ActionScriptDefault_Text">hreflang</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">link</span>.<span class="ActionScriptDefault_Text">href</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.@<span class="ActionScriptDefault_Text">href</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">link</span>.<span class="ActionScriptDefault_Text">title</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.@<span class="ActionScriptDefault_Text">title</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">link</span>.<span class="ActionScriptDefault_Text">length</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nanCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.@<span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">&quot;length&quot;</span><span class="ActionScriptBracket/Brace">])</span>;
+                <span class="ActionScriptDefault_Text">links</span>.<span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">link</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">links</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+        *    A String that uniquely identifies the Entry.
+        *
+        *    This property conveys a permanent, universally unique identifier for
+        *    an entry or feed.
+        *
+        *     @langversion ActionScript 3.0
+        *    @playerversion Flash 8.5
+        *    @tiptext
+        */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">id</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">id</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+        *    A Date that represents when the entry was last updated.
+        *
+        *     @langversion ActionScript 3.0
+        *    @playerversion Flash 8.5
+        *    @tiptext
+        */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">updated</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Date</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">dateCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">updated</span>, <span class="ActionScriptDefault_Text">DateUtil</span>.<span class="ActionScriptDefault_Text">parseW3CDTF</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+        *    A Date that represents when the entry was originally published.
+        *
+        *     @langversion ActionScript 3.0
+        *    @playerversion Flash 8.5
+        *    @tiptext
+        */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">published</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Date</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">dateCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">published</span>, <span class="ActionScriptDefault_Text">DateUtil</span>.<span class="ActionScriptDefault_Text">parseW3CDTF</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+        *    An Array of Author objects that represent the authors for the entry.
+        *
+        *     @langversion ActionScript 3.0
+        *    @playerversion Flash 8.5
+        *    @tiptext
+        */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">authors</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">authors</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">XML</span>;
+            <span class="ActionScriptReserved">for</span> <span class="ActionScriptReserved">each</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptReserved">in</span> <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">author</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">author</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Author</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Author</span><span class="ActionScriptBracket/Brace">()</span>;
+                <span class="ActionScriptDefault_Text">author</span>.<span class="ActionScriptDefault_Text">name</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">&quot;name&quot;</span><span class="ActionScriptBracket/Brace">])</span>;
+                <span class="ActionScriptDefault_Text">author</span>.<span class="ActionScriptDefault_Text">email</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">email</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">author</span>.<span class="ActionScriptDefault_Text">uri</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">uri</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">authors</span>.<span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">author</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">authors</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+        *    An Array of Author objects that represent the contributors for the entry.
+        *
+        *     @langversion ActionScript 3.0
+        *    @playerversion Flash 8.5
+        *    @tiptext
+        */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">contributors</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">contributors</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">XML</span>;
+            <span class="ActionScriptReserved">for</span> <span class="ActionScriptReserved">each</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptReserved">in</span> <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">contributor</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">contributor</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Contributor</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Contributor</span><span class="ActionScriptBracket/Brace">()</span>;
+                <span class="ActionScriptDefault_Text">contributor</span>.<span class="ActionScriptDefault_Text">name</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">&quot;name&quot;</span><span class="ActionScriptBracket/Brace">])</span>;
+                <span class="ActionScriptDefault_Text">contributor</span>.<span class="ActionScriptDefault_Text">email</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">email</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">contributor</span>.<span class="ActionScriptDefault_Text">uri</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">uri</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">contributors</span>.<span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">contributor</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">contributors</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+        *    A Content object that contains the content of the entry.
+        *
+        *     @langversion ActionScript 3.0
+        *    @playerversion Flash 8.5
+        *    @tiptext
+        */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">content</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Content</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">content</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Content</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Content</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptDefault_Text">content</span>.<span class="ActionScriptDefault_Text">type</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">content</span>.@<span class="ActionScriptDefault_Text">type</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">content</span>.<span class="ActionScriptDefault_Text">src</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">content</span>.@<span class="ActionScriptDefault_Text">src</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">content</span>.<span class="ActionScriptDefault_Text">type</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptString">&quot;xhtml&quot;</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">content</span>.<span class="ActionScriptDefault_Text">value</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">content</span>.<span class="ActionScriptDefault_Text">xhtml</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">div</span><span class="ActionScriptBracket/Brace">)</span>;                
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">else</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">content</span>.<span class="ActionScriptDefault_Text">value</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">content</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">content</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+        *    An Array of Category objecst that represent the categories that the
+        *    feed is associated with.
+        *
+        *     @langversion ActionScript 3.0
+        *    @playerversion Flash 8.5
+        *    @tiptext
+        */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">categories</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">categories</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">XML</span>;
+            <span class="ActionScriptReserved">for</span> <span class="ActionScriptReserved">each</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptReserved">in</span> <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">category</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">category</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Category</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Category</span><span class="ActionScriptBracket/Brace">()</span>;
+                <span class="ActionScriptDefault_Text">category</span>.<span class="ActionScriptDefault_Text">term</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.@<span class="ActionScriptDefault_Text">term</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">category</span>.<span class="ActionScriptDefault_Text">scheme</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.@<span class="ActionScriptDefault_Text">scheme</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">category</span>.<span class="ActionScriptDefault_Text">label</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span>.@<span class="ActionScriptDefault_Text">label</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">categories</span>.<span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">category</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">categories</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+        *    A FeedData object that represents the source element of an Atom
+        *    entry
+        *
+        *     @langversion ActionScript 3.0
+        *    @playerversion Flash 8.5
+        *    @tiptext
+        *
+        *    @see http://www.atomenabled.org/developers/syndication/atom-format-spec.php#atomContent
+        */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">source</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">FeedData</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">FeedData</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">XMLList</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">atom</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">source</span><span class="ActionScriptBracket/Brace">))</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+                <span class="ActionScriptASDoc">/**
+                 * Any GeoRSS info associated with this item.
+                 *
+                 * @langversion ActionScript 3.0
+                 * @playerversion Flash 8.5
+                 * @tiptext
+                 */</span>
+                <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">geo</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Geo</span>
+                <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">xmlToGeo</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">georss</span><span class="ActionScriptOperator">::</span><span class="ActionScriptDefault_Text">point</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+
+
+                <span class="ActionScriptASDoc">/**
+                 * Any media associated with this item.
+                 *
+                 * @langversion ActionScript 3.0
+                 * @playerversion Flash 8.5
+                 * @tiptext
+                 */</span>
+                <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">media</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Media</span>
+                <span class="ActionScriptBracket/Brace">{</span>
+                        <span class="ActionScriptReserved">for</span> <span class="ActionScriptReserved">each</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">link</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Link</span> <span class="ActionScriptReserved">in</span> <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">links</span><span class="ActionScriptBracket/Brace">)</span>
+                        <span class="ActionScriptBracket/Brace">{</span>
+                                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">link</span>.<span class="ActionScriptDefault_Text">rel</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptString">&quot;enclosure&quot;</span><span class="ActionScriptBracket/Brace">)</span>
+                                <span class="ActionScriptBracket/Brace">{</span>
+                                        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">media</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Media</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Media</span><span class="ActionScriptBracket/Brace">()</span>;
+                                        <span class="ActionScriptDefault_Text">media</span>.<span class="ActionScriptDefault_Text">type</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">link</span>.<span class="ActionScriptDefault_Text">type</span>;
+                                        <span class="ActionScriptDefault_Text">media</span>.<span class="ActionScriptDefault_Text">length</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">link</span>.<span class="ActionScriptDefault_Text">length</span>;
+                                        <span class="ActionScriptDefault_Text">media</span>.<span class="ActionScriptDefault_Text">url</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">link</span>.<span class="ActionScriptDefault_Text">href</span>;
+                                        <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">media</span>;
+                                <span class="ActionScriptBracket/Brace">}</span>
+                        <span class="ActionScriptBracket/Brace">}</span>
+                        <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">null</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+</pre></body>
+</html>

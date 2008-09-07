@@ -1,0 +1,142 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>FeedFactory.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">/*
+    Adobe Systems Incorporated(r) Source Code License Agreement
+    Copyright(c) 2005 Adobe Systems Incorporated. All rights reserved.
+    
+    Please read this Source Code License Agreement carefully before using
+    the source code.
+    
+    Adobe Systems Incorporated grants to you a perpetual, worldwide, non-exclusive, 
+    no-charge, royalty-free, irrevocable copyright license, to reproduce,
+    prepare derivative works of, publicly display, publicly perform, and
+    distribute this source code and such derivative works in source or 
+    object code form without any attribution requirements.  
+    
+    The name &quot;Adobe Systems Incorporated&quot; must not be used to endorse or promote products
+    derived from the source code without prior written permission.
+    
+    You agree to indemnify, hold harmless and defend Adobe Systems Incorporated from and
+    against any loss, damage, claims or lawsuits, including attorney&apos;s 
+    fees that arise or result from your use or distribution of the source 
+    code.
+    
+    THIS SOURCE CODE IS PROVIDED &quot;AS IS&quot; AND &quot;WITH ALL FAULTS&quot;, WITHOUT 
+    ANY TECHNICAL SUPPORT OR ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  ALSO, THERE IS NO WARRANTY OF 
+    NON-INFRINGEMENT, TITLE OR QUIET ENJOYMENT.  IN NO EVENT SHALL MACROMEDIA
+    OR ITS SUPPLIERS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOURCE CODE, EVEN IF
+    ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/</span>
+
+<span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">generic</span>
+<span class="ActionScriptBracket/Brace">{</span>
+
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">atom</span>.<span class="ActionScriptDefault_Text">Atom10</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">atom</span>.<span class="ActionScriptDefault_Text">Atom03</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">rss</span>.<span class="ActionScriptDefault_Text">RSS10</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">rss</span>.<span class="ActionScriptDefault_Text">RSS20</span>;
+
+    <span class="ActionScriptASDoc">/**
+     * The FeedFactory allows you to create generic IFeed objects from any
+     * version of RSS or Atom. You can then access data within the feed
+     * without knowing what type of feed or which version it is. For most
+     * people, this will be the starting point for the XML syndication
+     * project.
+     * 
+     * @langversion ActionScript 3.0
+     * @playerversion Flash 8.5
+     * @tiptext
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">FeedFactory</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/**
+         * Allows you to get a generic IFeed object from a string of XML. The
+         * string can be any version of RSS or Atom.
+         *
+         * @param xmlStr A string of XML that is any type of RSS or Atom.
+         * @return A generic IFeed object that lets you access data in the
+         *         feed without having to know what kind of feed it is.
+         * @throws UnknownFeedError If it can&apos;t determine what kind of feed
+         *         you passed in.
+         *
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getFeedByString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">xmlStr</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">IFeed</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">FeedFactory</span>.<span class="ActionScriptDefault_Text">getFeedByXML</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">XML</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">xmlStr</span><span class="ActionScriptBracket/Brace">))</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Allows you to get a generic IFeed object from an XML object. The
+         * XML can represent any version of RSS or Atom.
+         *
+         * @param x An XML object that represents any type of RSS or Atom.
+         * @return A generic IFeed object that lets you access data in the
+         *         feed without having to know what kind of feed it is.
+         * @throws UnknownFeedError If it can&apos;t determine what kind of feed
+         *         you passed in.
+         *
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getFeedByXML</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">XML</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">IFeed</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">// Atom 0.3
+</span>            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">namespace</span><span class="ActionScriptBracket/Brace">()</span>.<span class="ActionScriptDefault_Text">uri</span>.<span class="ActionScriptDefault_Text">toLowerCase</span><span class="ActionScriptBracket/Brace">()</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptString">&quot;http://purl.org/atom/ns#&quot;</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">atom03</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Atom03</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Atom03</span><span class="ActionScriptBracket/Brace">()</span>;
+                <span class="ActionScriptDefault_Text">atom03</span>.<span class="ActionScriptDefault_Text">populate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Atom03Feed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">atom03</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+
+            <span class="ActionScriptComment">// Atom 1.0
+</span>            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">namespace</span><span class="ActionScriptBracket/Brace">()</span>.<span class="ActionScriptDefault_Text">uri</span>.<span class="ActionScriptDefault_Text">toLowerCase</span><span class="ActionScriptBracket/Brace">()</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptString">&quot;http://www.w3.org/2005/atom&quot;</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">atom10</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Atom10</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Atom10</span><span class="ActionScriptBracket/Brace">()</span>;
+                <span class="ActionScriptDefault_Text">atom10</span>.<span class="ActionScriptDefault_Text">populate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Atom10Feed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">atom10</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+
+            <span class="ActionScriptComment">// RSS 1.0
+</span>            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">namespaces</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">namespaceDeclarations</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptReserved">for</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> 0; <span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptOperator">&lt;</span> <span class="ActionScriptDefault_Text">namespaces</span>.<span class="ActionScriptDefault_Text">length</span>; <span class="ActionScriptOperator">++</span><span class="ActionScriptDefault_Text">i</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">namespaces</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">i</span><span class="ActionScriptBracket/Brace">]</span>.<span class="ActionScriptDefault_Text">uri</span>.<span class="ActionScriptDefault_Text">toLowerCase</span><span class="ActionScriptBracket/Brace">()</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptString">&quot;http://purl.org/rss/1.0/&quot;</span><span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">rss10</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">RSS10</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">RSS10</span><span class="ActionScriptBracket/Brace">()</span>;
+                    <span class="ActionScriptDefault_Text">rss10</span>.<span class="ActionScriptDefault_Text">populate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">RSS10Feed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">rss10</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptBracket/Brace">}</span>
+
+            <span class="ActionScriptComment">// RSS .91, .92, 2.0
+</span>            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">name</span><span class="ActionScriptBracket/Brace">()</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptString">&quot;rss&quot;</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span>.@<span class="ActionScriptDefault_Text">version</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">&lt;=</span> 2<span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">rss20</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">RSS20</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">RSS20</span><span class="ActionScriptBracket/Brace">()</span>;
+                <span class="ActionScriptDefault_Text">rss20</span>.<span class="ActionScriptDefault_Text">populate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">RSS20Feed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">rss20</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptComment">// Don&apos;t recognize this feed.  Throw an exception.
+</span>            <span class="ActionScriptReserved">throw</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">UnknownFeedError</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">&quot;Unable to determine feed type.&quot;</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

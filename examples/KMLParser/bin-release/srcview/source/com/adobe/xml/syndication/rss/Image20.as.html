@@ -1,0 +1,159 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Image20.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">/*
+    Adobe Systems Incorporated(r) Source Code License Agreement
+    Copyright(c) 2005 Adobe Systems Incorporated. All rights reserved.
+    
+    Please read this Source Code License Agreement carefully before using
+    the source code.
+    
+    Adobe Systems Incorporated grants to you a perpetual, worldwide, non-exclusive, 
+    no-charge, royalty-free, irrevocable copyright license, to reproduce,
+    prepare derivative works of, publicly display, publicly perform, and
+    distribute this source code and such derivative works in source or 
+    object code form without any attribution requirements.  
+    
+    The name &quot;Adobe Systems Incorporated&quot; must not be used to endorse or promote products
+    derived from the source code without prior written permission.
+    
+    You agree to indemnify, hold harmless and defend Adobe Systems Incorporated from and
+    against any loss, damage, claims or lawsuits, including attorney&apos;s 
+    fees that arise or result from your use or distribution of the source 
+    code.
+    
+    THIS SOURCE CODE IS PROVIDED &quot;AS IS&quot; AND &quot;WITH ALL FAULTS&quot;, WITHOUT 
+    ANY TECHNICAL SUPPORT OR ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  ALSO, THERE IS NO WARRANTY OF 
+    NON-INFRINGEMENT, TITLE OR QUIET ENJOYMENT.  IN NO EVENT SHALL MACROMEDIA
+    OR ITS SUPPLIERS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOURCE CODE, EVEN IF
+    ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/</span>
+
+<span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">rss</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">XmlElement</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">ParsingTools</span>;
+
+    <span class="ActionScriptASDoc">/**
+     * Class that represents an RSS 1.0 image.
+     *
+     * Specifies a GIF, JPEG or PNG image that can be displayed with the
+     * channel.
+     * 
+     * @langversion ActionScript 3.0
+     * @playerversion Flash 8.5
+     * @tiptext
+     * 
+     * @see http://blogs.law.harvard.edu/tech/rss
+     */</span>    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">Image20</span>
+        <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">XmlElement</span>
+            <span class="ActionScriptReserved">implements</span> <span class="ActionScriptDefault_Text">IImage</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/**
+         * Creates a new Image20 instance.
+         * 
+         * @param x The XML with which to construct the image.
+         *
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">Image20</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">XMLList</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Describes the image, it&apos;s used in the ALT attribute of the HTML
+         * &lt;img&gt; tag when the channel is rendered in HTML. 
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">title</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">title</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * The URL of the site. When the channel is rendered, the image is a
+         * link to the site. (Note: in practice the image &lt;title&gt; and &lt;link&gt;
+         * should have the same value as the channel&apos;s &lt;title&gt; and &lt;link&gt;).
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">link</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">link</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * The URL of a GIF, JPEG or PNG image that represents the channel.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">url</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">url</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Number indicating the width of the image in pixels. The maximum
+         * value for width is 144. The default value (if undefined) is 88.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">width</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Number</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nanCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">width</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Number indicating the height of the image in pixels. The maximum
+         * value for height is 400. The default value (if undefined) is 31.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">height</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Number</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nanCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">height</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Contains text that is included in the TITLE attribute of the link
+         * formed around the image in the HTML rendering.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">description</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">description</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

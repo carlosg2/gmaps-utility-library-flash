@@ -1,0 +1,337 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Channel20.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">/*
+    Adobe Systems Incorporated(r) Source Code License Agreement
+    Copyright(c) 2005 Adobe Systems Incorporated. All rights reserved.
+    
+    Please read this Source Code License Agreement carefully before using
+    the source code.
+    
+    Adobe Systems Incorporated grants to you a perpetual, worldwide, non-exclusive, 
+    no-charge, royalty-free, irrevocable copyright license, to reproduce,
+    prepare derivative works of, publicly display, publicly perform, and
+    distribute this source code and such derivative works in source or 
+    object code form without any attribution requirements.  
+    
+    The name &quot;Adobe Systems Incorporated&quot; must not be used to endorse or promote products
+    derived from the source code without prior written permission.
+    
+    You agree to indemnify, hold harmless and defend Adobe Systems Incorporated from and
+    against any loss, damage, claims or lawsuits, including attorney&apos;s 
+    fees that arise or result from your use or distribution of the source 
+    code.
+    
+    THIS SOURCE CODE IS PROVIDED &quot;AS IS&quot; AND &quot;WITH ALL FAULTS&quot;, WITHOUT 
+    ANY TECHNICAL SUPPORT OR ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  ALSO, THERE IS NO WARRANTY OF 
+    NON-INFRINGEMENT, TITLE OR QUIET ENJOYMENT.  IN NO EVENT SHALL MACROMEDIA
+    OR ITS SUPPLIERS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOURCE CODE, EVEN IF
+    ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/</span>
+
+<span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">rss</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">utils</span>.<span class="ActionScriptDefault_Text">DateUtil</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">XmlElement</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">adobe</span>.<span class="ActionScriptDefault_Text">xml</span>.<span class="ActionScriptDefault_Text">syndication</span>.<span class="ActionScriptDefault_Text">ParsingTools</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span>.<span class="ActionScriptDefault_Text">utils</span>.<span class="ActionScriptDefault_Text">StringUtil</span>;
+
+    <span class="ActionScriptASDoc">/**
+     * Class that represents an RSS 2.0 Channel element.
+     * 
+     * @langversion ActionScript 3.0
+     * @playerversion Flash 8.5
+     * @tiptext
+     * 
+     * @see http://blogs.law.harvard.edu/tech/rss#requiredChannelElements
+     * @see http://blogs.law.harvard.edu/tech/rss#optionalChannelElements
+     */</span>    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">Channel20</span>
+        <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">XmlElement</span>
+            <span class="ActionScriptReserved">implements</span> <span class="ActionScriptDefault_Text">IChannel</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Create a new Channel20 instance.
+         * 
+         * @param x The XML with which to construct the channel.
+         *
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">Channel20</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">XMLList</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * The name of the channel. It&apos;s how people refer to your service.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">title</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">title</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * The URL to the HTML website corresponding to the channel.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">link</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">link</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Phrase or sentence describing the channel.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">description</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">description</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * The language the channel is written in.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         *
+         * @see http://blogs.law.harvard.edu/tech/stories/storyReader$15
+         * @see http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">language</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">language</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Copyright notice for content in the channel.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">copyright</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">copyright</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Email address for person responsible for editorial content.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">managingEditor</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">managingEditor</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Email address for person responsible for technical issues relating to channel.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">webMaster</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">webMaster</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * The PICS rating for the channel.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         *
+         * @see http://www.w3.org/PICS/
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">rating</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">rating</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * The publication date for the content in the channel.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">pubDate</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Date</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">dateCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">pubDate</span>, <span class="ActionScriptDefault_Text">DateUtil</span>.<span class="ActionScriptDefault_Text">parseRFC822</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * The last time the content of the channel changed.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">lastBuildDate</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Date</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">dateCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">lastBuildDate</span>,
+                                          <span class="ActionScriptDefault_Text">DateUtil</span>.<span class="ActionScriptDefault_Text">parseRFC822</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * A URL that points to the documentation for the format used in the
+         * RSS file.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">docs</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">docs</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * A hint for aggregators telling them which days they can skip.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         *
+         * @see http://blogs.law.harvard.edu/tech/skipHoursDays#skipdays
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">skipDays</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">skipDays</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">null</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">days</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">d</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">XML</span>;
+            <span class="ActionScriptReserved">for</span> <span class="ActionScriptReserved">each</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">d</span> <span class="ActionScriptReserved">in</span> <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">skipDays</span>.<span class="ActionScriptDefault_Text">day</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">days</span>.<span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">d</span><span class="ActionScriptBracket/Brace">))</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">days</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * A hint for aggregators telling them which hours they can skip.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         *
+         * @see http://blogs.law.harvard.edu/tech/skipHoursDays#skipdays
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">skipHours</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">skipHours</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">null</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">hours</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">h</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">XML</span>;
+            <span class="ActionScriptReserved">for</span> <span class="ActionScriptReserved">each</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">h</span> <span class="ActionScriptReserved">in</span> <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">skipHours</span>.<span class="ActionScriptDefault_Text">hour</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">hours</span>.<span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">h</span><span class="ActionScriptBracket/Brace">))</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">hours</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Specify one or more categories that the channel belongs to.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         *
+         * @see http://blogs.law.harvard.edu/tech/rss#syndic8
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">categories</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">xmlToCategories</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">category</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * A string indicating the program used to generate the channel.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">generator</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">generator</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * ttl stands for time to live. It&apos;s a number of minutes that
+         * indicates how long a channel can be cached before refreshing
+         * from the source.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         *
+         * @see http://blogs.law.harvard.edu/tech/rss#ltttlgtSubelementOfLtchannelgt
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">ttl</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">ttl</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Allows processes to register with a cloud to be notified of updates
+         * to the channel, implementing a lightweight publish-subscribe
+         * protocol for RSS feeds.
+         * 
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 8.5
+         * @tiptext
+         *
+         * @see http://blogs.law.harvard.edu/tech/rss#ltcloudgtSubelementOfLtchannelgt
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">cloud</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Cloud</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ParsingTools</span>.<span class="ActionScriptDefault_Text">nullCheck</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">cloud</span>.@<span class="ActionScriptDefault_Text">protocol</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">null</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">c</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Cloud</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Cloud</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptDefault_Text">c</span>.<span class="ActionScriptDefault_Text">domain</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">cloud</span>.@<span class="ActionScriptDefault_Text">domain</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">c</span>.<span class="ActionScriptDefault_Text">path</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">cloud</span>.@<span class="ActionScriptDefault_Text">path</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">c</span>.<span class="ActionScriptDefault_Text">port</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">cloud</span>.@<span class="ActionScriptDefault_Text">port</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">c</span>.<span class="ActionScriptDefault_Text">protocol</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">cloud</span>.@<span class="ActionScriptDefault_Text">protocol</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">c</span>.<span class="ActionScriptDefault_Text">registerProcedure</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span>.<span class="ActionScriptDefault_Text">cloud</span>.@<span class="ActionScriptDefault_Text">registerProcedure</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">c</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

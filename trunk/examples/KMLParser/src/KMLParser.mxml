@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright 2008 Google Inc. 
+ Licensed under the Apache License, Version 2.0:
+    http://www.apache.org/licenses/LICENSE-2.0
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%" viewSourceURL="srcview/index.html">
+  <mx:Panel title="Google Maps API for Flash - KML Parser Example" width="100%" height="100%">
+   <mx:HDividedBox width="100%" height="100%">
+   <mx:Tree id="kmlTree" width="200" height="100%" dataProvider="{kmlObj}" change="changeEvt(event);" labelField="name" showRoot="false"/>
+    <mx:UIComponent id="mapContainer" 
+        initialize="startMap(event);" 
+        resize="resizeMap(event)" 
+        width="100%" height="100%"/>
+    </mx:HDividedBox>
+  </mx:Panel>
+  <mx:Script>
+    <![CDATA[
+  import flash.events.Event;
+  
+  import com.google.maps.controls.ZoomControl;
+  import com.google.maps.overlays.Polyline;
+  import com.google.maps.overlays.Marker;
+  import com.google.maps.MapEvent;
+  import com.google.maps.Map;
+  import com.google.maps.MapType;
+  import com.google.maps.LatLng;
+  import com.google.maps.LatLngBounds;
+  import com.google.maps.overlays.GroundOverlay;
+  import com.google.maps.overlays.GroundOverlayOptions; 
+  import com.google.maps.extras.xmlparsers.kml.*;
+  
+  private var map:Map;
+  [Bindable] private var kmlObj:Object = new Object();
+  
+  public function startMap(event:Event):void {
+    map = new Map();
+    map.addEventListener(MapEvent.MAP_READY, onMapReady);
+    mapContainer.addChild(map);
+    map.key = "ABQIAAAA-O3c-Om9OcvXMOJXreXHAxTPZYElJSBeBUeMSX5xXgq6lLjHthQK56gfyM5NBqKVAIOX7Pg8-ceW5A";
+  }
+      
+  public function resizeMap(event:Event):void {
+    map.setSize(new flash.geom.Point::Point(mapContainer.width, mapContainer.height));
+  }
+  
+  public function onMapReady(event:MapEvent):void {
+	map.setCenter(new LatLng(37.422289,-122.0822035), 14, MapType.NORMAL_MAP_TYPE);
+    map.addControl(new ZoomControl());
+    var loader:URLLoader = new URLLoader();
+    loader.addEventListener(Event.COMPLETE, loadXML);
+    loader.load(new URLRequest("sample.xml"));
+  }
+  
+  public function loadXML(event:Event):void {
+  	//trace(event.target.data);
+ 	var kml:Kml22 = new Kml22(event.target.data);
+    var rootFeature:Feature = kml.feature;
+     
+	kmlObj = new Object();
+	kmlObj.name = rootFeature.name;
+	
+	if (!canContainFeatures(rootFeature)) return;
+	// its a container, lets look for children features
+	kmlObj.children = getChildrenFeatures(Container(rootFeature));
+  }
+  
+   private function changeEvt(event:Event):void {
+   	var mapObj:* = event.currentTarget.selectedItem.mapObject;
+   	if (mapObj is Marker) {
+   		var marker:Marker = Marker(mapObj);
+   		map.setCenter(marker.getLatLng());
+   	} else if (mapObj is com.google.maps.overlays.Polygon::Polygon) {
+   		var polygon: com.google.maps.overlays.Polygon = com.google.maps.overlays.Polygon::Polygon(mapObj);
+   		map.setCenter(polygon.getLatLngBounds().getCenter());
+   	}else if (mapObj is com.google.maps.overlays.Polyline::Polyline) {
+   		var polyline: com.google.maps.overlays.Polyline = com.google.maps.overlays.Polyline::Polyline(mapObj);
+   		map.setCenter(polyline.getLatLngBounds().getCenter());
+   	} else if (mapObj is com.google.maps.overlays.GroundOverlay::GroundOverlay) {
+   		var groundOverlay: com.google.maps.overlays.GroundOverlay = com.google.maps.overlays.GroundOverlay::GroundOverlay(mapObj);
+   		// we need a getLatLngBounds function
+   		map.setCenter(new LatLng(37.757687,15.177612));
+   	}
+   }
+   
+   
+  public function associateWithMapObject(obj:Object, feature:Feature):void {
+  	// at this point it can either be a placemark or a groundoverlay
+  	if (feature is Placemark) {
+  		var placemark:Placemark = com.google.maps.extras.xmlparsers.kml.Placemark::Placemark(feature);
+  		if (placemark.geometry != null) {
+  			if (placemark.geometry is com.google.maps.extras.xmlparsers.kml.Point::Point) {
+  				var point: com.google.maps.extras.xmlparsers.kml.Point::Point = com.google.maps.extras.xmlparsers.kml.Point::Point(placemark.geometry);
+  				var latlng:LatLng = new LatLng(point.coordinates.coordsList[0].lat, point.coordinates.coordsList[0].lon);
+  				obj.mapObject = new Marker(latlng);
+  				map.addOverlay(obj.mapObject);
+  			} else if (placemark.geometry is LineString) {
+  				var lineString:LineString = LineString(placemark.geometry);
+  				obj.mapObject = new Polyline(getCoordinatesLatLngs(lineString.coordinates));
+  				map.addOverlay(obj.mapObject);
+  			}  else if (placemark.geometry is LinearRing) {
+  				var linearRing:LinearRing = LinearRing(placemark.geometry);
+  				obj.mapObject = new Polyline(getCoordinatesLatLngs(linearRing.coordinates));
+  				map.addOverlay(obj.mapObject);
+  			}  else if (placemark.geometry is Polygon) {
+  				var polygon:Polygon = Polygon(placemark.geometry);
+  				obj.mapObject = new com.google.maps.overlays.Polygon::Polygon(getCoordinatesLatLngs(polygon.outerBoundaryIs.linearRing.coordinates));
+  				map.addOverlay(obj.mapObject);
+  			} 
+  		}
+  	} else if (feature is com.google.maps.extras.xmlparsers.kml.GroundOverlay::GroundOverlay) {
+  		var groundOverlay:com.google.maps.extras.xmlparsers.kml.GroundOverlay::GroundOverlay = com.google.maps.extras.xmlparsers.kml.GroundOverlay::GroundOverlay(feature);
+	  	var testLoader:Loader = new Loader();
+	  	var urlRequest:URLRequest = new URLRequest(groundOverlay.icon.href);
+	    testLoader.contentLoaderInfo.addEventListener(
+	      Event.COMPLETE,
+	      function(e:Event):void {
+	        obj.mapObject = new com.google.maps.overlays.GroundOverlay::GroundOverlay(
+	        testLoader,
+	        new LatLngBounds(new LatLng(groundOverlay.latLonBox.south,groundOverlay.latLonBox.west), new LatLng(groundOverlay.latLonBox.north,groundOverlay.latLonBox.east)));
+	        map.addOverlay(obj.mapObject);
+	    });
+	    testLoader.load(urlRequest); 
+  	}
+  }
+  
+  public function getCoordinatesLatLngs(coordinates:Coordinates):Array {
+  	var latlngs:Array = new Array();
+  	for (var i:Number = 0; i < coordinates.coordsList.length; i++) {
+  		var coordinate:Object = coordinates.coordsList[i];
+  		latlngs.push(new LatLng(Number(coordinate.lat), Number(coordinate.lon)));
+  	}
+  	return latlngs;
+  }
+  
+  public function getChildrenFeatures(container:Container):Array {
+  	var childrenFeatures:Array = new Array();
+  	for (var i:Number = 0; i < container.features.length; i++) {
+  		var feature:Feature = container.features[i];
+  		var childObj:Object = new Object();
+	 	childObj.name = feature.name;
+	 	if (childObj.name == null) {
+	 		childObj.name = getAlternateName(feature);
+	 	}
+	 	if (canContainFeatures(feature)) {
+	 		childObj.children = getChildrenFeatures(Container(feature));
+	 	} else {
+	 		associateWithMapObject(childObj, feature);
+	 	}
+	 	childrenFeatures.push(childObj);
+  	}
+  	return childrenFeatures;
+  }
+  
+  public function canContainFeatures(feature:Feature):Boolean {
+  	return (feature is Container);
+  }
+  
+  public function getAlternateName(feature:Feature):String {
+  	if (feature is Folder) {
+  		return "Unnamed Folder";
+  	} else if (feature is Document) {
+  		return "Unnamed Document";
+  	} else if (feature is Placemark) {
+  		var placemark:Placemark = com.google.maps.extras.xmlparsers.kml.Placemark::Placemark(feature);
+  		if (placemark.geometry != null) {
+  			if (placemark.geometry is com.google.maps.extras.xmlparsers.kml.Point) {
+  				return "Unnamed Point";
+  			} else if (placemark.geometry is com.google.maps.extras.xmlparsers.kml.LineString) {
+  				return "Unnamed Linestring";
+  			}  else if (placemark.geometry is com.google.maps.extras.xmlparsers.kml.LinearRing) {
+  				return "Unnamed LinearRing";
+  			}  else if (placemark.geometry is com.google.maps.extras.xmlparsers.kml.Polygon) {
+  				return "Unnamed Polygon";
+  			}
+  		}
+  		return "Unnamed Placemark";
+  		
+  	} else if (feature is com.google.maps.extras.xmlparsers.kml.GroundOverlay::GroundOverlay) {
+  		return "Unnamed GroundOverlay";
+  	}
+  	return "Unnamed Feature";
+  }
+    ]]>
+  </mx:Script>
+</mx:Application>

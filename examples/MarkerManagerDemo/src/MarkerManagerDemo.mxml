@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright 2008 Google Inc. 
+ Licensed under the Apache License, Version 2.0:
+    http://www.apache.org/licenses/LICENSE-2.0
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+  width="100%" height="100%" layout="absolute" viewSourceURL="srcview/index.html">
+ <mx:Panel title="Google Maps Marker Manager Demo" width="100%" height="100%">
+  <mx:UIComponent id="mapHolder"
+      initialize="onHolderCreated(event);"
+      resize="onHolderResized(event)"
+      width="100%" height="100%"/>
+ </mx:Panel>
+ <mx:Script>
+    <![CDATA[
+      import com.google.maps.LatLng;
+      import com.google.maps.LatLngBounds;
+      import com.google.maps.Map;
+      import com.google.maps.MapEvent;
+      import com.google.maps.MapMouseEvent;
+      import com.google.maps.MapType;
+      import com.google.maps.services.ClientGeocoder;
+      import com.google.maps.services.GeocodingEvent;
+      import com.google.maps.overlays.Marker;
+      import com.google.maps.overlays.MarkerOptions;
+      import com.google.maps.InfoWindowOptions;
+      import mx.controls.Alert;
+      import com.google.maps.controls.ZoomControl;
+      import com.google.maps.extras.markermanager.MarkerManager;
+
+      private var map:Map;
+      private var marker:Marker;
+
+      public function onHolderCreated(event:Event):void {
+        map = new Map();
+        map.key = "ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g";
+        map.addEventListener(MapEvent.MAP_READY, onMapReady);
+        mapHolder.addChild(map);
+      }
+
+      public function onHolderResized(event:Event):void {
+        map.setSize(new Point(mapHolder.width, mapHolder.height));
+      }
+
+      private function getRandomPoint():LatLng {
+        var lat:Number = 48.25 + (Math.random() - 0.5)*14.5;
+        var lng:Number = 11.00 + (Math.random() - 0.5)*36.0;
+        return new LatLng(Math.round(lat*10)/10, Math.round(lng*10)/10);
+      }
+
+      private function getWeatherMarkers(n:int):Array {
+        var batch:Array = new Array();
+        for (var i:Number = 0; i < n; ++i) {
+          batch.push(new Marker(getRandomPoint()));
+        }
+        return batch;
+      }
+
+      private function onMapReady(event:Event):void {
+        map.enableScrollWheelZoom();
+        map.enableContinuousZoom();
+        map.setCenter(new LatLng(48.25, 11.00), 4,
+                      MapType.NORMAL_MAP_TYPE);
+        map.addControl(new ZoomControl());
+        
+        var mgr:MarkerManager = new MarkerManager(map, {});
+        mgr.addMarkers(getWeatherMarkers(20), 3);
+        mgr.addMarkers(getWeatherMarkers(200), 6);
+        mgr.addMarkers(getWeatherMarkers(1000), 8);
+        mgr.refresh();
+      }
+
+    ]]>
+  </mx:Script>
+</mx:Application>
+
+

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of MarkerManagerDemo</title>
+	<nodes>
+		<node label="src" icon="classpathIcon" expanded="true">
+			<node label="com.google.maps.examples" icon="packageIcon" expanded="true">
+				<node label="GridBounds.as" icon="actionScriptIcon" url="source/com/google/maps/examples/GridBounds.as.html"/>
+				<node label="MarkerManager.as" icon="actionScriptIcon" url="source/com/google/maps/examples/MarkerManager.as.html"/>
+			</node>
+			<node selected="true" label="MarkerManagerDemo.mxml" icon="mxmlAppIcon" url="source/MarkerManagerDemo.mxml.html"/>
+		</node>
+	</nodes>
+</index>

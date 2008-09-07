@@ -1,0 +1,7 @@
+#summary Ideas for future libraries to add here
+
+= Ideas =
+
+  * DragZoomControl - Port of the JS version. Requested in group.
+  * GeoRSSParser - I (pamela.fox) have the code and just need to fix it up.
+  * WorldlyMapTypes - Sky, Mars, Moon. Coming soon...

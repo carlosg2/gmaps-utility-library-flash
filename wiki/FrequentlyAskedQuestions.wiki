@@ -1,4 +1,5 @@
 #summary Answers to common questions about this project.
+#labels Featured
 
 === What's the purpose of this project? ===
 

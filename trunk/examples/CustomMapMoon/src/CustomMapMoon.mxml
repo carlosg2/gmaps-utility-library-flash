@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+layout="absolute" width="100%" height="100%" viewSourceURL="srcview/index.html">
+   <mx:Panel title="Google Maps API for Flash - Moon Map Types Demo"
+backgroundColor="#FFFFFF" width="100%" height="100%">
+       <mx:UIComponent id="mapHolder"
+initialize="onHolderCreated(event);" resize="onHolderResized(event)"
+width="100%" height="100%"/>
+   </mx:Panel>
+   <mx:Script>
+       <![CDATA[
+       	import com.google.maps.InfoWindowOptions;
+        import com.google.maps.overlays.MarkerOptions;
+        import com.google.maps.LatLng;
+        import com.google.maps.MapEvent;
+        import com.google.maps.overlays.Marker;
+        import com.google.maps.MapMouseEvent;
+        import com.google.maps.Map;
+        import com.google.maps.MapType;
+        import com.google.maps.controls.MapTypeControl;
+        import com.google.maps.extras.planetary.Moon;
+        
+        
+        private var map:Map;
+        private var testPoint:Marker;
+
+        public function onHolderCreated(event:Event):void {
+            this.map = new Map;
+            this.map.key = "ABQIAAAAVTDW5mbVT4V5D7RGauepXhSdF-zECCuOJZa5MH-h2OOgY6JtqBTABawrv0P2mDoUylh0xOz6Ov37JQ";
+            this.map.addEventListener(MapEvent.MAP_READY, onMapReady);
+            mapHolder.addChild(map);
+        }
+
+        public function onHolderResized(event:Event):void {
+            this.map.setSize(new Point(mapHolder.width, mapHolder.height));
+        }
+
+        private function onMapReady(event:Event):void {
+        	this.map.setCenter(new LatLng(28, -90), 6);
+            this.map.addControl(new MapTypeControl());
+            this.map.addMapType(Moon.ELEVATION_MAP_TYPE);
+            this.map.addMapType(Moon.VISIBLE_MAP_TYPE);
+            
+            this.map.removeMapType(MapType.HYBRID_MAP_TYPE);
+            this.map.removeMapType(MapType.SATELLITE_MAP_TYPE);
+            this.map.removeMapType(MapType.PHYSICAL_MAP_TYPE);
+            this.map.removeMapType(MapType.NORMAL_MAP_TYPE);
+        }
+       ]]>
+   </mx:Script>
+</mx:Application>

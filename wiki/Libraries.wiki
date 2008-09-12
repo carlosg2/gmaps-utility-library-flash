@@ -6,7 +6,7 @@ Below is a list of the libraries being worked on in this project.
 
 == !MarkerManager ==
 
-This is the open-source ActionScript3 version of !MarkerManager, with improvements.
+This is the open-source !ActionScript3 version of !MarkerManager, with improvements.
 
 == KMLParser ==
 

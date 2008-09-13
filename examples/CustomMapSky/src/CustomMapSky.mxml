@@ -25,7 +25,7 @@ width="100%" height="100%"/>
         
         public function onHolderCreated(event:Event):void {
             this.map = new Map;
-            this.map.key = "ABQIAAAAVTDW5mbVT4V5D7RGauepXhSdF-zECCuOJZa5MH-h2OOgY6JtqBTABawrv0P2mDoUylh0xOz6Ov37JQ";
+            this.map.key = "ABQIAAAA-O3c-Om9OcvXMOJXreXHAxQGj0PqsCtxKvarsoS-iqLdqZSKfxS27kJqGZajBjvuzOBLizi931BUow";
             this.map.addEventListener(MapEvent.MAP_READY, onMapReady);
             mapHolder.addChild(map);
         }
@@ -42,6 +42,7 @@ width="100%" height="100%"/>
             this.map.removeMapType(MapType.SATELLITE_MAP_TYPE);
             this.map.removeMapType(MapType.PHYSICAL_MAP_TYPE);
             this.map.removeMapType(MapType.NORMAL_MAP_TYPE);
+           
         }
        ]]>
    </mx:Script>

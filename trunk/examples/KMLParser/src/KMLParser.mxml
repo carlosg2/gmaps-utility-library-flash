@@ -37,7 +37,7 @@
     map = new Map();
     map.addEventListener(MapEvent.MAP_READY, onMapReady);
     mapContainer.addChild(map);
-    map.key = "ABQIAAAA-O3c-Om9OcvXMOJXreXHAxTPZYElJSBeBUeMSX5xXgq6lLjHthQK56gfyM5NBqKVAIOX7Pg8-ceW5A";
+    map.key = "ABQIAAAA-O3c-Om9OcvXMOJXreXHAxQGj0PqsCtxKvarsoS-iqLdqZSKfxS27kJqGZajBjvuzOBLizi931BUow";
   }
       
   public function resizeMap(event:Event):void {

@@ -6,8 +6,29 @@ Below is a list of the libraries being worked on in this project.
 
 == !MarkerManager ==
 
-This is the open-source !ActionScript3 version of !MarkerManager, with improvements.
+This library is a AS3 port of the !MarkerManager in the JS open-source library. It enables developers to easily manage markers per zoom level/viewport, and is commonly combined with clustering. Though Flash is natively better at rendering large amounts of markers, developers have reported increased performance when using the !MarkerManager with thousands of markers.
 
-== KMLParser ==
+[http://gmaps-utility-library-flash.googlecode.com/svn/trunk/docs/com/google/maps/extras/markermanager/package-detail.html Reference]
 
-This is an !ActionScript3 port of the dom classes in [http://code.google.com/p/libkml libkml], and only supports elements which can be rendered by the Google Maps API for Flash.
+Demos:
+ * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/MarkerManagerDemo/bin-release/MarkerManagerDemo.swf MarkerManagerDemo]
+
+== KML Parser ==
+
+This library parses a KML file into objects representing the KML dom, and includes helper code for creating a sidebar using the Flex Tree component. Note that this class ignores elements and attributes that can't be rendered in the Maps API for Flash. It's based on the dom classes in [http://code.google.com/p/libkml libkml].
+
+[http://gmaps-utility-library-flash.googlecode.com/svn/trunk/docs/com/google/maps/extras/xmlparsers/kml/package-detail.html Reference]
+
+Demos:
+ * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/KMLParser/bin-release/KMLParser.html KMLParser]
+
+== Planetary Map Types ==
+
+This library contains map types for Mars, Sky, and Moon, and is a port of all the non-earth map types available in the JS API.
+
+[http://gmaps-utility-library-flash.googlecode.com/svn/trunk/docs/com/google/maps/extras/planetary/package-detail.html Reference]
+
+Demos:
+ * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/CustomMapSky/bin-release/CustomMapSky.html CustomMapSky]
+ * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/CustomMapMars/bin-release/CustomMapMars.html CustomMapMars]
+ * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/CustomMapMoon/bin-release/CustomMapMoon.html CustomMapMoon]

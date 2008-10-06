@@ -1,53 +1,34 @@
 <?xml version="1.0"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
-layout="absolute" width="100%" height="100%" viewSourceURL="srcview/index.html">
-   <mx:Panel title="Google Maps API for Flash - Mars Map Types Demo"
-backgroundColor="#FFFFFF" width="100%" height="100%">
-       <mx:UIComponent id="mapHolder"
-initialize="onHolderCreated(event);" resize="onHolderResized(event)"
-width="100%" height="100%"/>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:maps="com.google.maps.*" layout="absolute" width="100%" height="100%" viewSourceURL="srcview/index.html">
+  <mx:Panel title="Google Maps API for Flash Demo" width="100%" height="100%">
+  <maps:Map 
+    id="map" 
+    mapevent_mapready="onMapReady(event)"
+    mapevent_mappreinitialize="onMapPreinitialize(event)"
+    key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g"
+    width="100%" height="100%"/>
    </mx:Panel>
    <mx:Script>
        <![CDATA[
-       	import com.google.maps.InfoWindowOptions;
-        import com.google.maps.overlays.MarkerOptions;
         import com.google.maps.LatLng;
         import com.google.maps.MapEvent;
-        import com.google.maps.overlays.Marker;
-        import com.google.maps.MapMouseEvent;
         import com.google.maps.Map;
+        import com.google.maps.MapOptions;
         import com.google.maps.MapType;
         import com.google.maps.controls.MapTypeControl;
         import com.google.maps.extras.planetary.Mars;
         
+        private function onMapPreinitialize(event:Event):void {
+            var opts:MapOptions = new MapOptions();
+            opts.mapTypes = [Mars.ELEVATION_MAP_TYPE, Mars.VISIBLE_MAP_TYPE, Mars.INFRARED_MAP_TYPE]; 
+            opts.mapType = Mars.VISIBLE_MAP_TYPE;
+            opts.center = new LatLng(28, -90);
+            opts.zoom = 6;
+            this.map.setInitOptions(opts);
+        }
         
-        private var map:Map;
-        private var testPoint:Marker;
-
-        public function onHolderCreated(event:Event):void {
-            this.map = new Map;
-            this.map.key = "ABQIAAAA-O3c-Om9OcvXMOJXreXHAxQGj0PqsCtxKvarsoS-iqLdqZSKfxS27kJqGZajBjvuzOBLizi931BUow";
-            this.map.addEventListener(MapEvent.MAP_READY, onMapReady);
-            mapHolder.addChild(map);
-        }
-
-        public function onHolderResized(event:Event):void {
-            this.map.setSize(new Point(mapHolder.width, mapHolder.height));
-        }
-
         private function onMapReady(event:Event):void {
-        	this.map.setCenter(new LatLng(28, -90), 6);
-            this.map.addControl(new MapTypeControl());
-            this.map.addMapType(Mars.ELEVATION_MAP_TYPE);
-            this.map.addMapType(Mars.VISIBLE_MAP_TYPE);
-            this.map.addMapType(Mars.INFRARED_MAP_TYPE);
-           
-            this.map.removeMapType(MapType.HYBRID_MAP_TYPE);
-            this.map.removeMapType(MapType.SATELLITE_MAP_TYPE);
-            this.map.removeMapType(MapType.PHYSICAL_MAP_TYPE);
-            this.map.removeMapType(MapType.NORMAL_MAP_TYPE);
-            
-             this.map.setMapType(Mars.INFRARED_MAP_TYPE);
+        	this.map.addControl(new MapTypeControl());
         }
        ]]>
    </mx:Script>

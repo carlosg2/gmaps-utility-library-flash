@@ -23,8 +23,8 @@
          private function onMapPreinitialize(event:Event):void {
             var opts:MapOptions = new MapOptions();
             opts.mapTypes = [Sky.VISIBLE_MAP_TYPE];
-            opts.center = new LatLng(28, -90);
-            opts.zoom = 10;
+            opts.center = new LatLng(69.35708,30.9375);
+            opts.zoom = 7;
             opts.backgroundFillStyle = new FillStyle();
             opts.backgroundFillStyle.color = 0x000000;
             this.map.setInitOptions(opts);

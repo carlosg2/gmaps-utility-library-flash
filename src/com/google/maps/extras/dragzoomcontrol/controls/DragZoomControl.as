@@ -33,10 +33,15 @@ package com.google.maps.extras.dragzoomcontrol.controls
 	import com.google.maps.interfaces.IMap;
 	import com.google.maps.overlays.Polyline;
 	
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.filters.BitmapFilterQuality;
+	import flash.filters.BitmapFilterType;
+	import flash.filters.GradientBevelFilter;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -49,18 +54,18 @@ package com.google.maps.extras.dragzoomcontrol.controls
 	 */
 	[Event(name="zoomCommit", type="com.google.maps.extras.dragzoomcontrol.events.DragZoomEvent")]
 	public class DragZoomControl extends ControlBase {
-		
-		// Static constants
+				
+		//static constants
 		private static const ACTIVE_ALPHA:Number = 1;
 		private static const INACTIVE_ALPHA:Number = .7;
 		
-		private static const DRAG_BG_COLOR:Number = 0xFFFFFF;
-		private static const DRAG_BG_ALPHA:Number = 0.5;
-		private static const LINE_COLOR:Number = 0x000000;
-		private static const DEFAULT_CONTROL_POSITION:ControlPosition = new ControlPosition(ControlPosition.ANCHOR_TOP_LEFT, MARGIN_TOP, MARGIN_RIGHT); 						
-		
-		private static const MARGIN_TOP:int = 7;
-		private static const MARGIN_RIGHT:int = 7;
+		//Default configurable properties values
+		public static const DEFAULT_SELECTION_BG_COLOR:Number = 0xFFFFFF;
+		public static const DEFAULT_SELECTION_ALPHA:Number = 0.5;
+		public static const DEFAUT_LINE_COLOR:Number = 0x000000;	
+		public static const DEFAUT_DRAG_ZOOM_MSG:String = "click and drag mouse to zoom into area";								
+		public static const DEFAULT_MARGIN_TOP:int = 7;
+		public static const DEFAULT_MARGIN_LEFT:int = 7;
 		
 		//zoom-in image
 		[Embed(source="/assets/images/zoom-in.png")]
@@ -68,8 +73,17 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		
 		//zoom-out image
 		[Embed(source="/assets/images/zoom-out.png")]
-		public static const ZOOM_OUT_IMG:Class;						
+		public static const ZOOM_OUT_IMG:Class;	
 		
+		//configurable properties
+		private var _selectionBGColor:Number;
+		private var _selectionAlpha:Number;
+		private var _selectionLineColor:Number;	
+		private var _dragZoomMsg:String;	
+		private var _marginTop:int;
+		private var _margingLeft:int;			
+		
+		//private
 		private var _map:IMap;
 		private var _drawArea:Sprite;
 		private var _zoomArea:Shape;
@@ -84,16 +98,53 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		
 		private var _zoomInBtn:Sprite;
 		private var _zoomOutBtn:Sprite;
-		private var _msg:Sprite;		
+		private var _msg:Sprite;
+		
+		private var _mapBitmapData:BitmapData;
+		private var _mapDisplayObject:DisplayObject;		
 
 		/**
 		 * Creates the DragZoom control
 		 *
 		 * @constructor
+		 * @param {int} optMarginTop The top margin of the control in points - default:7
+		 * @param {int} optMarginLeft he left margin of the control in points - default:7
+		 * @param {Number} optSelectionBGColor The background color message text - default:0xFFFFFF
+		 * @param {Number} optSelectionLineColor The line color of the selection area - default:0x000000
+		 * @param {Number} optSelectionAlpha The alpha value of the selection area - default:0.5
+		 * @param {String} optDragZoomMsg The message displayed on screen when the control
+		 * is enabled - default:click and drag mouse to zoom into area
 		 */
-		public function DragZoomControl() {
-			super(DEFAULT_CONTROL_POSITION);	
+		public function DragZoomControl(
+				optMarginTop:int = DEFAULT_MARGIN_TOP,
+				optMarginLeft:int = DEFAULT_MARGIN_LEFT,
+				optSelectionBGColor:Number = DEFAULT_SELECTION_BG_COLOR,
+				optSelectionLineColor:Number = DEFAUT_LINE_COLOR,
+				optSelectionAlpha:Number = DEFAULT_SELECTION_ALPHA,
+				optDragZoomMsg:String = DEFAUT_DRAG_ZOOM_MSG) {	
+								
+			super(new ControlPosition(ControlPosition.ANCHOR_TOP_LEFT, optMarginTop, optMarginLeft));
+			_selectionBGColor = optSelectionBGColor;
+			_selectionAlpha = optSelectionAlpha;
+			_selectionLineColor = optSelectionLineColor;	
+			_dragZoomMsg = optDragZoomMsg;	
+			_marginTop = optMarginTop;
+			_margingLeft = optMarginLeft;	 
+         
+			var bf:GradientBevelFilter  = new GradientBevelFilter(
+																8,   
+																225,
+																[0xFFFFFF, 0xEEEEEE, 0x000000],
+																[1, 0, 1],
+																[0, 100, 255],
+																7,
+																7,
+																1,
+																BitmapFilterQuality.HIGH,
+																BitmapFilterType.OUTER,
+																true);
 			_drawArea =  new Sprite();
+			_drawArea.filters = [bf];
 			addChild(_drawArea);
 		}		
 
@@ -129,6 +180,10 @@ package com.google.maps.extras.dragzoomcontrol.controls
 			_map.addEventListener(MapMouseEvent.MOUSE_DOWN, startZoom);
 			_map.addEventListener(MapMouseEvent.MOUSE_UP, commitZoom);
 			_map.addEventListener(MapMouseEvent.MOUSE_MOVE, updateZoom);
+			
+			_mapDisplayObject = _map as DisplayObject;				
+			_mapBitmapData= new BitmapData(_mapDisplayObject.width, _mapDisplayObject.height);	
+			_mapBitmapData.draw(_mapDisplayObject);					
 		}
 		
 		/**
@@ -146,7 +201,7 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		 * @private
 		 * Removes Map event listener and enables map dragging
 		 */			
-		private function disableDragZoom():void {			
+		private function disableZoom():void {			
 			_map.removeEventListener(MapMouseEvent.MOUSE_DOWN, startZoom);
 			_map.removeEventListener(MapMouseEvent.MOUSE_UP, commitZoom);
 			_map.removeEventListener(MapMouseEvent.MOUSE_MOVE, updateZoom);
@@ -173,14 +228,21 @@ package com.google.maps.extras.dragzoomcontrol.controls
 
 				_zoomArea = new Shape();
 				
-				var recX:int = (point.x - zoomWidth)-8;
-				var recY:int = (point.y - zoomHeight)-8;
-	
-			    _zoomArea.graphics.beginFill(DRAG_BG_COLOR, DRAG_BG_ALPHA);
-			    _zoomArea.graphics.lineStyle(1, LINE_COLOR);
+				var recX:int = (point.x - zoomWidth)-_marginTop;
+				var recY:int = (point.y - zoomHeight)-_margingLeft;
+				
+			    var myMatrix:Matrix = new Matrix();
+			    myMatrix.tx = -(_margingLeft);
+			    myMatrix.ty = -(_marginTop);
+
+			    _zoomArea.graphics.beginBitmapFill(_mapBitmapData,myMatrix); 
+			    _zoomArea.graphics.lineStyle(1, _selectionLineColor);
 			    _zoomArea.graphics.drawRect(recX, recY, zoomWidth, zoomHeight);
 			    _zoomArea.graphics.endFill();
 			    _drawArea.addChild(_zoomArea);	
+			    
+			    recX = point.x - zoomWidth;
+			    recY = point.y - zoomHeight; 
 			    
 			    _nwPoint = new Point(recX, recY);
 			    _swPoint = new Point(recX, (recY + _zoomArea.height));
@@ -196,7 +258,7 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		 * @param {MapMouseEvent} event The mouse event
 		 */			
 		private function commitZoom(event:MapMouseEvent):void {	
-			disableDragZoom();	
+			disableZoom();	
 			_map.savePosition();	
 			_zoomState = false;
 			resetDrawArea();
@@ -206,6 +268,8 @@ package com.google.maps.extras.dragzoomcontrol.controls
 			
 			_zoomOutBtn.visible = true;
 			_msg.visible = false;
+			_mapBitmapData = null;
+			_mapDisplayObject = null;
 			
 			var evt:DragZoomEvent = new DragZoomEvent(DragZoomEvent.ZOOM_COMMIT);
 			evt.bounds = latLngBounds;			
@@ -322,30 +386,30 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		    _zoomOutBtn.alpha = INACTIVE_ALPHA;
 		    _zoomOutBtn.visible = false;
 		    
-		    var center:Point = _map.fromLatLngToViewport(_map.getCenter());
-		    _msg = new Sprite();
-		    _msg.x = center.x;
-		    _msg.y = 10;			    		    		
+			var center:Point = _map.fromLatLngToViewport(_map.getCenter());
+			_msg = new Sprite();
+			_msg.x = center.x;
+			_msg.y = 10;			    		    		
 			var label:TextField = new TextField();
-			label.text = "click and drag mouse to zoom into area";
+			label.text = _dragZoomMsg;
 			label.selectable = false;
 			label.autoSize = TextFieldAutoSize.CENTER;
 			var format:TextFormat = new TextFormat("Verdana");
 			label.setTextFormat(format);	
 			
 			var background:Shape = new Shape();
-			background.graphics.beginFill(DRAG_BG_COLOR, DRAG_BG_ALPHA);
-			background.graphics.lineStyle(1, LINE_COLOR);
+			background.graphics.beginFill(_selectionBGColor, _selectionAlpha);
+			background.graphics.lineStyle(1, _selectionLineColor);
 			background.graphics.drawRoundRect(label.x, label.y, label.width, label.height, 4);
 			background.graphics.endFill();
 			
 			_msg.addChild(background);	
 			_msg.addChild(label);
 			_msg.visible = false;				   	    	    
-
+			
 			addChild(_msg);
-		    addChild(_zoomInBtn);
-		    addChild(_zoomOutBtn);			
+			addChild(_zoomInBtn);
+			addChild(_zoomOutBtn);			
 		}		
 		
 	}

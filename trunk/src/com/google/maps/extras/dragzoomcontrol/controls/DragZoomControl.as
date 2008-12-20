@@ -183,7 +183,9 @@ package com.google.maps.extras.dragzoomcontrol.controls
 			
 			_mapDisplayObject = _map as DisplayObject;				
 			_mapBitmapData= new BitmapData(_mapDisplayObject.width, _mapDisplayObject.height);	
-			_mapBitmapData.draw(_mapDisplayObject);					
+			//this wil have to wait - sandbox security exception thrown
+			//we can do all kinds of cool effects once this is supported
+			//_mapBitmapData.draw(_mapDisplayObject);					
 		}
 		
 		/**

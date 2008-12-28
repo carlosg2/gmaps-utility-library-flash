@@ -6,10 +6,8 @@
 // todo: Support Schema, StyleSelector elements
 package com.google.maps.extras.xmlparsers.kml
 {
-    import com.google.maps.extras.xmlparsers.Namespaces;
 	import com.google.maps.extras.xmlparsers.ParsingTools;
-	import com.google.maps.extras.xmlparsers.XmlElement;
-
+	
 	/**
 	*	Class that represents a &lt;Document&gt; element within a KML file.
 	* 
@@ -22,12 +20,34 @@ package com.google.maps.extras.xmlparsers.kml
 		*	Constructor for class.
 		* 
 		*	@param x
-		*/	
+		*/
+		
+		public var _styleMap:StyleMap;
+		public var _styles:Array;
+			
 		public function Document(x:XMLList)
 		{
 			super(x);
+			
+			this._styles = new Array();
+		 	var i:XML;
+			for each (i in this.x.kml::Style) {
+					this._styles.push(new com.google.maps.extras.xmlparsers.kml.Style(XMLList(i)));
+			}
+			if (ParsingTools.nullCheck(this.x.kml::StyleMap) != null) {
+				this._styleMap = new com.google.maps.extras.xmlparsers.kml.StyleMap(this.x.kml::StyleMap);
+			}
 		}
 		
+		///(cmR)
+		public function get styles():Array{
+			return this._styles;
+		}
+		
+		public function get styleMap():StyleMap{
+			return this._styleMap;	
+		}
+		///////////
 		public override function toString():String {
 			return "Document: " + super.toString();
 		}

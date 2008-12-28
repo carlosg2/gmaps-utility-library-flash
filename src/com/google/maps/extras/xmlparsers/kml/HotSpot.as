@@ -9,10 +9,10 @@ package com.google.maps.extras.xmlparsers.kml
 	
 	public class HotSpot extends KmlObject
 	{
-		public var _x:Number;
-		public var _y:Number;
-		public var _xunits:String;
-		public var _yunits:String;
+		private var _x:Number;
+		private var _y:Number;
+		private var _xunits:String;
+		private var _yunits:String;
 		
 		public function HotSpot(x:XMLList)
 		{

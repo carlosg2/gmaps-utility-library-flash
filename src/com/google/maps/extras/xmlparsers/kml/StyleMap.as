@@ -7,7 +7,7 @@ package com.google.maps.extras.xmlparsers.kml
 {
 	public class StyleMap extends StyleSelector
 	{
-		public var _pairs:Array;
+		private var _pairs:Array;
 		
 		public function StyleMap(x:XMLList)
 		{

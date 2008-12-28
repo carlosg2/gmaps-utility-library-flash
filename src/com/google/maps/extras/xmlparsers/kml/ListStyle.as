@@ -9,9 +9,9 @@ package com.google.maps.extras.xmlparsers.kml
 	
 	public class ListStyle extends KmlObject
 	{
-		public var _bgColor:int;
-		public var _listItemType:String;
-		public var _itemIcon:ItemIcon;
+		private var _bgColor:int;
+		private var _listItemType:String;
+		private var _itemIcon:ItemIcon;
 		
 		public function ListStyle(x:XMLList)
 		{

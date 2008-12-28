@@ -8,7 +8,7 @@ package com.google.maps.extras.xmlparsers.kml
 	
 	public class LabelStyle extends ColorStyle
 	{
-		public var _scale:Number;
+		private var _scale:Number;
 		
 		public function LabelStyle(x:XMLList)
 		{

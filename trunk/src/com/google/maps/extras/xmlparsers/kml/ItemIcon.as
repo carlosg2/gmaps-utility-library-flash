@@ -8,7 +8,7 @@ package com.google.maps.extras.xmlparsers.kml
 	
 	public class ItemIcon extends Icon
 	{
-		public var _state:String;
+		private var _state:String;
 		
 		public function ItemIcon(x:XMLList)
 		{

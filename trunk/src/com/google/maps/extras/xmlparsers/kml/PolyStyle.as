@@ -8,8 +8,8 @@ package com.google.maps.extras.xmlparsers.kml
 	
 	public class PolyStyle extends ColorStyle
 	{
-		public var _fill:Boolean;
-		public var _outline:Boolean;
+		private var _fill:Boolean;
+		private var _outline:Boolean;
 		
 		public function PolyStyle(x:XMLList)
 		{

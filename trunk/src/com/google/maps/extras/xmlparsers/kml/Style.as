@@ -8,10 +8,10 @@ package com.google.maps.extras.xmlparsers.kml
 	
 	public class Style extends StyleSelector
 	{
-		public var _iconStyle:IconStyle;
-		public var _labelStyle:LabelStyle;
-		public var _lineStyle:LineStyle;
-		public var _polyStyle:PolyStyle;
+		private var _iconStyle:IconStyle;
+		private var _labelStyle:LabelStyle;
+		private var _lineStyle:LineStyle;
+		private var _polyStyle:PolyStyle;
 		
 		public function Style(x:XMLList)
 		{

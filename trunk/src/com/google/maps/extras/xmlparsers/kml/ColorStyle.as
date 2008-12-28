@@ -8,9 +8,9 @@ package com.google.maps.extras.xmlparsers.kml
 	
 	public class ColorStyle extends KmlObject
 	{
-		public var _color:int;
-		public var _colorMode:String;
-		public var _id:String;
+		private var _color:int;
+		private var _colorMode:String;
+		private var _id:String;
 		
 		public function ColorStyle(x:XMLList)
 		{

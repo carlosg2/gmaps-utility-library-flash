@@ -8,10 +8,10 @@ package com.google.maps.extras.xmlparsers.kml
 
 	public class IconStyle extends ColorStyle
 	{
-		public var _scale:Number;
-		public var _heading:Number;
-		public var _icon:com.google.maps.extras.xmlparsers.kml.Icon;
-		public var _hotSpot:com.google.maps.extras.xmlparsers.kml.HotSpot;
+		private var _scale:Number;
+		private var _heading:Number;
+		private var _icon:com.google.maps.extras.xmlparsers.kml.Icon;
+		private var _hotSpot:com.google.maps.extras.xmlparsers.kml.HotSpot;
 		
 		public function IconStyle(x:XMLList)
 		{

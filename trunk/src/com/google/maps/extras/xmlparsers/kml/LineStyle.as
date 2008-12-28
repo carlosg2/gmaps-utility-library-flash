@@ -8,7 +8,7 @@ package com.google.maps.extras.xmlparsers.kml
 	
 	public class LineStyle extends ColorStyle
 	{
-		public var _width:Number;
+		private var _width:Number;
 		
 		public function LineStyle(x:XMLList)
 		{

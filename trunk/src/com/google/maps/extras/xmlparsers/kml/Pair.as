@@ -8,9 +8,9 @@ package com.google.maps.extras.xmlparsers.kml
 	
 	public class Pair extends KmlObject
 	{
-		public var _key:String;
-		public var _styleUrl:String;
-		public var _id:String;
+		private var _key:String;
+		private var _styleUrl:String;
+		private var _id:String;
 		
 		public function Pair(x:XMLList)
 		{

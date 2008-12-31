@@ -5,10 +5,10 @@
 	id="map" mapevent_mapready="onMapReady(event)" 
   	width="100%" 
   	height="100%" 
-  	key="ABQIAAAA-O3c-Om9OcvXMOJXreXHAxQGj0PqsCtxKvarsoS-iqLdqZSKfxS27kJqGZajBjvuzOBLizi931BUow"/>
+    key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g"/>
 <mx:Script>
     <![CDATA[
-    	import com.google.maps.extras.dragzoomcontrol.controls.DragZoomControl;
+    	import com.google.maps.extras.dragzoomcontrol.DragZoomControl;
     	import com.google.maps.MapType;
     	import com.google.maps.LatLng;
 	    private function onMapReady(event:Event):void {	

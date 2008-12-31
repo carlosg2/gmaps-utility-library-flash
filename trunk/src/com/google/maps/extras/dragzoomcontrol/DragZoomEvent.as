@@ -5,7 +5,7 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  * 
  */
-package com.google.maps.extras.dragzoomcontrol.events
+package com.google.maps.extras.dragzoomcontrol
 {
 	import com.google.maps.LatLngBounds;
 	

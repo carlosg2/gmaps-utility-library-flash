@@ -22,14 +22,13 @@
  * A second magnifying glass will appear to enable the user to
  * back out to the last map position
  */
-package com.google.maps.extras.dragzoomcontrol.controls
+package com.google.maps.extras.dragzoomcontrol
 {
 	import com.google.maps.LatLng;
 	import com.google.maps.LatLngBounds;
 	import com.google.maps.MapMouseEvent;
 	import com.google.maps.controls.ControlBase;
 	import com.google.maps.controls.ControlPosition;
-	import com.google.maps.extras.dragzoomcontrol.events.DragZoomEvent;
 	import com.google.maps.interfaces.IMap;
 	import com.google.maps.overlays.Polyline;
 	
@@ -38,9 +37,9 @@ package com.google.maps.extras.dragzoomcontrol.controls
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.filters.BevelFilter;
 	import flash.filters.BitmapFilterQuality;
 	import flash.filters.BitmapFilterType;
-	import flash.filters.GradientBevelFilter;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.text.TextField;
@@ -76,32 +75,32 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		public static const ZOOM_OUT_IMG:Class;	
 		
 		//configurable properties
-		private var _selectionBGColor:Number;
-		private var _selectionAlpha:Number;
-		private var _selectionLineColor:Number;	
-		private var _dragZoomMsg:String;	
-		private var _marginTop:int;
-		private var _margingLeft:int;			
+		private var selectionBGColor_:Number;
+		private var selectionAlpha_:Number;
+		private var selectionLineColor_:Number;	
+		private var dragZoomMsg_:String;	
+		private var marginTop_:int;
+		private var margingLeft_:int;			
 		
 		//private
-		private var _map:IMap;
-		private var _drawArea:Sprite;
-		private var _zoomArea:Shape;
-		private var _startXPos:int;
-		private var _startYPos:int;
-		private var _zoomState:Boolean = false;
+		private var map_:IMap;
+		private var drawArea_:Sprite;
+		private var zoomArea_:Shape;
+		private var startXPos_:int;
+		private var startYPos_:int;
+		private var zoomState_:Boolean = false;
 		
-		private var _nwPoint:Point;
-		private var _swPoint:Point;
-		private var _nePoint:Point;
-		private var _sePoint:Point;
+		private var nwPoint_:Point;
+		private var swPoint_:Point;
+		private var nePoint_:Point;
+		private var sePoint_:Point;
 		
-		private var _zoomInBtn:Sprite;
-		private var _zoomOutBtn:Sprite;
-		private var _msg:Sprite;
+		private var zoomInBtn_:Sprite;
+		private var zoomOutBtn_:Sprite;
+		private var msg_:Sprite;
 		
-		private var _mapBitmapData:BitmapData;
-		private var _mapDisplayObject:DisplayObject;		
+		private var mapBitmapData_:BitmapData;
+		private var mapDisplayObject_:DisplayObject;		
 
 		/**
 		 * Creates the DragZoom control
@@ -124,28 +123,30 @@ package com.google.maps.extras.dragzoomcontrol.controls
 				optDragZoomMsg:String = DEFAUT_DRAG_ZOOM_MSG) {	
 								
 			super(new ControlPosition(ControlPosition.ANCHOR_TOP_LEFT, optMarginTop, optMarginLeft));
-			_selectionBGColor = optSelectionBGColor;
-			_selectionAlpha = optSelectionAlpha;
-			_selectionLineColor = optSelectionLineColor;	
-			_dragZoomMsg = optDragZoomMsg;	
-			_marginTop = optMarginTop;
-			_margingLeft = optMarginLeft;	 
-         
-			var bf:GradientBevelFilter  = new GradientBevelFilter(
-																8,   
-																225,
-																[0xFFFFFF, 0xEEEEEE, 0x000000],
-																[1, 0, 1],
-																[0, 100, 255],
-																7,
-																7,
-																1,
-																BitmapFilterQuality.HIGH,
-																BitmapFilterType.OUTER,
-																true);
-			_drawArea =  new Sprite();
-			_drawArea.filters = [bf];
-			addChild(_drawArea);
+			selectionBGColor_ = optSelectionBGColor;
+			selectionAlpha_ = optSelectionAlpha;
+			selectionLineColor_ = optSelectionLineColor;	
+			dragZoomMsg_ = optDragZoomMsg;	
+			marginTop_ = optMarginTop;
+			margingLeft_ = optMarginLeft;	 
+			
+			//default selection effect - possibly make this configurable
+			var bf:BevelFilter = new BevelFilter(1,
+			   45,
+			   0xFFFFFF,
+			   0.8,
+			   0x000000,
+			   0.8,
+			   5,
+			   5,
+			   5,
+			   BitmapFilterQuality.HIGH,
+			   BitmapFilterType.INNER,
+			   true);
+			   
+			drawArea_ =  new Sprite();
+			drawArea_.filters = [bf];
+			addChild(drawArea_);
 		}		
 
 		/**
@@ -156,7 +157,7 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		 */		
 		public override function initControlWithMap(pMap:IMap):void {
 			super.initControlWithMap(map);
-			_map = pMap;
+			map_ = pMap;
 			addControlButton();		
 		}
 		
@@ -175,14 +176,14 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		 * @param {MouseEvent} event The mouse event that triggered the call
 		 */			
 		private function enableDragZoom(event:MouseEvent):void {
-			_msg.visible = true;
-			_map.disableDragging();	
-			_map.addEventListener(MapMouseEvent.MOUSE_DOWN, startZoom);
-			_map.addEventListener(MapMouseEvent.MOUSE_UP, commitZoom);
-			_map.addEventListener(MapMouseEvent.MOUSE_MOVE, updateZoom);
+			msg_.visible = true;
+			map_.disableDragging();	
+			map_.addEventListener(MapMouseEvent.MOUSE_DOWN, startZoom);
+			map_.addEventListener(MapMouseEvent.MOUSE_UP, commitZoom);
+			map_.addEventListener(MapMouseEvent.MOUSE_MOVE, updateZoom);
 			
-			_mapDisplayObject = _map as DisplayObject;				
-			_mapBitmapData= new BitmapData(_mapDisplayObject.width, _mapDisplayObject.height);	
+			mapDisplayObject_ = map_ as DisplayObject;				
+			mapBitmapData_= new BitmapData(mapDisplayObject_.width, mapDisplayObject_.height);	
 			//this wil have to wait - sandbox security exception thrown
 			//we can do all kinds of cool effects once this is supported
 			//_mapBitmapData.draw(_mapDisplayObject);					
@@ -195,8 +196,8 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		 * @param {MouseEvent} event The mouse event
 		 */			
 		private function returnToSavedPosition(event:MouseEvent):void {
-			_zoomOutBtn.visible = false;
-			_map.returnToSavedPosition();			
+			zoomOutBtn_.visible = false;
+			map_.returnToSavedPosition();			
 		}
 
 		/**
@@ -204,10 +205,10 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		 * Removes Map event listener and enables map dragging
 		 */			
 		private function disableZoom():void {			
-			_map.removeEventListener(MapMouseEvent.MOUSE_DOWN, startZoom);
-			_map.removeEventListener(MapMouseEvent.MOUSE_UP, commitZoom);
-			_map.removeEventListener(MapMouseEvent.MOUSE_MOVE, updateZoom);
-			_map.enableDragging();
+			map_.removeEventListener(MapMouseEvent.MOUSE_DOWN, startZoom);
+			map_.removeEventListener(MapMouseEvent.MOUSE_UP, commitZoom);
+			map_.removeEventListener(MapMouseEvent.MOUSE_MOVE, updateZoom);
+			map_.enableDragging();
 		}		
 
 		/**
@@ -219,37 +220,37 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		 * @param {MapMouseEvent} event The mouse event
 		 */			
 		private function updateZoom(event:MapMouseEvent):void {
-			if (_zoomState) {
+			if (zoomState_) {
 				var latLgn:LatLng = event.latLng;
-				var point:Point = _map.fromLatLngToViewport(latLgn);
+				var point:Point = map_.fromLatLngToViewport(latLgn);
 							
-				var zoomWidth:int = (point.x - _startXPos);
-				var zoomHeight:int = (point.y - _startYPos);
+				var zoomWidth:int = (point.x - startXPos_);
+				var zoomHeight:int = (point.y - startYPos_);
 				
 				resetDrawArea();
 
-				_zoomArea = new Shape();
+				zoomArea_ = new Shape();
 				
-				var recX:int = (point.x - zoomWidth)-_marginTop;
-				var recY:int = (point.y - zoomHeight)-_margingLeft;
+				var recX:int = (point.x - zoomWidth)-marginTop_;
+				var recY:int = (point.y - zoomHeight)-margingLeft_;
 				
-			    var myMatrix:Matrix = new Matrix();
-			    myMatrix.tx = -(_margingLeft);
-			    myMatrix.ty = -(_marginTop);
-
-			    _zoomArea.graphics.beginBitmapFill(_mapBitmapData,myMatrix); 
-			    _zoomArea.graphics.lineStyle(1, _selectionLineColor);
-			    _zoomArea.graphics.drawRect(recX, recY, zoomWidth, zoomHeight);
-			    _zoomArea.graphics.endFill();
-			    _drawArea.addChild(_zoomArea);	
-			    
-			    recX = point.x - zoomWidth;
-			    recY = point.y - zoomHeight; 
-			    
-			    _nwPoint = new Point(recX, recY);
-			    _swPoint = new Point(recX, (recY + _zoomArea.height));
-			    _sePoint = new Point((recX + _zoomArea.width), (recY + _zoomArea.height));
-			    _nePoint = new Point((recX + _zoomArea.width), recY);
+				var myMatrix:Matrix = new Matrix();
+				myMatrix.tx = -(margingLeft_);
+				myMatrix.ty = -(marginTop_);
+				
+				zoomArea_.graphics.beginBitmapFill(mapBitmapData_,myMatrix); 
+				zoomArea_.graphics.lineStyle(1, selectionLineColor_);
+				zoomArea_.graphics.drawRect(recX, recY, zoomWidth, zoomHeight);
+				zoomArea_.graphics.endFill();
+				drawArea_.addChild(zoomArea_);	
+				
+				recX = point.x - zoomWidth;
+				recY = point.y - zoomHeight; 
+				
+				nwPoint_ = new Point(recX, recY);
+				swPoint_ = new Point(recX, (recY + zoomArea_.height));
+				sePoint_ = new Point((recX + zoomArea_.width), (recY + zoomArea_.height));
+				nePoint_ = new Point((recX + zoomArea_.width), recY);
 			}		
 		}
 		
@@ -261,17 +262,17 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		 */			
 		private function commitZoom(event:MapMouseEvent):void {	
 			disableZoom();	
-			_map.savePosition();	
-			_zoomState = false;
+			map_.savePosition();	
+			zoomState_ = false;
 			resetDrawArea();
 						
 			var latLngBounds:LatLngBounds = calculatePolyline();
 			positionMap(latLngBounds);			
 			
-			_zoomOutBtn.visible = true;
-			_msg.visible = false;
-			_mapBitmapData = null;
-			_mapDisplayObject = null;
+			zoomOutBtn_.visible = true;
+			msg_.visible = false;
+			mapBitmapData_ = null;
+			mapDisplayObject_ = null;
 			
 			var evt:DragZoomEvent = new DragZoomEvent(DragZoomEvent.ZOOM_COMMIT);
 			evt.bounds = latLngBounds;			
@@ -286,8 +287,8 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		 * used to postion the map
 		 */			
 		private function positionMap(pLatLngBounds:LatLngBounds):void {
-			_map.setCenter(pLatLngBounds.getCenter());
-			_map.setZoom(_map.getBoundsZoomLevel(pLatLngBounds));			
+			map_.setCenter(pLatLngBounds.getCenter());
+			map_.setZoom(map_.getBoundsZoomLevel(pLatLngBounds));			
 		}	
 		
 		/**
@@ -298,10 +299,10 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		 * @param {MapMouseEvent} event The mouse event
 		 */			
 		private function startZoom(event:MapMouseEvent):void {
-			_zoomState = true;			
-			var point:Point = _map.fromLatLngToViewport(event.latLng);
-			_startXPos = point.x;
-			_startYPos = point.y;		
+			zoomState_ = true;			
+			var point:Point = map_.fromLatLngToViewport(event.latLng);
+			startXPos_ = point.x;
+			startYPos_ = point.y;		
 		}
 		
 		/**
@@ -309,9 +310,9 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		 *
 		 */			
 		private function resetDrawArea():void {
-			if (_zoomArea) {				
-				_drawArea.removeChild(_zoomArea);
-				_zoomArea = null;
+			if (zoomArea_) {				
+				drawArea_.removeChild(zoomArea_);
+				zoomArea_ = null;
 			}					
 		}
 		
@@ -326,11 +327,11 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		 */			
 		private function calculatePolyline():LatLngBounds {	  						
 			var lines:Array = 
-				[_map.fromViewportToLatLng(_nwPoint),
-				_map.fromViewportToLatLng(_swPoint),
-				_map.fromViewportToLatLng(_sePoint),
-				_map.fromViewportToLatLng(_nePoint),
-				_map.fromViewportToLatLng(_nwPoint)];			
+				[map_.fromViewportToLatLng(nwPoint_),
+				map_.fromViewportToLatLng(swPoint_),
+				map_.fromViewportToLatLng(sePoint_),
+				map_.fromViewportToLatLng(nePoint_),
+				map_.fromViewportToLatLng(nwPoint_)];			
 			var polyLine:Polyline = new Polyline(lines);
 			return polyLine.getLatLngBounds();
 		}	
@@ -369,49 +370,49 @@ package com.google.maps.extras.dragzoomcontrol.controls
 		 *
 		 */			
 		private function addControlButton():void {			
-		    _zoomInBtn = new Sprite();
-		    _zoomInBtn.x = 0;
-		    _zoomInBtn.y = 0;	   			    		    		    	
-			_zoomInBtn.addChild(DisplayObject(new ZOOM_IN_IMG()));
-			_zoomInBtn.addEventListener(MouseEvent.CLICK, enableDragZoom);
-			_zoomInBtn.addEventListener(MouseEvent.MOUSE_OVER, mouseOver);
-			_zoomInBtn.addEventListener(MouseEvent.MOUSE_OUT, mouseOut);
-			_zoomInBtn.alpha = INACTIVE_ALPHA;
+			zoomInBtn_ = new Sprite();
+			zoomInBtn_.x = 0;
+			zoomInBtn_.y = 0;	   			    		    		    	
+			zoomInBtn_.addChild(DisplayObject(new ZOOM_IN_IMG()));
+			zoomInBtn_.addEventListener(MouseEvent.CLICK, enableDragZoom);
+			zoomInBtn_.addEventListener(MouseEvent.MOUSE_OVER, mouseOver);
+			zoomInBtn_.addEventListener(MouseEvent.MOUSE_OUT, mouseOut);
+			zoomInBtn_.alpha = INACTIVE_ALPHA;
 						
-		    _zoomOutBtn = new Sprite();
-		    _zoomOutBtn.x = _zoomInBtn.width;
-		    _zoomOutBtn.y = 0;									    		    
-		    _zoomOutBtn.addChild(DisplayObject(new ZOOM_OUT_IMG()));
-		    _zoomOutBtn.addEventListener(MouseEvent.CLICK, returnToSavedPosition);
-			_zoomOutBtn.addEventListener(MouseEvent.MOUSE_OVER, mouseOver);
-			_zoomOutBtn.addEventListener(MouseEvent.MOUSE_OUT, mouseOut);		    
-		    _zoomOutBtn.alpha = INACTIVE_ALPHA;
-		    _zoomOutBtn.visible = false;
-		    
-			var center:Point = _map.fromLatLngToViewport(_map.getCenter());
-			_msg = new Sprite();
-			_msg.x = center.x;
-			_msg.y = 10;			    		    		
+			zoomOutBtn_ = new Sprite();
+			zoomOutBtn_.x = zoomInBtn_.width;
+			zoomOutBtn_.y = 0;									    		    
+			zoomOutBtn_.addChild(DisplayObject(new ZOOM_OUT_IMG()));
+			zoomOutBtn_.addEventListener(MouseEvent.CLICK, returnToSavedPosition);
+			zoomOutBtn_.addEventListener(MouseEvent.MOUSE_OVER, mouseOver);
+			zoomOutBtn_.addEventListener(MouseEvent.MOUSE_OUT, mouseOut);		    
+			zoomOutBtn_.alpha = INACTIVE_ALPHA;
+			zoomOutBtn_.visible = false;
+			
+			var center:Point = map_.fromLatLngToViewport(map_.getCenter());
+			msg_ = new Sprite();
+			msg_.x = center.x;
+			msg_.y = 10;			    		    		
 			var label:TextField = new TextField();
-			label.text = _dragZoomMsg;
+			label.text = dragZoomMsg_;
 			label.selectable = false;
 			label.autoSize = TextFieldAutoSize.CENTER;
 			var format:TextFormat = new TextFormat("Verdana");
 			label.setTextFormat(format);	
 			
 			var background:Shape = new Shape();
-			background.graphics.beginFill(_selectionBGColor, _selectionAlpha);
-			background.graphics.lineStyle(1, _selectionLineColor);
+			background.graphics.beginFill(selectionBGColor_, selectionAlpha_);
+			background.graphics.lineStyle(1, selectionLineColor_);
 			background.graphics.drawRoundRect(label.x, label.y, label.width, label.height, 4);
 			background.graphics.endFill();
 			
-			_msg.addChild(background);	
-			_msg.addChild(label);
-			_msg.visible = false;				   	    	    
+			msg_.addChild(background);	
+			msg_.addChild(label);
+			msg_.visible = false;				   	    	    
 			
-			addChild(_msg);
-			addChild(_zoomInBtn);
-			addChild(_zoomOutBtn);			
+			addChild(msg_);
+			addChild(zoomInBtn_);
+			addChild(zoomOutBtn_);			
 		}		
 		
 	}

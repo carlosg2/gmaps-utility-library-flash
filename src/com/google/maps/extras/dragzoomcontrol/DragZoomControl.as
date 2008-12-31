@@ -68,11 +68,11 @@ package com.google.maps.extras.dragzoomcontrol
 		
 		//zoom-in image
 		[Embed(source="/assets/images/zoom-in.png")]
-		public static const ZOOM_IN_IMG:Class;
+		public var zoomInImg_:Class;
 		
 		//zoom-out image
 		[Embed(source="/assets/images/zoom-out.png")]
-		public static const ZOOM_OUT_IMG:Class;	
+		public var zoomOutImg_:Class;	
 		
 		//configurable properties
 		private var selectionBGColor_:Number;
@@ -373,7 +373,7 @@ package com.google.maps.extras.dragzoomcontrol
 			zoomInBtn_ = new Sprite();
 			zoomInBtn_.x = 0;
 			zoomInBtn_.y = 0;	   			    		    		    	
-			zoomInBtn_.addChild(DisplayObject(new ZOOM_IN_IMG()));
+			zoomInBtn_.addChild(DisplayObject(new zoomInImg_()));
 			zoomInBtn_.addEventListener(MouseEvent.CLICK, enableDragZoom);
 			zoomInBtn_.addEventListener(MouseEvent.MOUSE_OVER, mouseOver);
 			zoomInBtn_.addEventListener(MouseEvent.MOUSE_OUT, mouseOut);
@@ -382,7 +382,7 @@ package com.google.maps.extras.dragzoomcontrol
 			zoomOutBtn_ = new Sprite();
 			zoomOutBtn_.x = zoomInBtn_.width;
 			zoomOutBtn_.y = 0;									    		    
-			zoomOutBtn_.addChild(DisplayObject(new ZOOM_OUT_IMG()));
+			zoomOutBtn_.addChild(DisplayObject(new zoomOutImg_()));
 			zoomOutBtn_.addEventListener(MouseEvent.CLICK, returnToSavedPosition);
 			zoomOutBtn_.addEventListener(MouseEvent.MOUSE_OVER, mouseOver);
 			zoomOutBtn_.addEventListener(MouseEvent.MOUSE_OUT, mouseOut);		    

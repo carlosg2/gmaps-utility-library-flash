@@ -37,7 +37,7 @@ Demos:
 
 This library is an AS3 version of the !DragZoomControl from the JS open-source library. It creates a custom control that lets user drag a rectangle to zoom to a bounds on the map. 
 
-[http://gmaps-utility-library-flash.googlecode.com/svn/trunk/docs/com/google/maps/extras/dragzoomcontrol/controls/package-detail.html Reference]
+[http://gmaps-utility-library-flash.googlecode.com/svn/trunk/docs/com/google/maps/extras/dragzoomcontrol/package-detail.html Reference]
 
 Demos:
  * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/DragZoomonControl/bin-release/DragZoom.html DragZoomControlDemo]

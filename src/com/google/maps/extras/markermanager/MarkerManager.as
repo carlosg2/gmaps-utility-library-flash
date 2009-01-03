@@ -73,12 +73,12 @@ private var tileSize_:Number;
  * Creates a new MarkerManager that will show/hide markers on a map.
  *
  * @constructor
- * @param {Map} map The map to manage.
- * @param {Object} opt_opts A container for optional arguments:
- *   {Number} maxZoom The maximum zoom level for which to create tiles.
- *   {Number} borderPadding The width in pixels beyond the map border,
+ * @param {Map} The map to manage.
+ * @param {Object} A container for optional arguments:
+ *   {Number} The maximum zoom level for which to create tiles.
+ *   {Number} The width in pixels beyond the map border,
  *                   where markers should be display.
- *   {Boolean} trackMarkers Whether or not this manager should track marker
+ *   {Boolean} Whether or not this manager should track marker
  *                   movements.
  */
 public function MarkerManager(map:IMap, opt_opts:Object) {
@@ -163,9 +163,9 @@ public function clearMarkers():void {
 /**
  * Gets the tile coordinate for a given latlng point.
  *
- * @param {LatLng} latlng The geographical point.
- * @param {Number} zoom The zoom level.
- * @param {GSize} padding The padding used to shift the pixel coordinate.
+ * @param {LatLng} The geographical point.
+ * @param {Number} The zoom level.
+ * @param {GSize} The padding used to shift the pixel coordinate.
  *               Used for expanding a bounds to include an extra padding
  *               of pixels surrounding the bounds.
  * @return {GPoint} The point in tile coordinates.
@@ -184,9 +184,9 @@ private function getTilePoint_(latlng:LatLng, zoom:Number, padding:Point):Point 
  * Optimized for speed; does not actually add the marker to the map.
  * Designed for batch-processing thousands of markers.
  *
- * @param {Marker} marker The marker to add.
- * @param {Number} minZoom The minimum zoom for displaying the marker.
- * @param {Number} maxZoom The maximum zoom for displaying the marker.
+ * @param {Marker} The marker to add.
+ * @param {Number} The minimum zoom for displaying the marker.
+ * @param {Number} The maximum zoom for displaying the marker.
  */
 private function addMarkerBatch_(marker:Marker, minZoom:Number, maxZoom:Number):void {
   var mPoint:LatLng = marker.getLatLng();
@@ -213,7 +213,7 @@ private function addMarkerBatch_(marker:Marker, minZoom:Number, maxZoom:Number):
  * is a helper method that takes care of the corner case, when shownBounds have
  * negative minX value.
  *
- * @param {Point} point a point on a grid.
+ * @param {Point} A point on a grid.
  * @return {Boolean} Whether or not the given point is visible in the currently
  * shown bounds.
  */
@@ -289,7 +289,7 @@ private function onMarkerMoved_(marker:Marker, oldLatLng:LatLng, newLatLng:LatLn
  * Searches at every zoom level to find grid cell
  * that marker would be in, removes from that array if found.
  * Also removes marker with removeOverlay if visible.
- * @param {GMarker} marker The marker to delete.
+ * @param {GMarker} The marker to delete.
  */
 public function removeMarker(marker:Marker):void {
   var zoom:Number = this.maxZoom_;
@@ -325,9 +325,9 @@ public function removeMarker(marker:Marker):void {
  * Add many markers at once.
  * Does not actually update the map, just the internal grid.
  *
- * @param {Array of Marker} markers The markers to add.
- * @param {Number} minZoom The minimum zoom level to display the markers.
- * @param {Number} opt_maxZoom The maximum zoom level to display the markers.
+ * @param {Array} The marker objects to add.
+ * @param {Number} The minimum zoom level to display the markers.
+ * @param {Number} The  maximum zoom level to display the markers.
  */
 public function addMarkers(markers:Array, minZoom:Number, opt_maxZoom:Number = Infinity):void {
   var maxZoom:Number = this.getOptMaxZoom_(opt_maxZoom);
@@ -343,7 +343,7 @@ public function addMarkers(markers:Array, minZoom:Number, opt_maxZoom:Number = I
  * Returns the value of the optional maximum zoom. This method is defined so
  * that we have just one place where optional maximum zoom is calculated.
  *
- * @param {Number} opt_maxZoom The optinal maximum zoom.
+ * @param {Number} The optinal maximum zoom.
  * @return The maximum zoom.
  */
 private function getOptMaxZoom_(opt_maxZoom:Number):Number {
@@ -355,7 +355,7 @@ private function getOptMaxZoom_(opt_maxZoom:Number):Number {
  * Calculates the total number of markers potentially visible at a given
  * zoom level.
  *
- * @param {Number} zoom The zoom level to check.
+ * @param {Number} The zoom level to check.
  * @return {Number}
  */
 public function getMarkerCount(zoom:Number):Number {
@@ -370,9 +370,9 @@ public function getMarkerCount(zoom:Number):Number {
 /**
  * Add a single marker to the map.
  *
- * @param {Marker} marker The marker to add.
- * @param {Number} minZoom The minimum zoom level to display the marker.
- * @param {Number} opt_maxZoom The maximum zoom level to display the marker.
+ * @param {Marker} The marker to add.
+ * @param {Number} The minimum zoom level to display the marker.
+ * @param {Number} The maximum zoom level to display the marker.
  */
 public function addMarker(marker:Marker, minZoom:Number, opt_maxZoom:Number):void {
   var maxZoom:Number = this.getOptMaxZoom_(opt_maxZoom);

@@ -68,11 +68,11 @@ package com.google.maps.extras.dragzoomcontrol
 		
 		//zoom-in image
 		[Embed(source="/assets/images/zoom-in.png")]
-		public var zoomInImg_:Class;
+		private var zoomInImg_:Class;
 		
 		//zoom-out image
 		[Embed(source="/assets/images/zoom-out.png")]
-		public var zoomOutImg_:Class;	
+		private var zoomOutImg_:Class;	
 		
 		//configurable properties
 		private var selectionBGColor_:Number;
@@ -106,13 +106,18 @@ package com.google.maps.extras.dragzoomcontrol
 		 * Creates the DragZoom control
 		 *
 		 * @constructor
-		 * @param {int} optMarginTop The top margin of the control in points - default:7
-		 * @param {int} optMarginLeft he left margin of the control in points - default:7
-		 * @param {Number} optSelectionBGColor The background color message text - default:0xFFFFFF
-		 * @param {Number} optSelectionLineColor The line color of the selection area - default:0x000000
-		 * @param {Number} optSelectionAlpha The alpha value of the selection area - default:0.5
-		 * @param {String} optDragZoomMsg The message displayed on screen when the control
-		 * is enabled - default:click and drag mouse to zoom into area
+		 * @param {int} The top margin of the control in points. 
+		 *   @see #DEFAULT_MARGIN_TOP
+		 * @param {int} The left margin of the control in points. 
+		 *   @see #DEFAULT_MARGIN_LEFT
+		 * @param {Number} The background color message text. 
+		 *   @see #DEFAULT_SELECTION_BG_COLOR
+		 * @param {Number} The line color of the selection area. 
+		 *   @see #DEFAUT_LINE_COLOR
+		 * @param {Number} The alpha value of the selection area. 
+		 *   @see #DEFAULT_SELECTION_ALPHA
+		 * @param {String} The message displayed on screen when the control is enabled. 
+		 *   @see #DEFAUT_DRAG_ZOOM_MSG
 		 */
 		public function DragZoomControl(
 				optMarginTop:int = DEFAULT_MARGIN_TOP,
@@ -152,8 +157,9 @@ package com.google.maps.extras.dragzoomcontrol
 		/**
 		 * Initialize the control
 		 *
-		 * @param {IMap} pMap The instance of the Map the control is being 
-		 * added to
+		 * @param {IMap} The instance of the Map the control is being 
+		 *   added to
+		 * @private
 		 */		
 		public override function initControlWithMap(pMap:IMap):void {
 			super.initControlWithMap(map);

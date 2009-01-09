@@ -2,6 +2,5 @@
 
 = Ideas =
 
-  * DragZoomControl - Port of the JS version. Requested in group. Brian has created it, and is porting it in.
   * GeoRSSParser - I (pamela.fox) have the code and just need to fix it up.
   * PolylineEncoder - Javier/abr have this code

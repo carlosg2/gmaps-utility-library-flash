@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:maps="com.google.maps.*" 
+	layout="vertical">
+	<mx:Script>
+		<![CDATA[
+			import com.google.maps.controls.ControlPosition;
+			import com.google.maps.controls.MapTypeControl;
+			import com.google.maps.controls.ZoomControl;
+			import com.google.maps.controls.ZoomControlOptions;
+			import com.google.maps.extras.MarkerTracker;
+			import com.google.maps.overlays.MarkerOptions;
+			import com.google.maps.overlays.Marker;
+			import com.google.maps.styles.FillStyle;
+			import com.google.maps.styles.StrokeStyle;
+			import com.google.maps.LatLng;
+			import com.google.maps.MapEvent;
+			import com.google.maps.MapOptions;
+			import com.google.maps.MapType;
+			
+			
+			private function onMappreinitialize(event:MapEvent):void {
+				event.target.setInitOptions(new MapOptions({mapType: MapType.NORMAL_MAP_TYPE, zoom: 14}));
+			}
+			
+			private function onMapready(event:MapEvent):void {
+				event.target.addControl(new ZoomControl(new ZoomControlOptions({position: new ControlPosition(ControlPosition.ANCHOR_TOP_LEFT)})));
+				event.target.addControl(new MapTypeControl());
+				var exampleLatLng:LatLng = new LatLng(49.483126, 8.462144);
+				var exampleMarker:Marker = new Marker(exampleLatLng, new MarkerOptions({
+					strokeStyle: new StrokeStyle({color: 0xffffff}),
+					fillStyle: new FillStyle({color: 0xb00000, alpha: 0.8}),
+	 				radius: 12,
+	 				hasShadow: true,
+	 				tooltip: "example marker"
+				}));
+				
+				exampleMap.addOverlay(exampleMarker);
+				exampleMap.setCenter(exampleLatLng);
+				
+				new MarkerTracker(exampleMarker, exampleMap, null);	
+			}
+			
+		]]>
+	</mx:Script>
+	<maps:Map id="exampleMap" mapevent_mapready="onMapready(event);" mapevent_mappreinitialize="onMappreinitialize(event);" width="100%" height="100%" key="ABQIAAAAl80qGC7EhfWba1NW0ZhMtRTGRMgVwpiZ0uO5vyHqpqZpWcCbOBSTKRHU52Dqt1zMsKgOaIFeVqtgOg"/>
+</mx:Application>

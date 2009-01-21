@@ -44,5 +44,5 @@
 			
 		]]>
 	</mx:Script>
-	<maps:Map id="exampleMap" mapevent_mapready="onMapready(event);" mapevent_mappreinitialize="onMappreinitialize(event);" width="100%" height="100%" key="ABQIAAAAl80qGC7EhfWba1NW0ZhMtRTGRMgVwpiZ0uO5vyHqpqZpWcCbOBSTKRHU52Dqt1zMsKgOaIFeVqtgOg"/>
+	<maps:Map id="exampleMap" mapevent_mapready="onMapready(event);" mapevent_mappreinitialize="onMappreinitialize(event);" width="100%" height="100%" key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g"/>
 </mx:Application>

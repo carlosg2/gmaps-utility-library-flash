@@ -13,6 +13,7 @@ This library is a AS3 port of the !MarkerManager in the JS open-source library. 
 Demos:
  * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/MarkerManagerDemo/bin-release/MarkerManagerDemo.swf MarkerManagerDemo]
 
+
 == KML Parser ==
 
 This library parses a KML file into objects representing the KML dom, and includes helper code for creating a sidebar using the Flex Tree component. Note that this class ignores elements and attributes that can't be rendered in the Maps API for Flash. It's based on the dom classes in [http://code.google.com/p/libkml libkml].
@@ -21,6 +22,7 @@ This library parses a KML file into objects representing the KML dom, and includ
 
 Demos:
  * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/KMLParser/bin-release/KMLParser.html KMLParser]
+
 
 == Planetary Map Types ==
 
@@ -33,6 +35,7 @@ Demos:
  * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/CustomMapMars/bin-release/CustomMapMars.html CustomMapMars]
  * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/CustomMapMoon/bin-release/CustomMapMoon.html CustomMapMoon]
 
+
 == !DragZoomControl ==
 
 This library is an AS3 version of the !DragZoomControl from the JS open-source library. It creates a custom control that lets user drag a rectangle to zoom to a bounds on the map. 
@@ -42,9 +45,10 @@ This library is an AS3 version of the !DragZoomControl from the JS open-source l
 Demos:
  * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/DragZoomonControl/bin-release/DragZoom.html DragZoomControlDemo]
 
+
 == !MarkerTracker ==
 
-This library is an AS3 version of the !MarkerTracker from the JS open-source library. You can assign a MarkerTracker to a map/marker, and then when that marker moves out of the visible viewport, a ghost marker and arrow will appear and point in its direction.
+This library is an AS3 version of the !MarkerTracker from the JS open-source library. You can assign a !MarkerTracker to a map/marker, and then when that marker moves out of the visible viewport, a ghost marker and arrow will appear and point in its direction.
 
 [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/docs/com/google/maps/extras/markertracker/package-detail.html Reference]
 

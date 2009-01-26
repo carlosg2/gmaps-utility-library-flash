@@ -3,13 +3,14 @@
 	xmlns:mx="http://www.adobe.com/2006/mxml"
 	xmlns:maps="com.google.maps.*" 
 	layout="vertical">
+	<maps:Map id="map" mapevent_mapready="onMapready(event);" mapevent_mappreinitialize="onMappreinitialize(event);" width="100%" height="100%" key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g"/>
 	<mx:Script>
 		<![CDATA[
 			import com.google.maps.controls.ControlPosition;
 			import com.google.maps.controls.MapTypeControl;
 			import com.google.maps.controls.ZoomControl;
 			import com.google.maps.controls.ZoomControlOptions;
-			import com.google.maps.extras.MarkerTracker;
+			import com.google.maps.extras.markertracker.MarkerTracker;
 			import com.google.maps.overlays.MarkerOptions;
 			import com.google.maps.overlays.Marker;
 			import com.google.maps.styles.FillStyle;
@@ -21,12 +22,12 @@
 			
 			
 			private function onMappreinitialize(event:MapEvent):void {
-				event.target.setInitOptions(new MapOptions({mapType: MapType.NORMAL_MAP_TYPE, zoom: 14}));
+				map.setInitOptions(new MapOptions({mapType: MapType.NORMAL_MAP_TYPE, zoom: 14}));
 			}
 			
 			private function onMapready(event:MapEvent):void {
-				event.target.addControl(new ZoomControl(new ZoomControlOptions({position: new ControlPosition(ControlPosition.ANCHOR_TOP_LEFT)})));
-				event.target.addControl(new MapTypeControl());
+				map.addControl(new ZoomControl(new ZoomControlOptions({position: new ControlPosition(ControlPosition.ANCHOR_TOP_LEFT)})));
+				map.addControl(new MapTypeControl());
 				var exampleLatLng:LatLng = new LatLng(49.483126, 8.462144);
 				var exampleMarker:Marker = new Marker(exampleLatLng, new MarkerOptions({
 					strokeStyle: new StrokeStyle({color: 0xffffff}),
@@ -36,13 +37,12 @@
 	 				tooltip: "example marker"
 				}));
 				
-				exampleMap.addOverlay(exampleMarker);
-				exampleMap.setCenter(exampleLatLng);
+				map.addOverlay(exampleMarker);
+				map.setCenter(exampleLatLng);
 				
-				new MarkerTracker(exampleMarker, exampleMap, null);	
+				var tracker:MarkerTracker = new MarkerTracker(exampleMarker, map, null);	
 			}
 			
 		]]>
 	</mx:Script>
-	<maps:Map id="exampleMap" mapevent_mapready="onMapready(event);" mapevent_mappreinitialize="onMappreinitialize(event);" width="100%" height="100%" key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g"/>
 </mx:Application>

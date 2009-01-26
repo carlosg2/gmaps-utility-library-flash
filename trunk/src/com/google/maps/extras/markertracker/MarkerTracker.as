@@ -20,7 +20,7 @@
  */  
 
 
-package com.google.maps.extras
+package com.google.maps.extras.markertracker
 {
 	import com.google.maps.LatLng;
 	import com.google.maps.LatLngBounds;
@@ -42,15 +42,15 @@ package com.google.maps.extras
 	public class MarkerTracker
 	{
 
-		private static const DEFAULT_EDGE_PADDING_:Number = 25;
-		private static const DEFAULT_ICON_SCALE_:Number = 0.6;
-		private static const DEFAULT_ARROW_COLOR_:Number = 0xff0000;
-		private static const DEFAULT_ARROW_WEIGHT_:Number = 20;
-		private static const DEFAULT_ARROW_LENGTH_:Number = 20;
-		private static const DEFAULT_ARROW_OPACITY_:Number = 0.8;
-		private static const DEFAULT_UPDATE_EVENT_:String = MapMoveEvent.MOVE_STEP;
-		private static const DEFAULT_PAN_EVENT_:String = MapMouseEvent.CLICK;
-		private static const DEFAULT_QUICK_PAN_ENABLED_:Boolean = true;
+		public static const DEFAULT_PADDING:Number = 25;
+		public static const DEFAULT_ICON_SCALE:Number = 0.6;
+		public static const DEFAULT_ARROW_COLOR:Number = 0xff0000;
+		public static const DEFAULT_ARROW_WEIGHT:Number = 20;
+		public static const DEFAULT_ARROW_LENGTH:Number = 20;
+		public static const DEFAULT_ARROW_OPACITY:Number = 0.8;
+		public static const DEFAULT_UPDATE_EVENT:String = MapMoveEvent.MOVE_STEP;
+		public static const DEFAULT_PAN_EVENT:String = MapMouseEvent.CLICK;
+		public static const DEFAULT_QUICK_PAN_ENABLED:Boolean = true;
 
 		private var padding_:Number;
 		private var iconScale_:Number;
@@ -73,25 +73,16 @@ package com.google.maps.extras
 		private var control_:Object;
 
 		/**
-		 *  Creates a MarkerTracker for the given marker and displays it ont he map as needed.
+		 * Creates a MarkerTracker for the given marker and displays it on the map as needed.
 		 *
 		 * @constructor
-		 * @param {Map} map The map that will display the MarkerTracker. 
-		 * @param {Marker} marker the marker to be tracked.
-		 * @param {Object} opts? Object that contains the options for coustomizing the 
+		 * @param {Marker} The marker to be tracked.
+		 * @param {Map} The map that will display the MarkerTracker. 
+		 * @param {MarkerTrackerOptions} Object that contains the options for customizing the 
 		 *                  look and behavior of arrows:
-		 *   {Number} iconScale Scales the icon size by this value, 0 = no icon.
-		 *   {Number} padding The padding between the arrow and the edge of the map.
-		 *   {Number} color Color of the arrow.
-		 *   {Number} weight Thickness of the lines that make up the arrows.
-		 *   {Number} length length of the arrow.
-		 *   {Number} opacity opacity of the arrow.
-		 *   {String} updateEvent The GMap2 event name that triggers the arrows to update.
-		 *   {String} panEvent The GMarker event name that triggers a quick zoom to the tracked marker.
-		 *   {Boolean} quickPanEnabled The GMarker event name that triggers a quick zoom to the tracked marker.
 		 */
 
-		public function MarkerTracker(marker:Marker, map:Map, opts:Object)
+		public function MarkerTracker(marker:Marker, map:Map, opts:MarkerTrackerOptions)
 		{
 
 			this.map_ = map;
@@ -103,45 +94,45 @@ package com.google.maps.extras
 			this.control_ = null;
 			
 			  
-			opts = opts || {};
-			this.iconScale_ = MarkerTracker.DEFAULT_ICON_SCALE_;
-			if (opts.iconScale != undefined ) {
+			opts = opts || new MarkerTrackerOptions();
+			this.iconScale_ = MarkerTracker.DEFAULT_ICON_SCALE;
+			if (opts.iconScale) {
 				this.iconScale_ = opts.iconScale;
 			}
-			this.padding_ = MarkerTracker.DEFAULT_EDGE_PADDING_;
-			if (opts.padding != undefined ) {
+			this.padding_ = MarkerTracker.DEFAULT_PADDING;
+			if (opts.padding) {
 				this.padding_ = opts.padding;
 			}
-			this.color_ = MarkerTracker.DEFAULT_ARROW_COLOR_;
-			if (opts.color != undefined ) {
-				this.color_ = opts.color;
+			this.color_ = MarkerTracker.DEFAULT_ARROW_COLOR;
+			if (opts.arrowColor) {
+				this.color_ = opts.arrowColor;
 			}
-			this.weight_ = MarkerTracker.DEFAULT_ARROW_WEIGHT_;
-			if (opts.weight != undefined ) {
-				this.weight_ = opts.weight;
+			this.weight_ = MarkerTracker.DEFAULT_ARROW_WEIGHT;
+			if (opts.arrowWeight) {
+				this.weight_ = opts.arrowWeight;
 			}
-			this.length_ = MarkerTracker.DEFAULT_ARROW_LENGTH_;
-			if (opts.length != undefined ) {
-				this.length_ = opts.length;
+			this.length_ = MarkerTracker.DEFAULT_ARROW_LENGTH;
+			if (opts.arrowLength) {
+				this.length_ = opts.arrowLength;
 			}
-			this.opacity_ = MarkerTracker.DEFAULT_ARROW_OPACITY_;
-			if (opts.opacity != undefined ) {
-				this.opacity_ = opts.opacity;
+			this.opacity_ = MarkerTracker.DEFAULT_ARROW_OPACITY;
+			if (opts.arrowOpacity) {
+				this.opacity_ = opts.arrowOpacity;
 			}
-			this.updateEvent_ = MarkerTracker.DEFAULT_UPDATE_EVENT_;
-			if (opts.updateEvent != undefined ) {
+			this.updateEvent_ = MarkerTracker.DEFAULT_UPDATE_EVENT;
+			if (opts.updateEvent) {
 				this.updateEvent_ = opts.updateEvent;
 			}
-			this.panEvent_ = MarkerTracker.DEFAULT_PAN_EVENT_;
-			if (opts.panEvent != undefined ) {
+			this.panEvent_ = MarkerTracker.DEFAULT_PAN_EVENT;
+			if (opts.panEvent) {
 				this.panEvent_ = opts.panEvent;
 			}
-			this.quickPanEnabled_ = MarkerTracker.DEFAULT_QUICK_PAN_ENABLED_;
-			if (opts.quickPanEnabled != undefined ) {
+			this.quickPanEnabled_ = MarkerTracker.DEFAULT_QUICK_PAN_ENABLED;
+			if (opts.quickPanEnabled) {
 				this.quickPanEnabled_ = opts.quickPanEnabled;
 			}
 			
-			this.babyMarker_ = new Marker(new LatLng(0, 0));			
+			this.babyMarker_ = new Marker(new LatLng(0, 0));
 			if(marker.getOptions().icon){
 				//replicate a different sized icon 
 				var babyIcon:DisplayObject = DisplayObject(ObjectUtil.copy(marker.getOptions().icon));

@@ -41,3 +41,12 @@ This library is an AS3 version of the !DragZoomControl from the JS open-source l
 
 Demos:
  * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/DragZoomonControl/bin-release/DragZoom.html DragZoomControlDemo]
+
+== !MarkerTracker ==
+
+This library is an AS3 version of the !MarkerTracker from the JS open-source library. You can assign a MarkerTracker to a map/marker, and then when that marker moves out of the visible viewport, a ghost marker and arrow will appear and point in its direction.
+
+[http://gmaps-utility-library-flash.googlecode.com/svn/trunk/docs/com/google/maps/extras/markertracker/package-detail.html Reference]
+
+Demos
+ * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/MarkerTrackerDemo/bin-release/MarkerTrackerDemo.html MarkerTrackerDemo]

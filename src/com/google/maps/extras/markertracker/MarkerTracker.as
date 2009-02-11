@@ -157,7 +157,18 @@ package com.google.maps.extras.markertracker
 			this.updateArrow_(null);
 		}
 
-
+		/**
+		 * Destroys the marker tracker for successful garbage collecting.
+		 */
+		 public function destroy():void 
+		 {
+		 	this.disable();
+		 	
+		 	this.marker_.removeEventListener(Event.CHANGE, this.updateArrow_);
+		 	this.map_.removeEventListener(this.updateEvent_, this.updateArrow_);
+		 	
+		 	this.babyMarker_ = null;
+		 }
 
 		/**
 		 *  Disables the marker tracker.
@@ -176,9 +187,42 @@ package com.google.maps.extras.markertracker
 			this.enabled_ = true;
 			this.updateArrow_(null);
 		}
+		
+		/**
+		 * Reactivates the marker tracker after being destroyed.
+		 */
+		 public function reactivate():void
+		 {
+			this.enabled_ = true;
+			this.arrowDisplayed_ = false;
+			this.arrow_ = null;
+			this.oldArrow_ = null;
+			this.control_ = null;
+
+			this.babyMarker_ = new Marker(new LatLng(0, 0));
+			if(this.marker_.getOptions().icon){
+				var babyIcon:DisplayObject = DisplayObject(ObjectUtil.copy(this.marker_.getOptions().icon));
+				babyIcon.width = this.marker_.getOptions().icon.width * this.iconScale_;
+				babyIcon.height = this.marker_.getOptions().icon.height * this.iconScale_ ;
+				this.babyMarker_.getOptions().icon = babyIcon;				
+			} else {
+				this.babyMarker_.setOptions(this.marker_.getOptions());
+			}
+			this.babyMarker_.getOptions().hasShadow = false;
+			this.babyMarker_.getOptions().clickable = true;
+			
+			this.map_.addEventListener(this.updateEvent_, this.updateArrow_);
+			this.marker_.addEventListener(Event.CHANGE, this.updateArrow_);
+			if (this.quickPanEnabled_) {
+				this.babyMarker_.addEventListener(this.panEvent_, this.panToMarker_);
+			}
+
+			this.updateArrow_(null);
+		 }
+
 
 		/**
-		 *  Called on on the trigger event to update the arrow. Primary function is to
+		 *  Called on the trigger event to update the arrow. Primary function is to
 		 *  check if the parent marker is in view, if not draw the tracking arrow.
 		 */
 		

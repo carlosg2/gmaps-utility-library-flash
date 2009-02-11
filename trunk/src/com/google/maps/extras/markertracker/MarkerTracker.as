@@ -162,7 +162,7 @@ package com.google.maps.extras.markertracker
 		/**
 		 *  Disables the marker tracker.
 		 */
-		private function disable():void 
+		public function disable():void 
 		{
 			this.enabled_ = false;
 			this.updateArrow_(null);
@@ -171,7 +171,7 @@ package com.google.maps.extras.markertracker
 		/**
 		 *  Enables the marker tracker.
 		 */
-		private function enable():void 
+		public function enable():void 
 		{
 			this.enabled_ = true;
 			this.updateArrow_(null);

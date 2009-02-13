@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <index>
-	<title>Source of DragZoom</title>
+	<title>Source of DragZoomonControl</title>
 	<nodes>
 		<node label="html-template">
 			<node label="history">
@@ -13,7 +13,6 @@
 			<node label="playerProductInstall.swf" icon="swfIcon" url="source/html-template/playerProductInstall.swf"/>
 		</node>
 		<node label="libs">
-			<node label="map_flex_1_8b.swc" url="source/libs/map_flex_1_8b.swc"/>
 		</node>
 		<node label="src" icon="classpathIcon" expanded="true">
 			<node label="assets">
@@ -22,13 +21,7 @@
 					<node label="zoom-out.png" icon="imageIcon" url="source/assets/images/zoom-out.png.html"/>
 				</node>
 			</node>
-			<node label="com.google.maps.extras.dragzoomcontrol.controls" icon="packageIcon" expanded="true">
-				<node label="DragZoomControl.as" icon="actionScriptIcon" url="source/com/google/maps/extras/dragzoomcontrol/controls/DragZoomControl.as.html"/>
-			</node>
-			<node label="com.google.maps.extras.dragzoomcontrol.events" icon="packageIcon" expanded="true">
-				<node label="DragZoomEvent.as" icon="actionScriptIcon" url="source/com/google/maps/extras/dragzoomcontrol/events/DragZoomEvent.as.html"/>
-			</node>
-			<node selected="true" label="DragZoom.mxml" icon="mxmlAppIcon" url="source/DragZoom.mxml.html"/>
+			<node selected="true" label="DragZoomonControl.mxml" icon="mxmlAppIcon" url="source/DragZoomonControl.mxml.html"/>
 		</node>
 	</nodes>
 </index>

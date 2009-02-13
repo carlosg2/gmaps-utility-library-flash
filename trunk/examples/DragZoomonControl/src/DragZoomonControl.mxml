@@ -11,6 +11,7 @@
     	import com.google.maps.extras.dragzoomcontrol.DragZoomControl;
     	import com.google.maps.MapType;
     	import com.google.maps.LatLng;
+    	
 	    private function onMapReady(event:Event):void {	
 			map.setCenter(new LatLng(40.736072,-73.992062), 14, MapType.NORMAL_MAP_TYPE);
 			map.addControl(new DragZoomControl());   	  

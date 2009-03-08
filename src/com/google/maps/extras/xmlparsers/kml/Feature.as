@@ -19,15 +19,15 @@ package com.google.maps.extras.xmlparsers.kml
 	{
 		private var atom:Namespace = Namespaces.ATOM_NS;
 		
-		public var _name:String;
-		public var _id:String;
-		public var _link: com.google.maps.extras.xmlparsers.atom.Link::Link;
-		public var _visibility:Boolean = true;
-		public var _open:Boolean = false;
-		public var _author:Author;
-		public var _snippet:String;
-		public var _description:String;
-		public var _styleUrl:String;
+		private var _name:String;
+		private var _id:String;
+		private var _link: com.google.maps.extras.xmlparsers.atom.Link::Link;
+		private var _visibility:Boolean = true;
+		private var _open:Boolean = false;
+		private var _author:Author;
+		private var _snippet:String;
+		private var _description:String;
+		private var _styleUrl:String;
 		
 		/**
 		*	Constructor for class.

@@ -6,11 +6,9 @@
 package com.google.maps.extras.xmlparsers.kml
 {
     import com.google.maps.extras.xmlparsers.Namespaces;
-	import com.google.maps.extras.xmlparsers.ParsingTools;
-	import com.google.maps.extras.xmlparsers.XmlElement;
-
-	import com.google.maps.extras.xmlparsers.atom.Link;
-	import com.google.maps.extras.xmlparsers.atom.Author;
+    import com.google.maps.extras.xmlparsers.ParsingTools;
+    import com.google.maps.extras.xmlparsers.atom.Author;
+    import com.google.maps.extras.xmlparsers.atom.Link;
 	
 	/**
 	*	Abstract element extended by Container, Overlay, and Placemark.
@@ -29,6 +27,7 @@ package com.google.maps.extras.xmlparsers.kml
 		public var _author:Author;
 		public var _snippet:String;
 		public var _description:String;
+		public var _styleUrl:String;
 		
 		/**
 		*	Constructor for class.
@@ -44,6 +43,7 @@ package com.google.maps.extras.xmlparsers.kml
 			
 			this._description = ParsingTools.nullCheck(this.x.kml::description);
 			this._snippet = ParsingTools.nullCheck(this.x.kml::Snippet);
+			this._styleUrl = ParsingTools.nullCheck(this.x.kml::styleUrl);
 			
 			if (ParsingTools.nullCheck(this.x.atom::link) != null) {
 				this._link = new com.google.maps.extras.xmlparsers.atom.Link::Link(this.x.atom::link);
@@ -124,6 +124,14 @@ package com.google.maps.extras.xmlparsers.kml
 		public function get snippet():String
 		{
 			return this._snippet;
+		}
+		
+		/**
+		 * Represents the &lt;styleUrl&gt; child element.
+		 */
+		public function get styleUrl():String
+		{
+			return this._styleUrl;
 		}
 		
 		public override function toString():String {

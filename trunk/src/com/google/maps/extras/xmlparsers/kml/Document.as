@@ -22,8 +22,8 @@ package com.google.maps.extras.xmlparsers.kml
 		*	@param x
 		*/
 		
-		public var _styleMap:StyleMap;
-		public var _styles:Array;
+		private var _styleMap:StyleMap;
+		private var _styles:Array;
 			
 		public function Document(x:XMLList)
 		{

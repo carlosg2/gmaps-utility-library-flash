@@ -5,8 +5,8 @@
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path=""/>
 <libraryPathEntry kind="1" linkType="1" path="libs"/>
-<libraryPathEntry kind="3" linkType="1" path="${DOCUMENTS}/lib/map_flex_1_6.swc" useDefaultLinkType="false"/>
 <libraryPathEntry kind="3" linkType="1" path="${DOCUMENTS}/GoogleMapsAPIUtilityLibrary/bin/GoogleMapsAPIUtilityLibrary.swc" useDefaultLinkType="false"/>
+<libraryPathEntry kind="3" linkType="1" path="${DOCUMENTS}/lib/map_flex_1_7.swc" useDefaultLinkType="false"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>

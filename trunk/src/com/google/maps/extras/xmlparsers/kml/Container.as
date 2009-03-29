@@ -36,7 +36,7 @@ package com.google.maps.extras.xmlparsers.kml
 				this._features.push(new Placemark(XMLList(i)));
 			}
 			for each (i in this.x.kml::GroundOverlay) {
-				this._features.push(new GroundOverlay(XMLList(i)));
+				this._features.push(new KmlGroundOverlay(XMLList(i)));
 			}
 			for each (i in this.x.kml::Folder) {
 				this._features.push(new Folder(XMLList(i)));

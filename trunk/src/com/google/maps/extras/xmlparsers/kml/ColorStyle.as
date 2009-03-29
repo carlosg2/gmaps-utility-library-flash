@@ -10,7 +10,6 @@ package com.google.maps.extras.xmlparsers.kml
 	{
 		private var _color:int;
 		private var _colorMode:String;
-		private var _id:String;
 		
 		public function ColorStyle(x:XMLList)
 		{

@@ -10,16 +10,12 @@ package com.google.maps.extras.xmlparsers.kml
 	import com.google.maps.extras.xmlparsers.XmlElement;
 
 	/**
-	*	Class that represents a &lt;LineString&gt; element.
+	*	Class that represents a &lt;Point&gt; element.
 	* 
-	* 	@see http://code.google.com/apis/kml/documentation/kmlreference.html#linestring
+	* 	@see http://code.google.com/apis/kml/documentation/kmlreference.html#point
 	*/
-	public class LineString extends Geometry
+	public class KmlPoint extends Geometry
 	{
-		//todo: add constants for the enum values?
-		
-		// Can contain: <extrude>, <tessellate>, <altitudeMode>, <coordinates>
-		// We support coordinates only
 		private var _coordinates:Coordinates;		
   
 		/**
@@ -27,9 +23,12 @@ package com.google.maps.extras.xmlparsers.kml
 		* 
 		*	@param x
 		*/	
-		public function LineString(x:XMLList)
+		public function KmlPoint(x:XMLList)
 		{
 			super(x);
+			trace("t");
+			trace(this.x);
+			trace("e");
 			if (ParsingTools.nullCheck(this.x.kml::coordinates) != null) {
 				this._coordinates = new Coordinates(ParsingTools.nullCheck(this.x.kml::coordinates));
 			}
@@ -44,7 +43,7 @@ package com.google.maps.extras.xmlparsers.kml
 	 	}
 	 	
 	 	public override function toString():String {
-	 		return "LineString: " + super.toString() + " coordinates " + this._coordinates;
+	 		return "Point: " + this._coordinates;	
 	 	}
 	}
 }

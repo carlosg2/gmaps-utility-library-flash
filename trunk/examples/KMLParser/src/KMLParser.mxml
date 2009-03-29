@@ -4,15 +4,22 @@
  Licensed under the Apache License, Version 2.0:
     http://www.apache.org/licenses/LICENSE-2.0
 -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%" viewSourceURL="srcview/index.html">
-  <mx:Panel title="Google Maps API for Flash - KML Parser Example" width="100%" height="100%">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:maps="com.google.maps.*" layout="absolute" width="100%" height="100%" viewSourceURL="srcview/index.html">
+  <mx:Panel title="Google Maps API for Flash Demo" width="100%" height="100%">
+   <mx:VBox width="100%" height="100%">
+   <mx:ComboBox
+   	id="kmlFiles"
+    dataProvider = "{SAMPLE_FILES}"
+    change="loadFile(event)"/>
    <mx:HDividedBox width="100%" height="100%">
    <mx:Tree id="kmlTree" width="200" height="100%" dataProvider="{kmlObj}" change="changeEvt(event);" labelField="name" showRoot="false"/>
-    <mx:UIComponent id="mapContainer" 
-        initialize="startMap(event);" 
-        resize="resizeMap(event)" 
-        width="100%" height="100%"/>
+   <maps:Map 
+    id="map" 
+    key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g" 
+    mapevent_mapready="onMapReady(event)"
+    width="100%" height="100%"/>
     </mx:HDividedBox>
+    </mx:VBox>
   </mx:Panel>
   <mx:Script>
     <![CDATA[
@@ -20,6 +27,7 @@
   
   import com.google.maps.controls.ZoomControl;
   import com.google.maps.overlays.Polyline;
+  import com.google.maps.overlays.Polygon;
   import com.google.maps.overlays.Marker;
   import com.google.maps.MapEvent;
   import com.google.maps.Map;
@@ -29,57 +37,46 @@
   import com.google.maps.overlays.GroundOverlay;
   import com.google.maps.overlays.GroundOverlayOptions; 
   import com.google.maps.extras.xmlparsers.kml.*;
+  import mx.controls.Alert;
   
-  private var map:Map;
   [Bindable] private var kmlObj:Object = new Object();
-  
-  public function startMap(event:Event):void {
-    map = new Map();
-    map.addEventListener(MapEvent.MAP_READY, onMapReady);
-    mapContainer.addChild(map);
-    map.key = "ABQIAAAA-O3c-Om9OcvXMOJXreXHAxQGj0PqsCtxKvarsoS-iqLdqZSKfxS27kJqGZajBjvuzOBLizi931BUow";
-  }
-      
-  public function resizeMap(event:Event):void {
-    map.setSize(new flash.geom.Point::Point(mapContainer.width, mapContainer.height));
-  }
+  public var SAMPLE_FILES:Array = ["sample.xml", "debug.xml", "multigeometry.xml", "polygon.xml"];
   
   public function onMapReady(event:MapEvent):void {
 	map.setCenter(new LatLng(37.422289,-122.0822035), 14, MapType.NORMAL_MAP_TYPE);
     map.addControl(new ZoomControl());
-    var loader:URLLoader = new URLLoader();
+    loadFile(null);
+  }
+  
+  public function loadFile(event:Event):void {
+  	var file:String = kmlFiles.selectedLabel;
+  	var loader:URLLoader = new URLLoader();
     loader.addEventListener(Event.COMPLETE, loadXML);
-    loader.load(new URLRequest("sample.xml"));
+    loader.load(new URLRequest(file));
   }
   
   public function loadXML(event:Event):void {
-  	//trace(event.target.data);
- 	var kml:Kml22 = new Kml22(event.target.data);
+  	var kml:Kml22 = new Kml22(event.target.data);
     var rootFeature:Feature = kml.feature;
      
+    // @todo: This is redundant with code in getChildrenFeatures, should combine
 	kmlObj = new Object();
 	kmlObj.name = rootFeature.name;
+	kmlObj.mapObjs = new Array();
+	kmlObj.bounds = new LatLngBounds();
 	
-	if (!canContainFeatures(rootFeature)) return;
-	// its a container, lets look for children features
-	kmlObj.children = getChildrenFeatures(Container(rootFeature));
+	if (canContainFeatures(rootFeature)) {
+	  kmlObj.children = getChildrenFeatures(Container(rootFeature));
+	} else {
+      associateWithMapObject(kmlObj, rootFeature);
+    }
+    map.setCenter(kmlObj.bounds.getCenter(), map.getBoundsZoomLevel(kmlObj.bounds));
   }
   
    private function changeEvt(event:Event):void {
-   	var mapObj:* = event.currentTarget.selectedItem.mapObject;
-   	if (mapObj is Marker) {
-   		var marker:Marker = Marker(mapObj);
-   		map.setCenter(marker.getLatLng());
-   	} else if (mapObj is com.google.maps.overlays.Polygon::Polygon) {
-   		var polygon: com.google.maps.overlays.Polygon = com.google.maps.overlays.Polygon::Polygon(mapObj);
-   		map.setCenter(polygon.getLatLngBounds().getCenter());
-   	}else if (mapObj is com.google.maps.overlays.Polyline::Polyline) {
-   		var polyline: com.google.maps.overlays.Polyline = com.google.maps.overlays.Polyline::Polyline(mapObj);
-   		map.setCenter(polyline.getLatLngBounds().getCenter());
-   	} else if (mapObj is com.google.maps.overlays.GroundOverlay::GroundOverlay) {
-   		var groundOverlay: com.google.maps.overlays.GroundOverlay = com.google.maps.overlays.GroundOverlay::GroundOverlay(mapObj);
-   		// we need a getLatLngBounds function
-   		map.setCenter(new LatLng(37.757687,15.177612));
+   	var currentObj:Object = event.currentTarget.selectedItem;
+   	if (currentObj.bounds) { // Otherwise it's a folder
+   	  map.setCenter(currentObj.bounds.getCenter(), map.getBoundsZoomLevel(currentObj.bounds));
    	}
    }
    
@@ -87,41 +84,68 @@
   public function associateWithMapObject(obj:Object, feature:Feature):void {
   	// at this point it can either be a placemark or a groundoverlay
   	if (feature is Placemark) {
-  		var placemark:Placemark = com.google.maps.extras.xmlparsers.kml.Placemark::Placemark(feature);
+  		var placemark:Placemark = Placemark(feature);
   		if (placemark.geometry != null) {
-  			if (placemark.geometry is com.google.maps.extras.xmlparsers.kml.Point::Point) {
-  				var point: com.google.maps.extras.xmlparsers.kml.Point::Point = com.google.maps.extras.xmlparsers.kml.Point::Point(placemark.geometry);
-  				var latlng:LatLng = new LatLng(point.coordinates.coordsList[0].lat, point.coordinates.coordsList[0].lon);
-  				obj.mapObject = new Marker(latlng);
-  				map.addOverlay(obj.mapObject);
-  			} else if (placemark.geometry is LineString) {
-  				var lineString:LineString = LineString(placemark.geometry);
-  				obj.mapObject = new Polyline(getCoordinatesLatLngs(lineString.coordinates));
-  				map.addOverlay(obj.mapObject);
-  			}  else if (placemark.geometry is LinearRing) {
-  				var linearRing:LinearRing = LinearRing(placemark.geometry);
-  				obj.mapObject = new Polyline(getCoordinatesLatLngs(linearRing.coordinates));
-  				map.addOverlay(obj.mapObject);
-  			}  else if (placemark.geometry is Polygon) {
-  				var polygon:Polygon = Polygon(placemark.geometry);
-  				obj.mapObject = new com.google.maps.overlays.Polygon::Polygon(getCoordinatesLatLngs(polygon.outerBoundaryIs.linearRing.coordinates));
-  				map.addOverlay(obj.mapObject);
-  			} 
+  		  associateGeometryWithMapObject(obj, placemark.geometry);
   		}
-  	} else if (feature is com.google.maps.extras.xmlparsers.kml.GroundOverlay::GroundOverlay) {
-  		var groundOverlay:com.google.maps.extras.xmlparsers.kml.GroundOverlay::GroundOverlay = com.google.maps.extras.xmlparsers.kml.GroundOverlay::GroundOverlay(feature);
+  	} else if (feature is KmlGroundOverlay) {
+  		var groundOverlay:KmlGroundOverlay = KmlGroundOverlay(feature);
+  		var latLngBounds:LatLngBounds = new LatLngBounds(new LatLng(groundOverlay.latLonBox.south,groundOverlay.latLonBox.west), new LatLng(groundOverlay.latLonBox.north,groundOverlay.latLonBox.east));
+	  	updateBounds(obj, latLngBounds);
 	  	var testLoader:Loader = new Loader();
 	  	var urlRequest:URLRequest = new URLRequest(groundOverlay.icon.href);
 	    testLoader.contentLoaderInfo.addEventListener(
 	      Event.COMPLETE,
 	      function(e:Event):void {
-	        obj.mapObject = new com.google.maps.overlays.GroundOverlay::GroundOverlay(
-	        testLoader,
-	        new LatLngBounds(new LatLng(groundOverlay.latLonBox.south,groundOverlay.latLonBox.west), new LatLng(groundOverlay.latLonBox.north,groundOverlay.latLonBox.east)));
+	        obj.mapObject = new com.google.maps.overlays.GroundOverlay::GroundOverlay(testLoader, latLngBounds);
 	        map.addOverlay(obj.mapObject);
 	    });
 	    testLoader.load(urlRequest); 
-  	}
+  	} 
+  }
+  
+  public function associateGeometryWithMapObject(obj:Object, geometry:Geometry):void {
+    if (geometry is KmlPoint) {
+      var point:KmlPoint = KmlPoint(geometry);
+      var latlng:LatLng = new LatLng(point.coordinates.coordsList[0].lat, point.coordinates.coordsList[0].lon);
+      obj.mapObjs.push(new Marker(latlng));
+      updateBounds(obj, new LatLngBounds(latlng, latlng));
+      map.addOverlay(obj.mapObjs[obj.mapObjs.length -1]);
+    } else if (geometry is LineString) {
+      var lineString:LineString = LineString(geometry);
+      var polyline:Polyline = new Polyline(getCoordinatesLatLngs(lineString.coordinates));
+      obj.mapObjs.push(polyline);
+      updateBounds(obj, polyline.getLatLngBounds());
+      obj.center = polyline.getLatLngBounds().getCenter();
+      obj.bounds = polyline.getLatLngBounds();
+      map.addOverlay(polyline);
+    } else if (geometry is LinearRing) {
+      var linearRing:LinearRing = LinearRing(geometry);
+      var polyline:Polyline = new Polyline(getCoordinatesLatLngs(linearRing.coordinates));
+      obj.mapObjs.push(polyline);
+      updateBounds(obj, polyline.getLatLngBounds());
+      map.addOverlay(polyline);
+    } else if (geometry is KmlPolygon) {
+      var kmlPolygon:KmlPolygon = KmlPolygon(geometry);
+      var polygon:Polygon = new Polygon(getCoordinatesLatLngs(kmlPolygon.outerBoundaryIs.linearRing.coordinates));
+      obj.mapObjs.push(polygon);
+      updateBounds(obj, polygon.getLatLngBounds());
+      map.addOverlay(polygon);
+    } else if (geometry is MultiGeometry) {
+    	var multiGeometry:MultiGeometry = MultiGeometry(geometry);
+     	for (var i:uint = 0; i < multiGeometry.geometries.length; i++) {
+     	  associateGeometryWithMapObject(obj, multiGeometry.geometries[i]);
+        }
+    }
+  }
+  
+  public function updateBounds(obj:Object, bounds:LatLngBounds):void {
+  	if (obj.bounds) {
+  	  obj.bounds.union(bounds);	
+    } else {
+      obj.bounds = bounds;
+    }
+    kmlObj.bounds.union(bounds);
   }
   
   public function getCoordinatesLatLngs(coordinates:Coordinates):Array {
@@ -138,6 +162,7 @@
   	for (var i:Number = 0; i < container.features.length; i++) {
   		var feature:Feature = container.features[i];
   		var childObj:Object = new Object();
+  		childObj.mapObjs = new Array();
 	 	childObj.name = feature.name;
 	 	if (childObj.name == null) {
 	 		childObj.name = getAlternateName(feature);
@@ -162,21 +187,21 @@
   	} else if (feature is Document) {
   		return "Unnamed Document";
   	} else if (feature is Placemark) {
-  		var placemark:Placemark = com.google.maps.extras.xmlparsers.kml.Placemark::Placemark(feature);
+  		var placemark:Placemark = Placemark(feature);
   		if (placemark.geometry != null) {
-  			if (placemark.geometry is com.google.maps.extras.xmlparsers.kml.Point) {
+  			if (placemark.geometry is KmlPoint) {
   				return "Unnamed Point";
-  			} else if (placemark.geometry is com.google.maps.extras.xmlparsers.kml.LineString) {
+  			} else if (placemark.geometry is LineString) {
   				return "Unnamed Linestring";
-  			}  else if (placemark.geometry is com.google.maps.extras.xmlparsers.kml.LinearRing) {
+  			}  else if (placemark.geometry is LinearRing) {
   				return "Unnamed LinearRing";
-  			}  else if (placemark.geometry is com.google.maps.extras.xmlparsers.kml.Polygon) {
+  			}  else if (placemark.geometry is KmlPolygon) {
   				return "Unnamed Polygon";
   			}
   		}
   		return "Unnamed Placemark";
   		
-  	} else if (feature is com.google.maps.extras.xmlparsers.kml.GroundOverlay::GroundOverlay) {
+  	} else if (feature is com.google.maps.extras.xmlparsers.kml.GroundOverlay::KmlGroundOverlay) {
   		return "Unnamed GroundOverlay";
   	}
   	return "Unnamed Feature";

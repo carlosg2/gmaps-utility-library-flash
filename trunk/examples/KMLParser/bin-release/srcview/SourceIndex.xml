@@ -15,7 +15,10 @@
 		<node label="libs">
 		</node>
 		<node label="src" icon="classpathIcon" expanded="true">
+			<node label="debug.xml" url="source/debug.xml.txt"/>
 			<node selected="true" label="KMLParser.mxml" icon="mxmlAppIcon" url="source/KMLParser.mxml.html"/>
+			<node label="multigeometry.xml" url="source/multigeometry.xml.txt"/>
+			<node label="polygon.xml" url="source/polygon.xml.txt"/>
 			<node label="sample.xml" url="source/sample.xml.txt"/>
 		</node>
 	</nodes>

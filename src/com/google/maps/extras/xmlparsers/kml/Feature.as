@@ -20,7 +20,6 @@ package com.google.maps.extras.xmlparsers.kml
 		private var atom:Namespace = Namespaces.ATOM_NS;
 		
 		private var _name:String;
-		private var _id:String;
 		private var _link: com.google.maps.extras.xmlparsers.atom.Link::Link;
 		private var _visibility:Boolean = true;
 		private var _open:Boolean = false;
@@ -37,13 +36,12 @@ package com.google.maps.extras.xmlparsers.kml
 		public function Feature(x:XMLList)
 		{
 			super(x);
-
-			this._id = ParsingTools.nullCheck(this.x.@id);
 			this._name = ParsingTools.nullCheck(this.x.kml::name);
 			
 			this._description = ParsingTools.nullCheck(this.x.kml::description);
 			this._snippet = ParsingTools.nullCheck(this.x.kml::Snippet);
-			this._styleUrl = ParsingTools.nullCheck(this.x.kml::styleUrl);
+			var styleUrlQN:QName = new QName(kml, "styleUrl");
+			this._styleUrl = ParsingTools.nullCheck(this.x.attribute(styleUrlQN));
 			
 			if (ParsingTools.nullCheck(this.x.atom::link) != null) {
 				this._link = new com.google.maps.extras.xmlparsers.atom.Link::Link(this.x.atom::link);

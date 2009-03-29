@@ -34,7 +34,7 @@ package com.google.maps.extras.xmlparsers.kml
 				this._feature = new Placemark(this.x.kml::Placemark);
 			}
 			if (ParsingTools.nullCheck(this.x.kml::GroundOverlay)) {
-				this._feature = new GroundOverlay(this.x.kml::GroundOverlay);
+				this._feature = new KmlGroundOverlay(this.x.kml::GroundOverlay);
 			}
 			if (ParsingTools.nullCheck(this.x.kml::Folder)) {
 				this._feature = new Folder(this.x.kml::Folder);

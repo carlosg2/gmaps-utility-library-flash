@@ -26,15 +26,16 @@ package com.google.maps.extras.xmlparsers.kml
 		*/	
 		public function Coordinates(string:String)
 		{
-			var stringSplit:Array = string.split(" ");
-			
+			var re:RegExp = /(\s|\n|\r)+/;
+			var stringSplit:Array = string.split(re);
 			_coordsList = new Array();
 			for (var i:Number = 0; i < stringSplit.length; i++) {
+				if (stringSplit[i].length < 5) continue;
 				var coordinate:Object = new Object();
 				var coordString:Array = stringSplit[i].split(",");
-				coordinate.lon = coordString[0];
-				coordinate.lat = coordString[1];
-				coordinate.alt = coordString[2];
+				coordinate.lon = Number(coordString[0]);
+				coordinate.lat = Number(coordString[1]);
+				coordinate.alt = Number(coordString[2]);
 				_coordsList.push(coordinate);
 			}
 		}
@@ -49,8 +50,11 @@ package com.google.maps.extras.xmlparsers.kml
 	 	}
 	 	
 	 	public function toString():String {
-	 		return "Coords";
-	 		//return "Coordinates: " + " lat: " + this._lat + " lon: " + this._lon + " alt: " + this._alt;
+	 		var string:String = "";
+	 		for (var i:uint = 0; i < this._coordsList.length; i++) {
+	 		    string += this._coordsList[i].lon + ", " + this._coordsList[i].lat + ", " + this._coordsList[i].alt + ";";
+	 		}	
+	 		return "Coordinates: " + string;
 	 	}
 	}
 }

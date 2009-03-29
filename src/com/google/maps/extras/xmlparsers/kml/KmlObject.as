@@ -18,7 +18,7 @@ package com.google.maps.extras.xmlparsers.kml
 	{
 		public var kml:Namespace = Namespaces.KML_NS;
 		
-		private var _id:String;
+		public var _id:String;
 		
 		/**
 		*	Constructor for class.
@@ -28,8 +28,8 @@ package com.google.maps.extras.xmlparsers.kml
 		public function KmlObject(x:XMLList)
 		{
 			super(x);
-			this._id = ParsingTools.nullCheck(this.x.kml::id);
-		}
+			var idQN:QName = new QName(kml, "id");
+            this._id = ParsingTools.nullCheck(this.x.attribute(idQN));		}
 
 		/**
 		*	Represents the id attribute of the element.

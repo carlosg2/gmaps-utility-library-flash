@@ -30,7 +30,7 @@ package com.google.maps.extras.xmlparsers.kml
 			// Features are: <Point>, <LineString>, <LinearRing>, <Polygon>, <MultiGeometry>, <Model>
 			// We'll only support <Point>, <LineString>, <LinearRing>, <Polygon>
 			if (ParsingTools.nullCheck(this.x.kml::Point)) {
-				this._geometry = new Point(this.x.kml::Point);
+				this._geometry = new KmlPoint(this.x.kml::Point);
 			}
 			if (ParsingTools.nullCheck(this.x.kml::LineString)) {
 				this._geometry = new LineString(this.x.kml::LineString);
@@ -39,8 +39,11 @@ package com.google.maps.extras.xmlparsers.kml
 				this._geometry = new LinearRing(this.x.kml::LinearRing);
 			}
 			if (ParsingTools.nullCheck(this.x.kml::Polygon)) {
-				this._geometry = new Polygon(this.x.kml::Polygon);
+				this._geometry = new KmlPolygon(this.x.kml::Polygon);
 			}
+			if (ParsingTools.nullCheck(this.x.kml::MultiGeometry)) {
+                this._geometry = new MultiGeometry(this.x.kml::MultiGeometry);
+            }
 		}
 		
 		/**

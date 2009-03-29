@@ -10,7 +10,6 @@ package com.google.maps.extras.xmlparsers.kml
 	{
 		private var _key:String;
 		private var _styleUrl:String;
-		private var _id:String;
 		
 		public function Pair(x:XMLList)
 		{

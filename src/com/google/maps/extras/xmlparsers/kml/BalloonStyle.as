@@ -8,7 +8,6 @@ package com.google.maps.extras.xmlparsers.kml
 	
 	public class BalloonStyle extends KmlObject
 	{
-		private var _id:String;
 		private var _bgColor:int;
 		private var _textColor:int;
 		private var _text:String;

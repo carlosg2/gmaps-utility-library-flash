@@ -41,7 +41,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">Overlay <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../../../images/inherit-arrow.gif"> <a href="Feature.html">Feature</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../../../images/inherit-arrow.gif"> <a href="KmlObject.html">KmlObject</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../../../images/inherit-arrow.gif"> <a href="../XmlElement.html">XmlElement</a></td>
 </tr>
 <tr>
-<td class="classHeaderTableLabel">Subclasses</td><td><a href="../kml/GroundOverlay.html">GroundOverlay</a></td>
+<td class="classHeaderTableLabel">Subclasses</td><td><a href="../kml/KmlGroundOverlay.html">KmlGroundOverlay</a></td>
 </tr>
 </table>
 <p></p>
@@ -73,11 +73,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="Feature.html#_author">_author</a> : <a href="../atom/Author.html">Author</a>
-<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol"><a href="Feature.html">Feature</a></td>
-</tr>
-<tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="Feature.html#author">author</a> : <a href="../atom/Author.html">Author</a>
 <div class="summaryTableDescription">
   Represents the &lt;atom:author&gt; child element.</div>
@@ -87,10 +82,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#color">color</a> : String<div class="summaryTableDescription">[read-only]
   Represents the &lt;color&gt; child element.</div>
 </td><td class="summaryTableOwnerCol">Overlay</td>
-</tr>
-<tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="Feature.html#_description">_description</a> : String<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol"><a href="Feature.html">Feature</a></td>
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="Feature.html#description">description</a> : String<div class="summaryTableDescription">
@@ -109,8 +100,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">Overlay</td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="Feature.html#_id">_id</a> : String<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol"><a href="Feature.html">Feature</a></td>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="KmlObject.html#_id">_id</a> : String<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="KmlObject.html">KmlObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="KmlObject.html#id">id</a> : String<div class="summaryTableDescription">
@@ -122,18 +113,9 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="KmlObject.html">KmlObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="Feature.html#_link">_link</a> : <a href="../atom/Link.html">Link</a>
-<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol"><a href="Feature.html">Feature</a></td>
-</tr>
-<tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="Feature.html#link">link</a> : <a href="../atom/Link.html">Link</a>
 <div class="summaryTableDescription">
   Represents the &lt;atom:link&gt; child element.</div>
-</td><td class="summaryTableOwnerCol"><a href="Feature.html">Feature</a></td>
-</tr>
-<tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="Feature.html#_name">_name</a> : String<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol"><a href="Feature.html">Feature</a></td>
 </tr>
 <tr class="hideInheritedProperty">
@@ -142,16 +124,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="Feature.html">Feature</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="Feature.html#_open">_open</a> : Boolean = false<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol"><a href="Feature.html">Feature</a></td>
-</tr>
-<tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="Feature.html#open">open</a> : Boolean<div class="summaryTableDescription">
   Represents the &lt;open&gt; child element.</div>
-</td><td class="summaryTableOwnerCol"><a href="Feature.html">Feature</a></td>
-</tr>
-<tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="Feature.html#_snippet">_snippet</a> : String<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol"><a href="Feature.html">Feature</a></td>
 </tr>
 <tr class="hideInheritedProperty">
@@ -160,7 +134,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="Feature.html">Feature</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="Feature.html#_visibility">_visibility</a> : Boolean = true<div class="summaryTableDescription"></div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="Feature.html#styleUrl">styleUrl</a> : String<div class="summaryTableDescription">
+   Represents the &lt;styleUrl&gt; child element.</div>
 </td><td class="summaryTableOwnerCol"><a href="Feature.html">Feature</a></td>
 </tr>
 <tr class="hideInheritedProperty">

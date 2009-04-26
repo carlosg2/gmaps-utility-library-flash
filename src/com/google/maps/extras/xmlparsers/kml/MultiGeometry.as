@@ -43,12 +43,9 @@ package com.google.maps.extras.xmlparsers.kml
             for each (i in this.x.kml::Polygon) {
                 this._geometries.push(new KmlPolygon(XMLList(i)));
             }
-            trace(this._geometries);
-            /*
             for each (i in this.x.kml::MultiGeometry) {
                 this._geometries.push(new MultiGeometry(XMLList(i)));
             }
-            */
 		}
 		
 		/**

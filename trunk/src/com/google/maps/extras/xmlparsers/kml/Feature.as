@@ -27,6 +27,7 @@ package com.google.maps.extras.xmlparsers.kml
 		private var _snippet:String;
 		private var _description:String;
 		private var _styleUrl:String;
+		private var _style:Style;
 		
 		/**
 		*	Constructor for class.
@@ -64,6 +65,13 @@ package com.google.maps.extras.xmlparsers.kml
 			} else if (open == 0) {
 				this._open = false;
 			}
+			
+			this._styleUrl = ParsingTools.nullCheck(this.x.kml::styleUrl);
+			
+			if (ParsingTools.nullCheck(this.x.kml::Style) != null) {
+			    this._style = new Style(this.x.kml::Style);
+			}
+	
 		}
 
 		/**
@@ -131,6 +139,14 @@ package com.google.maps.extras.xmlparsers.kml
 		{
 			return this._styleUrl;
 		}
+		
+		/**
+         * Represents the &lt;Style&gt; child element.
+         */
+        public function get style():Style
+        {
+            return this._style;
+        }
 		
 		public override function toString():String {
 			return super.toString() + "name: " + _name +

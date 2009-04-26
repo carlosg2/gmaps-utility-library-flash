@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <index>
-	<title>Source of KMLParser</title>
+	<title>Source of StyledKMLParser</title>
 	<nodes>
 		<node label="html-template">
 			<node label="history">
@@ -20,6 +20,7 @@
 			<node label="multigeometry.xml" url="source/multigeometry.xml.txt"/>
 			<node label="polygon.xml" url="source/polygon.xml.txt"/>
 			<node label="sample.xml" url="source/sample.xml.txt"/>
+			<node label="styledpoly.xml" url="source/styledpoly.xml.txt"/>
 		</node>
 	</nodes>
 </index>

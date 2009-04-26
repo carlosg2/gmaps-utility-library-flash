@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+ <GroundOverlay styleUrl="bla" id="wtf">
+   <name>ovalay</name>
+   <Icon>
+     <href>http://code.google.com/apis/kml/documentation/googleSample.png</href>
+     <viewBoundScale>0.75</viewBoundScale>
+   </Icon>
+   <LatLonBox>
+     <north>-13.15204151432014</north>
+     <south>-13.17376840745433</south>
+     <east>-72.5013090207886</east>
+     <west>-72.53105986935958</west>
+   </LatLonBox>
+ </GroundOverlay>
+</kml>

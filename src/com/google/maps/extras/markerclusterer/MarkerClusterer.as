@@ -75,7 +75,7 @@ public class MarkerClusterer
 			var styles:Array		= new Array();
 			for (var i:int = 1; i <= 5; ++i)
 			{
-				styles.push({'url': "images/m" + i + ".png"});
+				styles.push({'url': "assets/images/m" + i + ".png"});
 			}
 			options.styles = styles;
 		}

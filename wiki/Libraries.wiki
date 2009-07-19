@@ -35,7 +35,6 @@ Demos:
  * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/CustomMapMars/bin-release/CustomMapMars.html CustomMapMars]
  * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/CustomMapMoon/bin-release/CustomMapMoon.html CustomMapMoon]
 
-
 == !DragZoomControl ==
 
 This library is an AS3 version of the !DragZoomControl from the JS open-source library. It creates a custom control that lets user drag a rectangle to zoom to a bounds on the map. 
@@ -54,3 +53,12 @@ This library is an AS3 version of the !MarkerTracker from the JS open-source lib
 
 Demos
  * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/MarkerTrackerDemo/bin-release/MarkerTrackerDemo.html MarkerTrackerDemo]
+
+== !GradientControl ==
+
+This library lets you draw thematic maps, setting polygon colors depending on associated numerical values. 
+
+[http://gmaps-utility-library-flash.googlecode.com/svn/trunk/docs/com/google/maps/extras/gradients/package-detail.html Reference]
+
+Demos:
+ * [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/GradientControlDemo/bin-release/GradientControlDemo.html GradientControlDemo]

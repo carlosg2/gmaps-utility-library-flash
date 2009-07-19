@@ -17,6 +17,7 @@ package com.google.maps.extras.xmlparsers.kml
 	public class Placemark extends Feature
 	{
 		private var _geometry:Geometry;
+		private var _extended_data:ExtendedData;
 		
 		/**
 		*	Constructor for class.
@@ -28,7 +29,7 @@ package com.google.maps.extras.xmlparsers.kml
 			super(x);
 			
 			// Features are: <Point>, <LineString>, <LinearRing>, <Polygon>, <MultiGeometry>, <Model>
-			// We'll only support <Point>, <LineString>, <LinearRing>, <Polygon>
+			// We'll only support <Point>, <LineString>, <LinearRing>, <Polygon>, <MultiGeometry>
 			if (ParsingTools.nullCheck(this.x.kml::Point)) {
 				this._geometry = new KmlPoint(this.x.kml::Point);
 			}
@@ -42,8 +43,11 @@ package com.google.maps.extras.xmlparsers.kml
 				this._geometry = new KmlPolygon(this.x.kml::Polygon);
 			}
 			if (ParsingTools.nullCheck(this.x.kml::MultiGeometry)) {
-                this._geometry = new MultiGeometry(this.x.kml::MultiGeometry);
-            }
+        this._geometry = new MultiGeometry(this.x.kml::MultiGeometry);
+      }
+			if (ParsingTools.nullCheck(this.x.kml::ExtendedData)) {
+        this._extended_data = new ExtendedData(this.x.kml::ExtendedData);
+      }   
 		}
 		
 		/**
@@ -51,6 +55,10 @@ package com.google.maps.extras.xmlparsers.kml
 		*/
 		public function get geometry():Geometry {
 			return this._geometry;
+		}
+		
+		public function get extendedData():ExtendedData {
+			return this._extended_data;
 		}
 		
 		public override function toString():String {

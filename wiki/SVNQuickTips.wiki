@@ -45,8 +45,11 @@ It's important to append a descriptive message to every commit, as it helps othe
 In this project, we're actually storing HTML, CSS, JS, and SWF files and we want them to be rendered by the browser as their proper mime-type so that users can browse the docs and examples in the repository. SVN submits ASCII files as plain text by default, so we need to manually set the mime-type on certain files. To do that, we use the propset command:
 
 `svn propset svn:mime-type text/html *.html`
+
 `svn propset svn:mime-type text/javascript *.js`
+
 `svn propset svn:mime-type text/css *.css`
+
 `svn propset svn:mime-type application/x-shockwave-flash *.swf`
 
 Those are the most common mime-types we'll use in this project. If using TortoiseSVN, you can configure it to always use a set of mime-types for every commit, so that you don't have to constantly propset.

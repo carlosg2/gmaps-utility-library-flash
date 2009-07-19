@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2009 Google Inc. 
+Deme for a GradientControl Flash Google Maps API element.
+See index.html for more information.  -->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	xmlns:gvlt="com.google.maps.extras.gradients.*">
+<mx:Script>
+  <![CDATA[
+    import flash.net.URLRequest;
+    import flash.net.URLLoader;
+    import flash.events.Event;
+
+    import com.adobe.serialization.json.JSON;
+
+    import com.google.maps.Color;
+    import com.google.maps.LatLng;
+    import com.google.maps.MapMouseEvent;
+    import com.google.maps.MapType;
+    import com.google.maps.controls.PositionControl;
+    import com.google.maps.controls.ZoomControl;
+
+    import com.google.maps.overlays.EncodedPolylineData;
+    import com.google.maps.overlays.Polygon;
+    import com.google.maps.overlays.PolygonOptions;
+    import com.google.maps.overlays.Polyline;
+    import com.google.maps.overlays.PolylineOptions;
+    import com.google.maps.styles.FillStyle;
+    import com.google.maps.styles.StrokeStyle;
+
+    import com.google.maps.extras.gradients.GradientControl;
+    import com.google.maps.extras.gradients.GradientRule;
+    import com.google.maps.extras.gradients.GradientRuleList;
+    import com.google.maps.extras.gradients.MultiPolygonWithValue;
+    import com.google.maps.extras.gradients.ThematicOverlay;
+
+    private var valueDict:Object = {};
+    private var geometries:Object = [];
+    private var borders:Array = [];
+    private var ruleList:GradientRuleList = null;
+    private var thematicOverlay:ThematicOverlay = null;
+    private var selectedCountry:String = "Russia";
+
+    private function dataLoaded(event:Event):void {
+      var loader:URLLoader = URLLoader(event.target); 
+      valueDict = JSON.decode(loader.data);
+      for each(var p:MultiPolygonWithValue in geometries) {
+        if (p.id in valueDict) {
+          p.amount = valueDict[p.id];
+        }
+      }
+      countryClicked("Russia", null);
+
+      borders = [0, 10, 20, 50];
+      borderSlider1.value = borders[1];
+      borderSlider2.value = borders[2];
+
+      createGradients();
+      thematicOverlay = new ThematicOverlay(map, ruleList, geometries);
+      thematicOverlay.draw();
+    }
+
+    private function createGradients():void {
+      var g1:GradientRule = new GradientRule();
+      g1.maxValue = borders[1];
+      g1.minColor = Color.GREEN;
+      g1.maxColor = Color.YELLOW;
+
+      var g2:GradientRule = new GradientRule();
+      g2.maxColor = 0xff7700;
+      g2.maxValue = borders[2];
+
+      var g3:GradientRule = new GradientRule();
+      g3.maxValue = borders[3];
+      g3.maxColor = 0xff0000;
+
+      ruleList = new GradientRuleList([g1, g2, g3]);
+
+      gradientBar.borders = borders;
+      gradientBar.drawGradientRule(ruleList);
+    }
+
+    // From http://stackoverflow.com/questions/359635/flex-implementing-classic-curry-function-in-actionscript
+    public static function curry(func:Function, ... args:Array):*
+    {
+        var arity:int = func.length;
+        var currying:Function = function(func:Function, arity:int, args:Array):*
+        {
+            return function(... moreArgs:Array):* {
+                if(moreArgs.length + args.length < arity)
+                {
+                    return currying(func, arity, args.concat(moreArgs));
+                }
+                return func.apply(this, args.concat(moreArgs));
+            }
+        }
+        return currying(func, arity, args);
+    }
+
+    private function countryClicked(country:String, event:MapMouseEvent):void {
+      selectedCountry = country;
+      countrySlider.value = valueDict[selectedCountry];
+      changeCountryText();
+    };
+
+    private function polygonsLoaded(event:Event):void {
+      var loader:URLLoader = URLLoader(event.target); 
+      var worldPolygons:Object = JSON.decode(loader.data);
+      for each(var country:Object in worldPolygons) {
+        var geometryWithValue:MultiPolygonWithValue = 
+            new MultiPolygonWithValue();
+        geometryWithValue.id = country.name;
+        geometryWithValue.addPolygonFromEncoded(
+            country.coordinates,
+            new PolygonOptions({ 
+                  strokeStyle: new StrokeStyle({
+                    alpha: 0
+                  }),
+                  fillStyle: new FillStyle({
+                      color: 0x0000ff,
+                      alpha: 0.7})
+              }));
+        geometryWithValue.addEventListener(
+            MapMouseEvent.CLICK, curry(countryClicked, country.name));
+
+        geometries[country.name] = geometryWithValue;
+      }
+      var loader2:URLLoader = new URLLoader();
+      loader2.addEventListener(Event.COMPLETE, dataLoaded);
+      loader2.load(new URLRequest("2005_per_capita_emissions.js"));
+    }
+
+    private function onMapReady(event:Event):void {     
+      map.disableContinuousZoom();
+      map.enableScrollWheelZoom(); //can't make it work on Mac OS X
+
+      map.addControl(new PositionControl());
+      map.addControl(new ZoomControl());
+
+      var loader:URLLoader = new URLLoader();
+      loader.addEventListener(Event.COMPLETE, polygonsLoaded);
+      loader.load(new URLRequest("world_polygons.encjs"));
+
+      map.setCenter(new LatLng(30, 20), 2, MapType.NORMAL_MAP_TYPE);
+
+
+    }
+
+    private function changeCountryText():void {
+      var rounded:Number = Math.round(countrySlider.value * 100) / 100.0;
+      countryLabel.htmlText = selectedCountry + ": " + rounded.toString();
+    }
+
+    private function countrySliderChanged():void {
+      geometries[selectedCountry].amount = countrySlider.value;
+      changeCountryText();
+      thematicOverlay.draw();
+    }
+
+    private function borderSlider1Changed():void {
+      borderSliderChanged(1, borderSlider1.value);
+    }
+    private function borderSlider2Changed():void {
+      
+      borderSliderChanged(2, borderSlider2.value);
+    }
+    private function borderSliderChanged(index:int, value:Number):void {
+      borders[index] = value;
+      createGradients();
+      thematicOverlay.gradientRule = ruleList;
+      thematicOverlay.draw();
+    }
+  ]]>
+</mx:Script>    
+
+<mx:HBox
+  paddingLeft="20"
+  paddingTop="20"
+  width="100%" 
+  height="100%" 
+  horizontalGap="0" 
+  verticalGap="30" 
+  backgroundColor="#ffffff">
+  <mx:VBox 
+    width="900" 
+    height="100%" 
+    horizontalAlign="center"
+    horizontalGap="10" 
+    verticalGap="0" 
+    backgroundColor="#ffffff">
+    <mx:Text
+      color="#666666" 
+      fontSize="20"
+      text="Gradient Control Demo: 2005 Greenhouse Gas Emissions per capita"
+    />
+    <maps:Map 
+        xmlns:maps="com.google.maps.*" 
+        id="map" mapevent_mapready="onMapReady(event)" 
+        width="900"
+        height="600" 
+    />
+    <gvlt:GradientBar width="900" height="15" id="gradientBar"/>
+    <mx:Label 
+      color="#666666" 
+      fontSize="20"
+      textAlign="center"
+      htmlText="Select transition point from green to yellow"/>
+    <mx:HSlider
+      width="900"
+      height="50"
+      id="borderSlider1"
+      liveDragging="true"
+      maximum="50"
+      minimum="0"
+      showDataTip="true"
+      tickInterval="10"
+      labels = "[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+      change="borderSlider1Changed()"
+    />
+    <mx:Label 
+      color="#666666" 
+      fontSize="20"
+      textAlign="center"
+      htmlText="Select transition point from orange to red"/>
+   <mx:HSlider
+      width="900"
+      height="50"
+      id="borderSlider2"
+      liveDragging="true"
+      maximum="50"
+      minimum="0"
+      showDataTip="true"
+      tickInterval="10"
+      labels = "[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+      change="borderSlider2Changed()"
+      />
+    <mx:Text
+      color="#666666" 
+      fontSize="15">
+    <mx:htmlText>
+      <![CDATA[Source: <a href="http://cait.wri.org/cait.php?page=yearly&mode=view&sort=val-desc&pHints=open&url=form&year=2005&sector=natl&co2=1&ch4=1&n2o=1&pfc=1&hfc=1&sf6=1&update=Update">World Resources Institute</a>]]>
+    </mx:htmlText>
+    </mx:Text>
+  </mx:VBox>
+  <mx:VBox
+  paddingLeft="20"
+  horizontalAlign="center"
+  verticalAlign="top"
+  >
+    <mx:Text
+       color="#666666"
+       fontSize="20">
+    <mx:htmlText>
+      <![CDATA[Click on a country <br>and move the slider <br>to change its value.]]>
+    </mx:htmlText>
+    </mx:Text>
+    <mx:Label 
+      id="countryLabel" 
+      color="#666666" 
+      fontSize="20"
+      htmlText="Russia"/>
+     <mx:VSlider
+        width="50"
+        height="600"
+        id="countrySlider"
+        liveDragging="true"
+        maximum="100"
+        minimum="0"
+        showDataTip="true"
+        tickInterval="10"
+        labels = "[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]"
+        change="countrySliderChanged()"
+      />
+    <mx:Label 
+      id="unitsLabel" 
+      color="#666666" 
+      fontSize="10"
+      text="tons CO2 per capita"/>
+  </mx:VBox>
+</mx:HBox>
+
+</mx:Application>

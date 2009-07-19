@@ -1,0 +1,259 @@
+<html>
+<head>
+<title>GradientControl documentation</title>
+</head>
+<style>
+body {
+font-family: Arial;
+font-size: larger
+}
+pre {
+background: #f7f7f7;
+border: 1px solid #666666;
+padding: 0.5em 1em;
+}
+</style>
+<body>
+
+<div style="width: 600px;">
+<h1>GradientControl</h1>
+
+<p>Author: Simon Ilyushchenko
+
+<p>A GradientControl object can be used to generate colors for <a href=http://en.wikipedia.org/wiki/Thematic_map>thematic maps</a> (or, more precisely, for <a href=http://en.wikipedia.org/wiki/Choropleth_map>chloropleth maps</a>). In thematic maps, polygon colors are used to indicate the magnitude of some value associated with these polygons. The rules for calculating the colors can be very simple or very complex. You can specify plain two-color or three-color gradients, or use nested gradient configs with transition borders defined either by absolute values or by percentages.
+
+<p>Log gradients are not supported at this time, but they should be easy to add.
+
+<p>For an example of what GradientControl can do, <a href="GradientControlDemo.html">see this demo</a> (and <a href="GradientControlExample.mxml">its source code</a>). Also see the test code in <a href=../../../src/com/google/maps/extras/gradients/GradientControlTest.as>GradientControlTest.as</a>.
+
+<ol>
+<li><a href="#two_colors">How to calculate gradients on a scale between TWO colors?</a>
+<li><a href="#three_colors">How to calculate gradients on a scale between THREE colors?</a>
+<li><a href="#four_colors">How to calculate gradients on a scale between FOUR and more colors?</a>
+<li><a href="#xml">How to specify gradient rules in XML?</a>
+<li><a href="#thematic_map">I just want a thematic map, what do I do?</a>
+<li><a href="#complex">I have a need for complex gradient rules.</a>
+<li><a href="#why">Why have both GradientRule and GradientControl objects?</a>
+</ol>
+
+
+In all examples below, the <code>values</code> array is used to tell the GradientControl object about the range of your values. if you know what your values are, just pass them in. If you don't know the exact values, provide instead a two-element array containing your best guess for the minimum and the maximum possible values. It's okay if the actual values later turn out to be outside of that range - the colors for the min and max that you specified will be used for all out-of-range values.
+
+<a name="two_colors">
+<h3>How to calculate gradients on a scale between TWO colors?</h3>
+
+<pre>
+import com.google.maps.Color;
+import com.google.maps.extras.gradients.GradientControl;
+import com.google.maps.extras.gradients.GradientRuleList;
+
+var values:Array = [3, 12, -7, 8.945, 0, 54, 33];
+var gradientControl:GradientControl = (
+  GradientRuleList.twoColorGradientControl(
+  Color.RED, Color.YELLOW, values));
+
+var input:Number = 10;
+var color:Number = gradientControl.colorForValue(input);
+</pre>
+
+<a name="three_colors">
+<h3>How to calculate gradients on a scale between THREE colors?</h3>
+
+Let's say you specify colors <code>c1, c2, c3</code>. If your value range is 0 to 100, then the values between 0 and 50 will generate a color gradient between <code>c1</code> and <code>c2</code>, and the rest of the values will generate a color gradient between <code>c2</code> and <code>c3</code>. Red, yellow and green are often used on thematic maps in this combination.
+
+<pre>
+import com.google.maps.Color;
+import com.google.maps.extras.gradients.GradientControl;
+import com.google.maps.extras.gradients.GradientRuleList;
+
+var values:Array = [3, 12, -7, 8.945, 0, 54, 33];
+var gradientControl:GradientControl = (
+  GradientRuleList.threeColorGradientControl(
+  Color.RED, Color.YELLOW, Color.GREEN, values));
+
+var input:Number = 10;
+var color:Number = gradientControl.colorForValue(input);
+</pre>
+
+<a name="four_colors">
+<h3>How to calculate gradients on a scale between FOUR and more colors?</h3>
+
+There is no shortcut method for doing this (yet), so it's a good example to spell out the details.
+
+<pre>
+import com.google.maps.Color;
+import com.google.maps.extras.gradients.GradientControl;
+import com.google.maps.extras.gradients.GradientRule;
+import com.google.maps.extras.gradients.GradientRuleList;
+
+// Use 0xaabbcc notation when specifying colors.
+// You can use the Color.XXX constants here.
+var colors:Array = [
+  Color.RED,
+  0xff7700,
+  Color.YELLOW,
+  Color.BLUE];
+
+var g1:GradientRule = new GradientRule();
+g1.maxPercent = 33.3;
+g1.minColor = colors[0];
+
+var g2:GradientRule = new GradientRule();
+g1.minColor = colors[1];
+g2.maxValue = 170
+
+var g3:GradientRule = new GradientRule();
+g2.minColor = colors[2];
+g3.maxColor = colors[3];
+
+var values:Array = [100, 200];
+var ruleList:GradientRuleList =
+    new GradientRuleList([g1, g2, g3]);
+var gradientControl:GradientControl =
+    ruleList.applyGradientToValueList(values);
+
+var input:Number = 122;
+var color:Number = gradientControl.colorForValue(input);
+</pre>
+
+For each GradientRule object, you have to specify two color boundaries and a way to determine its numerical range: either two absolute values, or two percentage values, or a value on one side plus a percentage on the other side.
+<p>You may notice that when GradientRule objects are combined into a GradientRuleList, you'd need to repeat the colors and the numerical ranges. However, you don't have to do that - if GradientRules <code>g1</code> and <code>g2</code> are next to each other, and you have specified <code>maxColor</code> and <code>maxPercent</code> for <code>g1</code>, the library will figure out that by default <code>g2.minColor=g1.maxColor</code> and <code>g2.minPercent=g1.maxPercent</code>. You don't need to say that your leftmost gradient is at 0% and the rightmost is at 100% - that's the default. In short, you can create GradientRules specifying as little as possible as long as your requirements make some kind of sense. If you specify incomplete or contradictory requirements, the behavior is, of course, undetermined.
+
+<a name="xml">
+<h3>How to specify gradient rules in XML?</h3>
+
+For extra flexibility, you might want to store gradient configs in a separate file or let the UI change them on the fly.
+
+<pre>
+import com.google.maps.Color;
+import com.google.maps.extras.gradients.GradientControl;
+import com.google.maps.extras.gradients.GradientRule;
+import com.google.maps.extras.gradients.GradientRuleList;
+
+var xml:XML =
+  &lt;gradientRuleList&gt;
+    &lt;gradientRule&gt;
+      &lt;gradient&gt;
+        &lt;minColor&gt;0xff0000&lt;/minColor&gt;
+        &lt;maxPercent&gt;33.3&lt;/maxPercent&gt;
+      &lt;/gradient&gt;
+    &lt;/gradientRule&gt;
+    &lt;gradientRule&gt;
+      &lt;gradient&gt;
+        &lt;minColor&gt;0xff7700&lt;/minColor&gt;
+        &lt;maxPercent&gt;66.6&lt;/maxPercent&gt;
+      &lt;/gradient&gt;
+    &lt;/gradientRule&gt;
+    &lt;gradientRule&gt;
+      &lt;gradient&gt;
+        &lt;minColor&gt;0x00ff00&lt;/minColor&gt;
+        &lt;maxColor&gt;0x00ff00&lt;/maxColor&gt;
+      &lt;/gradient&gt;
+    &lt;/gradientRule&gt;
+  &lt;/gradientRuleList&gt;;
+
+var ruleList:GradientRuleList =
+    GradientRuleList.fromXML(xml);
+
+var values:Array = [100, 200];
+var gradientControl:GradientControl =
+    ruleList.applyGradientToValueList(values);
+
+var input:Number = 122;
+var color:Number = gradientControl.colorForValue(input);
+</pre>
+
+<a name="thematic_map">
+<h3>I just want a thematic map, what do I do?</h3>
+
+See <a href="GradientControlDemo.html">the demo</a> and <a href="../src/GradientControlExample.mxml">the source code</a>. It's not completely generic, but the classes used there should be somewhat reusable. Look in <code>com.google.maps.extras.gradients</code>: the classes <code>ThematicOverlay</code> and <code>MultiPolygonWithValue</code> can be used for drawing of your own thematic map and geometries. The class <code>GradientBar</code> can help you to paint the map legend.
+
+Let me know if there is a way to improve these classes.
+
+<a name="complex">
+<h3>I need complex gradient rules.</h3>
+
+Let's say you want to deal with values of arbitrary magnitude and use one color gradient for negative values, and then two more color gradients for the top and the bottom 50% of positive values. You can't specify this behaviour using a single list of gradients, so a gradient tree has to created. You can put one GradientRule object inside another, so the code is similar to the previous examples.
+
+Again, the library lets you specify is little as possible. Border colors and values will propagate from parent rules to children rules and vice versa. Border percentages won't, though, as each level of the tree has its own notion of what a percent is.
+
+<pre>
+import com.google.maps.Color;
+import com.google.maps.extras.gradients.GradientControl;
+import com.google.maps.extras.gradients.GradientRule;
+import com.google.maps.extras.gradients.GradientRuleList;
+
+var g1:GradientRule = new GradientRule();
+g1.maxValue = 0;
+g1.minColor = Color.BLUE;
+
+var g2:GradientRule = new GradientRule();
+g1.maxPercent = 50;
+g1.minColor = Color.RED;
+g1.maxColor = 0xff8000;
+
+// g1.maxColor does not have to be
+// the same as g2.minColor,
+// even though they lie on
+// different sides of the same border
+
+var g3:GradientRule = new GradientRule();
+g2.minColor = Color.YELLOW;
+g2.maxColor = Color.GREEN;
+
+var ruleList:GradientRuleList =
+    new GradientRuleList([g2, g3]);
+var ruleList2:GradientRuleList =
+    new GradientRuleList([g1, ruleList]);
+
+var values:Array = [100, 200];
+var gradientControl:GradientControl =
+    ruleList2.applyGradientToValueList(values);
+
+var input:Number = 122;
+var color:Number = gradientControl.colorForValue(input);
+</pre>
+
+The same rule can be specified in XML:
+<pre>
+var xml:XML =
+  &lt;gradientRuleList&gt;
+    &lt;gradientRule&gt;
+      &lt;gradient&gt;
+        &lt;minColor&gt;0x0000ff&lt;/maxColor&gt;
+        &lt;maxValue&gt;0&lt;/minValue&gt;
+      &lt;/gradient&gt;
+    &lt;/gradientRule&gt;
+    &lt;gradientRule&gt;
+      &lt;gradientRuleList&gt;
+        &lt;gradientRule&gt;
+          &lt;gradient&gt;
+            &lt;minColor&gt;0xff0000&lt;/minColor&gt;
+            &lt;maxColor&gt;0xff8000&lt;/maxColor&gt;
+            &lt;maxPercent&gt;50&lt;/maxPercent&gt;
+          &lt;/gradient&gt;
+        &lt;/gradientRule&gt;
+        &lt;gradientRule&gt;
+          &lt;gradient&gt;
+            &lt;minColor&gt;0xffff00&lt;/minColor&gt;
+            &lt;maxColor&gt;0x00ff00&lt;/maxColor&gt;
+          &lt;/gradient&gt;
+        &lt;/gradientRule&gt;
+      &lt;/gradientRuleList&gt;
+    &lt;/gradientRule&gt;
+  &lt;/gradientRuleList&gt;;
+
+  var ruleList:GradientRuleList =
+      GradientRuleList.fromXML(xml);
+</pre>
+
+<a name="why">
+<h3>Why have both GradientRule and GradientControl objects?</h3>
+
+Why do we bother with having separate GradientRule objects for specifying gradient rules and GradientControl objects for calling the rules? It's necessary because this separations lets us specify gradient rules independent of specific value ranges. Some applications would want to say "use one color for the bottom 20% of the values and another color for the top 80%", so tying rules to specific values is too restrictive. On the other hand, by the time you have to calculate the colors, you need to know the actual value range that you are operating across. This is somewhat similar to the separation between classes and instances in OOP.
+
+<p>Please feel free to propose a simpler implementation.
+</div>
+
+</body>
+</html>

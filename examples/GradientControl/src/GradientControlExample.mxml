@@ -57,6 +57,10 @@ See index.html for more information.  -->
       createGradients();
       thematicOverlay = new ThematicOverlay(map, ruleList, geometries);
       thematicOverlay.draw();
+
+      borderSlider1.enabled = true;
+      borderSlider2.enabled = true;
+      countrySlider.enabled = true;
     }
 
     private function createGradients():void {
@@ -214,6 +218,7 @@ See index.html for more information.  -->
       showDataTip="true"
       tickInterval="10"
       labels = "[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+      enabled = "false"
       change="borderSlider1Changed()"
     />
     <mx:Label 
@@ -231,6 +236,7 @@ See index.html for more information.  -->
       showDataTip="true"
       tickInterval="10"
       labels = "[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+      enabled = "false"
       change="borderSlider2Changed()"
       />
     <mx:Text
@@ -268,6 +274,7 @@ See index.html for more information.  -->
         showDataTip="true"
         tickInterval="10"
         labels = "[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]"
+        enabled = "false"
         change="countrySliderChanged()"
       />
     <mx:Label 

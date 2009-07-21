@@ -50,7 +50,10 @@ import com.google.maps.overlays.Marker;
 
 import flash.geom.Point;
 import flash.geom.Rectangle;
-
+	/**
+	 * class Cluster is a structure to manage markers which fall into this cluster.
+	 * 
+	 */ 
 public class Cluster
 {
 	private var center_				: LatLng;
@@ -60,6 +63,11 @@ public class Cluster
 	private var clusterMarker_		: ClusterMarker;
 	private var zoom_				: Number;
 	private var _pane:IPane ;
+	
+	/**
+	 * class Cluster is a structure to manage markers which fall into this cluster.
+	 * 
+	 */ 
 	public function Cluster (markerClusterer : MarkerClusterer, pane:IPane)
 	{
 		center_ 			= null;
@@ -70,12 +78,16 @@ public class Cluster
 		zoom_ 				= markerClusterer_.getZoom(); // map_.getZoom();
 		this._pane = pane;
 	}
-	
+	/**
+	 * @return an array of UnitMarker instance.
+	 */ 
 	public function getMarkers () : Array
 	{
 		return markers_;
 	}
-	
+	/**
+	 * Check whether the cluster is in the rectangle in pixels
+	 */
 	public function isInRectangle(bounds:Rectangle= null):Boolean{
 		if(bounds == null){
 			bounds = this._pane.getViewportBounds();
@@ -96,7 +108,12 @@ public class Cluster
 		}
 		return true;
 	}
-
+	/**
+	 * Check whether this cluster is in bounds in LatLngBounds
+	 * 
+	 * This method is considered to be replaced with isInRectangle. 
+	 * So you may not see it in the later version.
+	 */
 	public function isInBounds (bounds : Object = undefined) : Boolean
 	{
 		if (center_ == null)			{
@@ -172,12 +189,17 @@ public class Cluster
 	{
 		return zoom_;
 	}
-	
-	public function redraw_ (isForce : Boolean) : void
+	/**
+	 * This function causes to redraw the cluster.
+	 * Currently, there are three (3) places to call this function:
+	 * - 2 places in MarkerClusterer.addMarker
+	 * - 1 place in MarkerClusterer.redraw
+	 * 
+	 * @param isForced - current not in used
+	 */
+	public function redraw (isForce : Boolean) : void
 	{
-		var i 	: int;
-		var mz 	: Number;
-		
+
 		if (!isForce && ! this.isInRectangle()
 		//this.isInBounds()
 		) {
@@ -187,17 +209,17 @@ public class Cluster
 		// Set cluster zoom level.
 		zoom_ = this.markerClusterer_.getZoom(); //  map_.getZoom();
 	
-		mz = markerClusterer_.getMaxZoom_();
+		var mz 	: Number = markerClusterer_.getMaxZoom_();
 		
 		if (isNaN(mz)) {
 			mz = this.markerClusterer_.getMaxZ(); // map_.getCurrentMapType().getMaximumResolution(); 
 		}
-		
+		var marker:UnitMarker;
 		if (zoom_ >= mz || this.getTotalMarkers() == 1)
 		{
 			// If current zoom level is beyond the max zoom level or the cluster
  			// have only one marker, the marker(s) in cluster will be showed on map.
-			for each(var marker:UnitMarker in markers_)
+			for each(marker in markers_)
 			{
 				if (marker.isAdded)
 				{
@@ -221,8 +243,8 @@ public class Cluster
 		{
 			// Else add a cluster marker on map to show the number of markers in
  			// this cluster.
-		//	for (i = 0; i < markers_.length; ++i)
-			for each(var marker:UnitMarker in markers_)
+
+			for each(marker in markers_)
 			{
 				if (marker.isAdded && marker.visible)
 				{

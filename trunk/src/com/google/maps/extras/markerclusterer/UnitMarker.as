@@ -46,7 +46,11 @@ package com.google.maps.extras.markerclusterer
 import com.google.maps.overlays.Marker;
 import com.google.maps.LatLng;
 import com.google.maps.overlays.MarkerOptions;
-
+/**
+ * This class extends Marker, with only one additional property added that is Boolean type <code>isAdded</code>, 
+ * indicating whethe the unit/individual marker has been added into Cluster.
+ * Normally, you as a developer should not concern or use this property.
+ */
 public class UnitMarker extends Marker
 {
 	public var isAdded : Boolean;

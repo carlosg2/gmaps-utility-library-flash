@@ -16,7 +16,7 @@ package com.google.maps.extras.gradients {
   * @author Simon Ilyushchenko
   */
 
-  class ValueColorGradient extends Range {
+  public class ValueColorGradient extends Range {
 
     /** 
     * Class constructor

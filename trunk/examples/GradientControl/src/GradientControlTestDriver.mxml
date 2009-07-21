@@ -5,7 +5,7 @@
 
   <mx:Script>
     <![CDATA[
-      import com.google.maps.extras.gradients.AllTests;
+      import com.google.maps.extras.gradients.test.AllTests;
       import flexunit.framework.TestSuite;
  
       // Create the test suite and run the tests

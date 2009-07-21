@@ -58,8 +58,8 @@ Demos
 
 This library lets you draw thematic maps, setting polygon colors depending on associated numerical values. 
 
-[http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/GradientControl/bin-release/demo.html Documentation]
+[http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/GradientControl/bin-release/index.html Documentation]
 
 [http://gmaps-utility-library-flash.googlecode.com/svn/trunk/docs/com/google/maps/extras/gradients/package-detail.html Class Reference]
 
-[http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/GradientControl/bin-release/demo.html Demo]
+[http://gmaps-utility-library-flash.googlecode.com/svn/trunk/examples/GradientControl/bin-release/GradientControlDemo.html Demo]

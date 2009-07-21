@@ -55,14 +55,20 @@ import flash.geom.Point;
 
 import mx.controls.Label;
 import mx.controls.Image;
-
+/**
+ * 
+ * This is a presentation class for <code>Cluster</code>.
+ * The current implementation is to load images for different level.
+ * Later, it can be implemented with other possibilities.
+ * 
+ * Current implementation is for Flex only, that Flex advantage on auto layout has been taken.
+ * Later, it will support both Flash and Flex.
+ */  
 public class ClusterMarker extends OverlayBase
 {
 	private var url_ 		: String;
 	private var height_ 	: Number;
 	private var width_ 		: Number;
-//	private var textColor_ 	: Number;
-//	private var anchor_ 	: Object;
 	private var latlng_ 	: LatLng;
 	private var index_ 		: Number;
 	private var styles_ 	: Array;
@@ -116,7 +122,7 @@ public class ClusterMarker extends OverlayBase
 		addChild(label);
 	}
 	
-	public function completeHandler(event : Event) : void
+	private function completeHandler(event : Event) : void
 	{		
 		imageLoader.width = event.currentTarget.content.width;
 		imageLoader.height = event.currentTarget.content.height;	
@@ -131,25 +137,7 @@ public class ClusterMarker extends OverlayBase
 
 		label.visible 	= true;
 	}
-/*	
-	public function initialise (map : Map) : void 
-	{
-		var div 		: Object;
-		var latlng		: LatLng;
-		var pos 		: Point;
-		var mstyle		: String;
-		var padding		: Number;
-		var txtColor	: String;
-		
-		map_ = map;
-		
-		latlng 	= this.latlng_;
-		pos 	= map.fromLatLngToViewport(latlng);
-		
-		x = pos.x;
-		y = pos.y;
-	}
-*/
+	
 	override public function getDefaultPane(map : IMap): IPane
 	{
 		var i 			: Number;
@@ -162,53 +150,36 @@ public class ClusterMarker extends OverlayBase
 	
 	override public function positionOverlay(zoomChanged : Boolean): void
 	{
-		
-		
-	//	pos = map_.fromLatLngToViewport(latlng_);
-		var pos : Point = this.pane.fromLatLngToPaneCoords(latlng_);
-		x = pos.x;
-		y = pos.y;
+		this.reposition();
 	}
 	
-	public function remove () : void
+	private function remove () : void
 	{
 		parent.removeChild(this);
 	}
-	
-	public function copy () : ClusterMarker
+	/*
+	private function copy () : ClusterMarker
 	{
 		return new ClusterMarker(this.latlng_, this.index_, this.styles_, this.padding_);
 	}
-	
+	*/
+	/**
+	 * 
+	 * Developer should not call this function. It is managed by Cluster.
+	 */ 
 	public function redraw (force:Boolean) : void
 	{
-	//	var pos : Point;
-		
-		if (!force)
-		{
+		if (!force){
 			return;
 		}
-		
-	//	pos = this.map_.fromLatLngToViewport(this.latlng_);
+
+		this.reposition();
+	}
+	
+	private function reposition():void{
 		var pos : Point = this.pane.fromLatLngToPaneCoords(latlng_);
 		x = pos.x;
 		y = pos.y;
 	}
-/*	
-	public function hide () : void
-	{
-		visible = false;
-	}
-	
-	public function show () : void
-	{
-		visible = true;
-	}
-	
-	public function isHidden () : Boolean
-	{
-		return visible;
-	}
-*/	
 }
 }

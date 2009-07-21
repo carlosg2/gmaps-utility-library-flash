@@ -193,7 +193,7 @@ public class MarkerClusterer
 				
 				if (!opt_isNodraw)
 				{
-					cluster.redraw_(false);
+					cluster.redraw(false);
 				}
 				
 				return;
@@ -207,7 +207,7 @@ public class MarkerClusterer
 		
 		if (!opt_isNodraw)
 		{
-			cluster.redraw_(false);
+			cluster.redraw(false);
 		}
 		
 		// Add this cluster both in clusters provided and clusters_
@@ -235,7 +235,7 @@ public class MarkerClusterer
 	public function redraw_ () : void
 	{
 		for each(var cluster:Cluster in getClustersInViewport_()){
-			cluster.redraw_(true);
+			cluster.redraw(true);
 		}
 	}
 	

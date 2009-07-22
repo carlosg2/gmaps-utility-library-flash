@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+                layout="absolute">
+  <mx:UIComponent id="mapHolder"
+                  creationComplete="onHolderCreated(event)"
+                  resize="onHolderResized(event)"
+                  width="100%"
+                  height="100%"/>
+  <mx:Script>
+    <![CDATA[
+      import com.google.maps.controls.*;
+      import com.google.maps.*;
+      import com.google.maps.extras.arcgislink.*;
+
+
+      private var map:Map;
+      private var svc:MapService;
+
+      public function onHolderCreated(event:Event):void {
+        svc=new MapService('http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Portland/Portland_ESRI_LandBase_AGO/MapServer');
+        svc.addEventListener(ServiceEvent.LOAD, onServiceLoad);
+      }
+
+      public function onHolderResized(event:Event):void {
+        if (map != null) {
+          map.setSize(new Point(mapHolder.width, mapHolder.height));
+        }
+      }
+
+      public function onServiceLoad(event:ServiceEvent):void {
+        // map should be constructed after service load instead from MXML, if you do not want load Google Tiles at all. 
+        map=new Map();
+        map.key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g";
+        map.width=mapHolder.width;
+        map.height=mapHolder.height;
+        mapHolder.addChild(map);
+        map.addEventListener(MapEvent.MAP_PREINITIALIZE, onMapPreinitialize);
+        map.addEventListener(MapEvent.MAP_READY, onMapReady);
+      }
+
+      private function onMapPreinitialize(event:Event):void {
+        var agsLayer:ArcGISTileLayer=new ArcGISTileLayer(svc);
+        var agsMapType:ArcGISMapType=new ArcGISMapType([agsLayer], new ArcGISMapTypeOptions({name: agsLayer.getName().replace(/ /g, '\n')}));
+        var bnds:LatLngBounds=agsLayer.getInitialBounds();
+        var opts:MapOptions=new MapOptions();
+        opts.zoom=15;
+        opts.center=new LatLng(45.5, -122.7);
+        opts.mapTypes=[agsMapType].concat(MapType.DEFAULT_MAP_TYPES);
+        opts.mapType=agsMapType;
+        map.setInitOptions(opts);
+      }
+
+
+      private function onMapReady(event:Event):void {
+        map.enableScrollWheelZoom();
+        map.addControl(new MapTypeControl());
+        map.addControl(new NavigationControl());
+      }
+    ]]>
+  </mx:Script>
+</mx:Application>

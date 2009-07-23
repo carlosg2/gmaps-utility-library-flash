@@ -28,6 +28,5 @@
 			<node label="TileLayerOverlay3D.mxml" icon="mxmlIcon" url="source/TileLayerOverlay3D.mxml.html"/>
 			<node label="TileLayerPreConfig.mxml" icon="mxmlIcon" url="source/TileLayerPreConfig.mxml.html"/>
 		</node>
-		<node label="copy_index.bat" url="source/copy_index.bat"/>
 	</nodes>
 </index>

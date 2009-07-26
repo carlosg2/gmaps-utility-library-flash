@@ -73,9 +73,9 @@ public class Cluster
 		center_ 			= null;
 		markers_ 			= new Array();
 		markerClusterer_ 	= markerClusterer;
-		map_ 				= markerClusterer.getMap_();
+		map_ 				= markerClusterer.map;
 		clusterMarker_ 		= null;
-		zoom_ 				= markerClusterer_.getZoom(); // map_.getZoom();
+		zoom_ 				= markerClusterer_.zoom; // map_.getZoom();
 		this._pane = pane;
 	}
 	/**
@@ -94,10 +94,10 @@ public class Cluster
 		}
 		var centerxy:Point = this._pane.fromLatLngToPaneCoords(center_);
 		
-		var gridSize:Number = markerClusterer_.getGridSize_();
+		var gridSize:Number = markerClusterer_.gridSize;
 		if (zoom_ != map_.getZoom())
 		{
-			var dl:Number 	= this.markerClusterer_.getZoom() - zoom_;
+			var dl:Number 	= this.markerClusterer_.zoom - zoom_;
 			gridSize 	= Math.pow(2, dl) * gridSize;
 		}
 		if(centerxy.x + gridSize < bounds.left || centerxy.x - gridSize > bounds.right){
@@ -128,7 +128,7 @@ public class Cluster
 		var  ne 			: Object			= map_.fromLatLngToViewport(bounds.getNorthEast());
 		var  centerxy 		: Object	= map_.fromLatLngToViewport(center_);
 		var  inViewport 	:Boolean 	= true;
-		var  gridSize 		: Number	= markerClusterer_.getGridSize_();
+		var  gridSize 		: Number	= markerClusterer_.gridSize;
 	
 		if (zoom_ != map_.getZoom())
 		{
@@ -207,12 +207,12 @@ public class Cluster
 		}
 		
 		// Set cluster zoom level.
-		zoom_ = this.markerClusterer_.getZoom(); //  map_.getZoom();
+		zoom_ = this.markerClusterer_.zoom; //  map_.getZoom();
 	
-		var mz 	: Number = markerClusterer_.getMaxZoom_();
+		var mz 	: Number = markerClusterer_.maxZoom;
 		
 		if (isNaN(mz)) {
-			mz = this.markerClusterer_.getMaxZ(); // map_.getCurrentMapType().getMaximumResolution(); 
+			mz = this.markerClusterer_.maximumResolution; // map_.getCurrentMapType().getMaximumResolution(); 
 		}
 		var marker:UnitMarker;
 		if (zoom_ >= mz || this.getTotalMarkers() == 1)
@@ -254,7 +254,8 @@ public class Cluster
 			
 			if (clusterMarker_ == null)
 			{
-				clusterMarker_ = new ClusterMarker(center_, this.getTotalMarkers(), markerClusterer_.getStyles_(), markerClusterer_.getGridSize_());
+				clusterMarker_ = new ClusterMarker(center_, this.getTotalMarkers(), 
+					markerClusterer_.getStyles(), markerClusterer_.gridSize);
 		//		clusterMarker_.initialise(map_);
 		//		map_.addOverlay(clusterMarker_);
 				this._pane.addOverlay(clusterMarker_);

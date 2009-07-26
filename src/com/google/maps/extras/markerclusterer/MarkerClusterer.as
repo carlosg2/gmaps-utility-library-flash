@@ -52,6 +52,12 @@ import flash.events.Event;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
+/**
+ * This class is the entry to MarkerClusterer package, and the only class you as a developer should touch.
+ * 
+ * 
+ * 
+ */ 
 public class MarkerClusterer
 {
 	private  var clusters_ 		: Array;
@@ -60,6 +66,10 @@ public class MarkerClusterer
 	private  var leftMarkers_ 	: Array;
 	private var _pane:IPane;
 	public var options:MarkerClustererOptions;
+	/**
+	 * 
+	 * 
+	 */ 
 	public function MarkerClusterer (map : Map, markers : Array, opts : MarkerClustererOptions = null)
 	{
 		clusters_ 		= new Array();
@@ -87,12 +97,12 @@ public class MarkerClusterer
 		map_.addEventListener("mapevent_moveend", mapMoved);
 	}
 	
-	public function mapMoved (event : Event) :void
+	private function mapMoved (event : Event) :void
 	{
 		resetViewport();
 	}
 	
-	public function addLeftMarkers_ () : void
+	private function addLeftMarkers () : void
 	{
 		var leftMarkers : Array = [];
 		
@@ -107,7 +117,7 @@ public class MarkerClusterer
 		leftMarkers_ = leftMarkers;
 	}
 	
-	public function getStyles_ () : Array
+	public function getStyles () : Array
 	{
 		return this.options.styles; // (styles_);
 	}
@@ -127,12 +137,12 @@ public class MarkerClusterer
 		leftMarkers_ 	= new Array();
 	}
 	
-	public function isMarkerInViewport_(marker : UnitMarker) : Boolean 
+	private function isMarkerInViewport_(marker : UnitMarker) : Boolean 
 	{
 		return map_.getLatLngBounds().containsLatLng(marker.getLatLng());
 	}
 	
-	public function reAddMarkers_(markers : Array) : void
+	private function reAddMarkers_(markers : Array) : void
 	{
 		var len:int 		= markers.length;
 		var clusters :Array	= new Array();
@@ -142,7 +152,7 @@ public class MarkerClusterer
 			addMarker(marker, true, marker.isAdded, clusters, true);
 		}
 		
-		addLeftMarkers_();
+		addLeftMarkers();
 	}
 	
 	public function addMarker (marker : UnitMarker, opt_isNodraw : Boolean,
@@ -232,14 +242,14 @@ public class MarkerClusterer
 		}
 	}
 	
-	public function redraw_ () : void
+	private function redraw_ () : void
 	{
 		for each(var cluster:Cluster in getClustersInViewport_()){
 			cluster.redraw(true);
 		}
 	}
 	
-	public function getClustersInViewport_ () : Array
+	private function getClustersInViewport_ () : Array
 	{
 		var clusters 	: Array = [];
 
@@ -260,26 +270,36 @@ public class MarkerClusterer
 		return clusters;
 	
 	}
-	
-	public function getMaxZoom_ () : Number
+	/**
+	 * This getter property is intented for Cluster use
+	 */
+	public function get maxZoom() : Number
 	{
 		return this.options.maxZoom;
 	}
-	public function getZoom():Number{
+	/**
+	 * This getter property is intented for Cluster use
+	 */
+	public function get zoom():Number{
 		return map_.getZoom();
 	}
-	public function getMaxZ():Number{
+	/**
+	 * This getter property is intented for Cluster use
+	 */
+	public function get maximumResolution():Number{
 		return map_.getCurrentMapType().getMaximumResolution(); 
 	}
 	// this will be removed!!
 	// if cluster needs any info of map, this class should provide methods for it,
 	// not to provide whole map object. 
-	public function getMap_ () : Map
+	public function get map () : Map
 	{
 		return map_;
 	}
-	
-	public function getGridSize_ () : Number
+	/**
+	 * This getter property is intented for Cluster use
+	 */
+	public function get gridSize () : Number
 	{
 		return this.options.gridSize;
 	}

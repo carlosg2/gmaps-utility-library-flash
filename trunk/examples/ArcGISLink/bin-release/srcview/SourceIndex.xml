@@ -2,6 +2,12 @@
 <index>
 	<title>Source of ArcGISLink</title>
 	<nodes>
+		<node label="[source path] src" icon="classpathIcon" expanded="true">
+			<node label="assets">
+			</node>
+			<node label="com">
+			</node>
+		</node>
 		<node label="src" icon="classpathIcon" expanded="true">
 			<node label="ArcGISOnline.mxml" icon="mxmlIcon" url="source/ArcGISOnline.mxml.html"/>
 			<node label="DynamicLayer.mxml" icon="mxmlIcon" url="source/DynamicLayer.mxml.html"/>

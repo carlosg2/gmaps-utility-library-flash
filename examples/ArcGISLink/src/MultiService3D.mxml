@@ -174,7 +174,8 @@
               var res:GeocodeResult=gcRes.candidates[0];
               if (res.location!=null){
                 trace(res.location.toUrlValue());
-                map.flyTo(res.location, 17, new com.google.maps.geom.Attitude(20, 30, 0));
+                //map.flyTo(res.location, 17, new com.google.maps.geom.Attitude(20, 30, 0));
+                map.setCenter(res.location, 17);
                 doQuery(res.attributes['Ref_ID'], res.location);
                 //doIdentify();
                 return;
@@ -211,6 +212,8 @@
               }
               idResults.dataProvider=data;
               idResults.alpha=0.5;
+              
+                
               map.openInfoWindow(latlng, new InfoWindowOptions({drawDefaultFrame: true, customContent: idWin, fillStyle: new FillStyle({alpha: 0.2})}));
             }
           });

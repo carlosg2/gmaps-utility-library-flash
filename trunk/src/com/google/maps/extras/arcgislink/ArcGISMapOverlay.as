@@ -13,12 +13,10 @@ package com.google.maps.extras.arcgislink {
 
   import flash.display.*;
   import flash.events.*;
-  import flash.net.URLRequest;
-  import flash.geom.Matrix;
   import flash.geom.Point;
-  import flash.system.LoaderContext;
-  
-  import mx.controls.Image;
+  import flash.net.URLRequest;
+
+  //import mx.controls.Image;
 
   /**
    * This is the UI component of an dynamic map service, used as an IOverlay.
@@ -36,7 +34,7 @@ package com.google.maps.extras.arcgislink {
     private var initialBounds_:LatLngBounds;
     private var bounds_:LatLngBounds;
     private var moveend_:Boolean;
-    private var img_:Image;///Sprite; ////;
+    private var img_:Sprite;
 
     public function ArcGISMapOverlay(service:*, opt_overlayOpts:ArcGISMapOverlayOptions=null) {
       super();
@@ -89,37 +87,32 @@ package com.google.maps.extras.arcgislink {
 
     public override function positionOverlay(zoomChanged:Boolean):void {
       if (this.bounds_ && this.img_ != null && this.pane != null) {
-        var point:flash.geom.Point=this.pane.fromLatLngToPaneCoords(this.bounds_.getNorthWest());
-        this.img_.x=point.x;
-        this.img_.y=point.y;
+
+        var nw:flash.geom.Point=this.pane.fromLatLngToPaneCoords(this.bounds_.getNorthWest());
+        var se:flash.geom.Point=this.pane.fromLatLngToPaneCoords(this.bounds_.getSouthEast());
+        var s:Sprite=this.img_;
+        s.x=nw.x;
+        s.y=nw.y;
+        s.width=se.x - nw.x;
+        s.height=se.y - nw.y;
       }
     }
 
     private function onOverlayAdded(event:MapEvent):void {
       this.map_.addEventListener(MapMoveEvent.MOVE_END, onMapMoveEnd);
-      ///this.img_=new Sprite(); 
-      this.img_=new Image();
+      this.img_=new Sprite();
       this.addChild(this.img_);
       if (this.mapService_.hasLoaded()) {
         this.refresh();
       }
-      this.img_.addEventListener(Event.COMPLETE, onImageLoadComplete);
-    }
-
-    private function onImageLoadComplete(event:Event):void {
-       this.dispatchEvent(new ServiceEvent(ServiceEvent.EXPORTMAP_LOAD));
     }
 
     private function onOverlayRemoved(event:MapEvent):void {
-      // trace('onOverlayRemoved');
-      this.img_.source=null;
-      ///this.img_.graphics.clear(); 
       this.removeChild(this.img_);
       this.map_.removeEventListener(MapMoveEvent.MOVE_END, refresh);
     }
 
     private function onMapMoveEnd(event:MapMoveEvent):void {
-      // trace('onMapMoveEnd');
       this.refresh();
     }
 
@@ -131,9 +124,6 @@ package com.google.maps.extras.arcgislink {
         this.redraw_=true;
         return;
       }
-      this.img_.source=null;
-     /// this.img_.graphics.clear();
-     
       var bnds:LatLngBounds=this.map_.getLatLngBounds();
       var prj:IProjection=this.map_.getCurrentMapType().getProjection();
       var sr:SpatialReference;
@@ -142,13 +132,15 @@ package com.google.maps.extras.arcgislink {
       } else {
         sr=SpatialReferences.WEB_MERCATOR;
       }
+      this.img_.graphics.clear();
       var me:ArcGISMapOverlay=this;
       var params:ImageParameters=this.exportParams_;
       params.width=this.map_.getSize().x;
       params.height=this.map_.getSize().y;
-      params.bounds=bnds; //.bbox=ArcGISUtil.fromLatLngBoundsToEnvelope(bnds, sr);
+      params.bounds=bnds;
       params.imageSpatialReference=sr;
       this.drawing_=true;
+
       this.dispatchEvent(new ServiceEvent(ServiceEvent.EXPORTMAP_START));
       this.mapService_.exportMap(params, function(json:MapImage):void {
           me.dispatchEvent(new ServiceEvent(ServiceEvent.EXPORTMAP_COMPLETE));
@@ -160,36 +152,21 @@ package com.google.maps.extras.arcgislink {
           }
           if (json.href) {
             me.bounds_=ArcGISUtil.fromEnvelopeToLatLngBounds(json.extent);
-            me.img_.width=json.width;
-            me.img_.height=json.width;
-            me.img_.source=json.href;
-            /*var loader:Loader=new Loader();
-
-            var loaderContext:LoaderContext=new LoaderContext();
-            loaderContext.checkPolicyFile=true;
+            var loader:Loader=new Loader();
             loader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(event:Event):void {
-                var myBitmap:BitmapData=new BitmapData(loader.width, loader.height, false);
-                myBitmap.draw(loader); //, new Matrix());
-                var g:Graphics=me.img_.graphics;
-                g.beginBitmapFill(myBitmap); //
-                g.drawRect(100, 50, 200, 90);
-                g.endFill();
+                if (me.img_.numChildren > 0) {
+                  me.img_.removeChildAt(0);
+                }
+                me.img_.addChild(loader);
+                me.img_.visible=true;
+                me.positionOverlay(false);
                 me.dispatchEvent(new ServiceEvent(ServiceEvent.EXPORTMAP_LOAD));
               });
-            //loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
-
             var request:URLRequest=new URLRequest(json.href);
-            loader.load(request, loaderContext);
-            */
-            me.positionOverlay(false);
-
+            loader.load(request);
           } else {
-            me.img_.source=null;
-            ///me.img_.graphics.clear();
             me.dispatchEvent(new ServiceEvent(ServiceEvent.EXPORTMAP_LOAD));
           }
-
-
         });
     }
 

@@ -58,6 +58,7 @@
       private function onMapReady(event:Event):void {
         map.setCenter(new LatLng(38.19, -85.68), 11);
         map.enableScrollWheelZoom();
+        map.enableContinuousZoom();
         map.addControl(new MapTypeControl());
         map.addControl(new NavigationControl());
         addOverlay();

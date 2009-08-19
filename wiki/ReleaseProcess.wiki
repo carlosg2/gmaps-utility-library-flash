@@ -3,11 +3,9 @@
 = Release Process =
 
 After making changes to a library or adding a new library:
-  * Re-generate the documentation. Check that nothing needs to be privatized and that everything public is documented correctly.
-  * Re-generate the SWC (change build path in Flex Builder if needed).
-  * Commit: new docs, example, SWC, source code.
-  * Upload the latest SWC to downloads. Mark it as featured, mark previous as deprecated.
-  * Update Libraries wiki if needed.
-  * Add any new demos to Flash API demo gallery.
+  * Re-generate the documentation (See AsDocGeneration). Check that nothing needs to be privatized and that everything public is documented correctly.
+  * Commit: new docs, example, source code. Make sure that the mime-types are set correctly for the docs and example (See SVNQuickTips).
+  * Update Libraries wiki if you've added a new library.
+  * Add any new demos to Flash API demo gallery (Ask Pamela to do this).
   * Post in the forum about the updates.
-  * Possibly do a blog post announcing the updates.
+  * Possibly do a blog post announcing the updates. See BlogPostGuidelines.

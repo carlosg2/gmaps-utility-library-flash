@@ -3,6 +3,8 @@
 = Release Process =
 
 After making changes to a library or adding a new library:
+  * Make sure the library roughly follows recommended [http://opensource.adobe.com/wiki/display/flexsdk/Coding+Conventions#CodingConventions-ASDoc coding conventions].
+  * Make sure the library is commented using ASDoc style comments. 
   * Re-generate the documentation (See AsDocGeneration). Check that nothing needs to be privatized and that everything public is documented correctly.
   * Commit: new docs, example, source code. Make sure that the mime-types are set correctly for the docs and example (See SVNQuickTips).
   * Update Libraries wiki if you've added a new library.

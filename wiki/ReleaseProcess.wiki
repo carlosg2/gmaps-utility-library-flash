@@ -4,7 +4,7 @@
 
 After making changes to a library or adding a new library:
   * Make sure the library roughly follows recommended [http://opensource.adobe.com/wiki/display/flexsdk/Coding+Conventions#CodingConventions-ASDoc coding conventions].
-  * Make sure the library is commented using [http://livedocs.adobe.com/flex/3/html/help.html?content=asdoc_9.html ASDoc style comments]. 
+  * Make sure the library is commented using [http://livedocs.adobe.com/flex/gumbo/html/WSd0ded3821e0d52fe1e63e3d11c2f44bc36-7ff6.html ASDoc style comments]. 
   * Re-generate the documentation (See AsDocGeneration). Check that nothing needs to be privatized and that everything public is documented correctly.
   * Commit: new docs, example, source code. Make sure that the mime-types are set correctly for the docs and example (See SVNQuickTips).
   * Update Libraries wiki if you've added a new library.

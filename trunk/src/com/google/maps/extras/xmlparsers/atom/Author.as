@@ -37,6 +37,8 @@ package com.google.maps.extras.xmlparsers.atom
 	
 	public class Author extends XmlElement {
 	
+	private var atom:Namespace = Namespaces.ATOM_NS;
+
 	private var _name:String;
 	private var _email:String;
 	private var _uri:String;
@@ -53,9 +55,9 @@ package com.google.maps.extras.xmlparsers.atom
 	
 	public function Author(x:XMLList) {
 		super(x);
-		this._name = ParsingTools.nullCheck(this.x::["name"]);
-		this._email = ParsingTools.nullCheck(this.x::email);
-		this._uri = ParsingTools.nullCheck(this.x::uri);
+		this._name = ParsingTools.nullCheck(this.x.atom::author.@["name"]);
+		this._email = ParsingTools.nullCheck(this.x.atom::author.email);
+		this._uri = ParsingTools.nullCheck(this.x.atom::author.uri);
 	}
 	
 	public function get name():String {

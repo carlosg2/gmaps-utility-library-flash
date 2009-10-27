@@ -193,7 +193,7 @@ public function setRubberBandColor (rgb:uint):void
 /**
  * Set the thickness, in pixels, of the rubber band.
  *
- * @param thickness The thickness of the rubber band, in pixels.
+ * @param pixels The thickness of the rubber band, in pixels.
  */
 public function setRubberBandThickness (pixels:int):void
 {
@@ -211,8 +211,8 @@ public function setRubberBandThickness (pixels:int):void
  */
 public function setPanIncrement (pixels:int):void
 {
-	if (pixels < 0 || pixels > 1000) {
-		throw new ArgumentError ("Increment exceeds limit of 0 .. 1000: " + pixels);
+	if (pixels < 0) {
+		throw new ArgumentError ("Pan increment must be 0 or greater: " + pixels);
 	}
 	panIncrementPx = pixels;
 }
@@ -230,10 +230,10 @@ private function addEventHandlers ():void
 
 private function initRubberBandOverlay ():void
 {
-	rubberband.x = map.x;
-	rubberband.y = map.y;
+	rubberband.x = 0;
+	rubberband.y = 0;
 	rubberband.visible = false;
-	map.stage.addChild (rubberband);
+	map.addChild (rubberband);
 }
 
 private function removeEventHandlers ():void

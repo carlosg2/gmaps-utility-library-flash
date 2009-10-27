@@ -15,8 +15,10 @@ To zoom in to a specific area on the map, a user would normally click the map an
  * Drag the mouse to stretch the rubber band.
  * Release the mouse button to snap the map to the area enclosed by the rubber band, or release the Shift key to cancel.
 
+[http://gmaps-utility-library-flash.googlecode.com/svn/trunk/docs/com/google/maps/extras/rubberbandctrl/package-detail.html Reference]
+
 Demos:
- * [http://spatialdatabox.com/rubber-band-ctrl/rubber-band-ctrl.html RubberBandCtrl Demo]
+ * [http://www.spatialdatabox.com/map-demos/rubber-band-map.html RubberBandCtrl Demo]
 
 
 == !MarkerManager ==

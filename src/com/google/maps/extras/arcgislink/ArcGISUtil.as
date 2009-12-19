@@ -7,12 +7,11 @@
  */
 package com.google.maps.extras.arcgislink {
 
-  import com.google.maps.extras.arcgislink.json.*;
-
   import com.google.maps.*;
+  import com.google.maps.extras.arcgislink.json.*;
   import com.google.maps.interfaces.IOverlay;
   import com.google.maps.overlays.*;
-
+  
   import flash.events.*;
   import flash.geom.Point;
   import flash.net.*;
@@ -174,6 +173,7 @@ package com.google.maps.extras.arcgislink {
             // multipoint
             lnglat=sr.reverse(part);
             ov=new Marker(new LatLng(lnglat[1], lnglat[0]), overlayOptions.marker);
+            ovs.push(ov);
           } else {
             if (part.length > ArcGISConfig.maxPolyPoints) {
               // TODO: do a simple point reduction 
@@ -185,17 +185,23 @@ package com.google.maps.extras.arcgislink {
               glatlngs.push(new LatLng(lnglat[1], lnglat[0]));
             }
             if (geom.paths) {
-
-              ov=new Polyline(glatlngs, overlayOptions.polyline); //new PolylineOptions({strokeStyle: style.strokeStyle}));
+                ov=new Polyline(glatlngs, overlayOptions.polyline); //new PolylineOptions({strokeStyle: style.strokeStyle}));
+                ovs.push(ov);
             } else if (geom.rings) {
               overlayOptions.polygon=overlayOptions.polygon || new PolygonOptions();
               overlayOptions.polygon.tooltip=title;
-              ov=new Polygon(glatlngs, overlayOptions.polygon); //new PolygonOptions({strokeStyle: style.strokeStyle, fillStyle: style.fillStyle, tooltip: title})); //, style.outlineColor, style.outlineWeight, style.outlineOpacity, style.fillColor, style.fillOpacity);
+              if (ov == null) {
+                ov=new Polygon(glatlngs, overlayOptions.polygon); //new PolygonOptions({strokeStyle: style.strokeStyle, fillStyle: style.fillStyle, tooltip: title})); //, style.outlineColor, style.outlineWeight, style.outlineOpacity, style.fillColor, style.fillOpacity);
+                ovs.push(ov);
+              } else {
+                (ov as Polygon).setPolyline(i, glatlngs);
+              }
             }
           }
-          ovs.push(ov);
+
         }
       }
+
       return ovs;
     }
 

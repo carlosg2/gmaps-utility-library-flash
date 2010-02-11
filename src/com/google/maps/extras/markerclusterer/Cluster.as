@@ -44,22 +44,23 @@
 package com.google.maps.extras.markerclusterer
 {
 import com.google.maps.LatLng;
-import com.google.maps.Map;
+import com.google.maps.LatLngBounds;
+import com.google.maps.interfaces.IMap;
 import com.google.maps.interfaces.IPane;
 import com.google.maps.overlays.Marker;
 
 import flash.geom.Point;
 import flash.geom.Rectangle;
-	/**
-	 * class Cluster is a structure to manage markers which fall into this cluster.
-	 * 
-	 */ 
-public class Cluster
+/**
+ * class Cluster is a structure to manage markers which fall into a single cluster.
+ * 
+ */ 
+internal class Cluster
 {
 	private var center_				: LatLng;
 	private var markers_			: Array;
 	private var markerClusterer_	: MarkerClusterer;
-	private var map_				: Map;
+	private var map_				: IMap;
 	private var clusterMarker_		: ClusterMarker;
 	private var zoom_				: Number;
 	private var _pane:IPane ;
@@ -114,7 +115,8 @@ public class Cluster
 	 * This method is considered to be replaced with isInRectangle. 
 	 * So you may not see it in the later version.
 	 */
-	public function isInBounds (bounds : Object = undefined) : Boolean
+
+	public function isInBounds (bounds : LatLngBounds = undefined) : Boolean
 	{
 		if (center_ == null)			{
 			return false;
@@ -124,15 +126,15 @@ public class Cluster
 			bounds = map_.getLatLngBounds();
 		}
 	
-		var  sw 			: Object 		= map_.fromLatLngToViewport(bounds.getSouthWest());
-		var  ne 			: Object			= map_.fromLatLngToViewport(bounds.getNorthEast());
-		var  centerxy 		: Object	= map_.fromLatLngToViewport(center_);
+		var  sw 			: Point = map_.fromLatLngToViewport(bounds.getSouthWest());
+		var  ne 			: Point	= map_.fromLatLngToViewport(bounds.getNorthEast());
+		var  centerxy 		: Point	= map_.fromLatLngToViewport(center_);
 		var  inViewport 	:Boolean 	= true;
 		var  gridSize 		: Number	= markerClusterer_.gridSize;
 	
 		if (zoom_ != map_.getZoom())
 		{
-			var  dl				: Number 			= map_.getZoom() - zoom_;
+			var  dl	: Number = map_.getZoom() - zoom_;
 			gridSize 	= Math.pow(2, dl) * gridSize;
 		}
 		
@@ -166,9 +168,8 @@ public class Cluster
 	
 	public function removeMarker (marker : Marker) : Boolean
 	{
-		var i : Number;
-		
-		for (i = 0; i < markers_.length; ++i)
+
+		for (var i:int = 0; i < markers_.length; ++i)
 		{
 			if (marker == markers_[i].marker)
 			{

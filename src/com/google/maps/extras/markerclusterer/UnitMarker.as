@@ -53,11 +53,11 @@ import com.google.maps.overlays.MarkerOptions;
  */
 public class UnitMarker extends Marker
 {
-	public var isAdded : Boolean;
+	internal var isAdded : Boolean;
 	
-	public function UnitMarker(latLng : LatLng, othersPin : MarkerOptions = undefined)
+	public function UnitMarker(latLng : LatLng, options : MarkerOptions = undefined)
 	{
-		super(latLng, othersPin);
+		super(latLng, options);
 	}
 }
 }

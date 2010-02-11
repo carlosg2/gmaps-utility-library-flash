@@ -45,7 +45,7 @@ package com.google.maps.extras.markerclusterer
 {
 import com.google.maps.LatLng;
 import com.google.maps.LatLngBounds;
-import com.google.maps.Map;
+import com.google.maps.interfaces.IMap;
 import com.google.maps.interfaces.IPane;
 
 import flash.events.Event;
@@ -61,21 +61,26 @@ import flash.geom.Rectangle;
 public class MarkerClusterer
 {
 	private  var clusters_ 		: Array;
-	private  var map_ 			: Map;
+	private  var map_ 			: IMap;
 
 	private  var leftMarkers_ 	: Array;
 	private var _pane:IPane;
 	public var options:MarkerClustererOptions;
 	/**
 	 * 
+	 * @param pane.
+	 * 
+	 * @param markers An array of UnitMarker. 
+	 * 
+	 * @param options of MarkerClustererOptions
 	 * 
 	 */ 
-	public function MarkerClusterer (map : Map, markers : Array, opts : MarkerClustererOptions = null)
+	public function MarkerClusterer (pane: IPane, markers : Array, opts : MarkerClustererOptions = null)
 	{
 		clusters_ 		= new Array();
-		map_ 			= map;
+		map_ 			= pane.map;
 		leftMarkers_ 	= new Array();
-		this._pane = map_.getPaneManager().createPane();
+		this._pane = pane; ///  map_.getPaneManager().createPane();
 		
 		if(opts == null)		opts = new MarkerClustererOptions;
 		this.options = opts;
@@ -171,7 +176,7 @@ public class MarkerClusterer
 				return;
 			}
 		}
-		var pos			: Point= map_.fromLatLngToViewport(marker.getLatLng());
+		var pos	: Point= map_.fromLatLngToViewport(marker.getLatLng());
 		
 		if (clusters == null)
 		{
@@ -292,7 +297,7 @@ public class MarkerClusterer
 	// this will be removed!!
 	// if cluster needs any info of map, this class should provide methods for it,
 	// not to provide whole map object. 
-	public function get map () : Map
+	public function get map (): IMap
 	{
 		return map_;
 	}

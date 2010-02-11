@@ -68,7 +68,7 @@ import flash.text.TextFormatAlign;
  * Update: 2010-02-11
  * 		Now it works with Flash, that means it also works for Flex.
  */  
-public class ClusterMarker extends OverlayBase
+internal class ClusterMarker extends OverlayBase
 {
 	private var latlng_ 	: LatLng;
 

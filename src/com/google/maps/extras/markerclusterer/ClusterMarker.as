@@ -43,51 +43,53 @@
 package com.google.maps.extras.markerclusterer
 {
 import com.google.maps.LatLng;
-import com.google.maps.Map;
 import com.google.maps.PaneId;
 import com.google.maps.interfaces.IMap;
 import com.google.maps.interfaces.IPane;
 import com.google.maps.interfaces.IPaneManager;
 import com.google.maps.overlays.OverlayBase;
 
+import flash.display.Loader;
 import flash.events.Event;
 import flash.geom.Point;
+import flash.net.URLRequest;
+import flash.text.TextField;
+import flash.text.TextFormat;
+import flash.text.TextFormatAlign;
 
-import mx.controls.Label;
-import mx.controls.Image;
+
 /**
  * 
  * This is a presentation class for <code>Cluster</code>.
  * The current implementation is to load images for different level.
  * Later, it can be implemented with other possibilities.
  * 
- * Current implementation is for Flex only, that Flex advantage on auto layout has been taken.
- * Later, it will support both Flash and Flex.
+ * 
+ * Update: 2010-02-11
+ * 		Now it works with Flash, that means it also works for Flex.
  */  
 public class ClusterMarker extends OverlayBase
 {
-	private var url_ 		: String;
-	private var height_ 	: Number;
-	private var width_ 		: Number;
 	private var latlng_ 	: LatLng;
-	private var index_ 		: Number;
+
 	private var styles_ 	: Array;
 	private var text_ 		: String;
 	private var padding_	: Number;
-	private var map_		: Map;
-	private var imageLoader	: Image;
-	private var label		: Label;
+
 	
-	public function ClusterMarker (latlng : LatLng, count : Number, styles : Array, padding : Number)
+//	private var imageLoader	: Image;
+//	private var label		: Label;
+	
+	private var _ld:Loader;
+	private var _tf:TextField;
+	
+	public function ClusterMarker (latlng : LatLng, count:int , styles : Array, padding : Number)
 	{
-		var index 	: Number;
-		var dv		: Number;
-		
-		index 	= 0;
-		dv 		= count;
-		
+		var index 	: int = 0;
+		var dv		: int = count;
+
 		while (dv != 0) {
-			dv = Math.round(dv / 10);
+			dv = dv / 10;
 			index ++;
 		}
 		
@@ -95,47 +97,78 @@ public class ClusterMarker extends OverlayBase
 			index = styles.length;
   		}
 		
-		url_ 							= styles[index - 1].url;
+		var url_ 	:String						= styles[index - 1].url;
 //		textColor_ 						= styles[index - 1].opt_textColor;
 //		anchor_ 						= styles[index - 1].opt_anchor;
 		latlng_ 						= latlng;
-		index_ 							= index;
 		styles_ 						= styles;
 		text_ 							= String(count);
 		padding_ 						= padding;
-		
+/* 		
 		imageLoader						= new Image();
 		imageLoader.autoLoad            = true;
 		imageLoader.source 				= url_; 
 		imageLoader.scaleContent 		= false;
 		imageLoader.addEventListener(Event.COMPLETE, completeHandler);
 		addChild(imageLoader);
+		 */
+		var req:URLRequest = new URLRequest(url_);
+		_ld = new Loader;
+		_ld.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
+		_ld.load(req);
 		
+		this.addChild(_ld);
+		
+		
+/* 	
+@20100211
+Previous code, for Flex only!	
 		label							= new Label();
 		label.setStyle("textAlign", "center");
-		label.setStyle("color", "0x000000");
+		label.setStyle("color", "0x00FF00");
 		label.setStyle("font", "Verdana");
 		label.setStyle("bold", "true");
 		label.selectable                = false;
 		label.text 						= text_;
-
+		
 		addChild(label);
+ */
+		var format :TextFormat = new TextFormat;
+		format.align = TextFormatAlign.CENTER;
+		format.color = 0xff90f0;
+		format.font = 'Verdana';
+		format.bold = true;
+		
+		this._tf = new TextField;
+		_tf.selectable = false;
+		_tf.text = text_;
+		_tf.setTextFormat(format);
+		
+		this.addChild(_tf);
+		
 	}
 	
 	private function completeHandler(event : Event) : void
 	{		
-		imageLoader.width = event.currentTarget.content.width;
-		imageLoader.height = event.currentTarget.content.height;	
-
-		event.currentTarget.move(imageLoader.width/-2, imageLoader.height/-2);
+	//	imageLoader.width = event.currentTarget.content.width;
+	//	imageLoader.height = event.currentTarget.content.height;	
+		_ld.width = event.currentTarget.content.width;
+		_ld.height = event.currentTarget.content.height;	
+	
+	//	event.currentTarget.move(imageLoader.width/-2, imageLoader.height/-2);
+		_ld.x = _ld.width / -2;
+		_ld.y = _ld.height / -2;
 		
-		label.width 	= imageLoader.width;
+	/* 	label.width 	= imageLoader.width;
 		label.height 	= 14;
-
 		label.x         = imageLoader.width / -2;
 		label.y 		= 0 - (label.height / 2);
-
-		label.visible 	= true;
+		label.visible 	= true; */
+		this._tf.width = _ld.width;
+		this._tf.height = 16;
+		this._tf.x = - _ld.width / 2;
+		this._tf.y = 0 - (_tf.height/2);
+		
 	}
 	
 	override public function getDefaultPane(map : IMap): IPane
@@ -167,7 +200,7 @@ public class ClusterMarker extends OverlayBase
 	 * 
 	 * Developer should not call this function. It is managed by Cluster.
 	 */ 
-	public function redraw (force:Boolean) : void
+	internal function redraw (force:Boolean) : void
 	{
 		if (!force){
 			return;

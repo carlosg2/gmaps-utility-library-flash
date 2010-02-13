@@ -60,7 +60,7 @@ internal class Cluster
 	private var center_				: LatLng;
 	private var markers_			: Array;
 	private var markerClusterer_	: MarkerClusterer;
-	private var map_				: IMap;
+//	private var map_				: IMap;
 	private var clusterMarker_		: ClusterMarker;
 	private var zoom_				: Number;
 	private var _pane:IPane ;
@@ -74,7 +74,7 @@ internal class Cluster
 		center_ 			= null;
 		markers_ 			= new Array();
 		markerClusterer_ 	= markerClusterer;
-		map_ 				= markerClusterer.map;
+//		map_ 				= markerClusterer.map;
 		clusterMarker_ 		= null;
 		zoom_ 				= markerClusterer_.zoom; // map_.getZoom();
 		this._pane = pane;
@@ -96,7 +96,7 @@ internal class Cluster
 		var centerxy:Point = this._pane.fromLatLngToPaneCoords(center_);
 		
 		var gridSize:Number = markerClusterer_.gridSize;
-		if (zoom_ != map_.getZoom())
+		if (zoom_ != _pane.map.getZoom()) //  map_.getZoom())
 		{
 			var dl:Number 	= this.markerClusterer_.zoom - zoom_;
 			gridSize 	= Math.pow(2, dl) * gridSize;
@@ -115,7 +115,7 @@ internal class Cluster
 	 * This method is considered to be replaced with isInRectangle. 
 	 * So you may not see it in the later version.
 	 */
-
+/* 
 	public function isInBounds (bounds : LatLngBounds = undefined) : Boolean
 	{
 		if (center_ == null)			{
@@ -150,7 +150,8 @@ internal class Cluster
 		
 		return inViewport;
 	}
-	
+	 */
+	 /* used in MarkerClusterer addMarker */
 	public function getCenter () : LatLng
 	{
 		return center_;
@@ -166,7 +167,7 @@ internal class Cluster
 		markers_.push(marker);
 	}
 	
-	public function removeMarker (marker : Marker) : Boolean
+/* 	private function removeMarker (marker : Marker) : Boolean
 	{
 
 		for (var i:int = 0; i < markers_.length; ++i)
@@ -184,7 +185,7 @@ internal class Cluster
 			}
 		}
 		return false;
-	}
+	} */
 	
 	public function getCurrentZoom () : Number
 	{
@@ -279,16 +280,14 @@ internal class Cluster
 	
 	public function clearMarkers () : void
 	{
-		if (clusterMarker_ != null)
-		{
+		if (clusterMarker_ != null){
 			this._pane.removeOverlay(clusterMarker_);
+			clusterMarker_ = null;
 		//	map_.removeOverlay(clusterMarker_);
 		}
 		
-		for (var i:int = 0; i < markers_.length; ++i)
-		{
-			if (markers_[i].isAdded)
-			{
+		for (var i:int = 0; i < markers_.length; ++i) {
+			if (markers_[i].isAdded){
 				markers_[i].isAdded = false;
 			// was:	map_.removeOverlay(markers_[i]);
 				this._pane.removeOverlay(markers_[i]);
@@ -298,8 +297,7 @@ internal class Cluster
 		markers_ = new Array();
 	}
 	
-	public function getTotalMarkers () : int
-	{
+ 	internal function getTotalMarkers () : int{
 		return markers_.length;
 	}
 }

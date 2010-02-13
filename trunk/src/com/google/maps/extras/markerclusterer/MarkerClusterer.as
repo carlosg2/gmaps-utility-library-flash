@@ -60,6 +60,7 @@ import flash.geom.Rectangle;
  */ 
 public class MarkerClusterer
 {
+	private var _markers		: Array;
 	private  var clusters_ 		: Array;
 	private  var map_ 			: IMap;
 
@@ -77,6 +78,7 @@ public class MarkerClusterer
 	 */ 
 	public function MarkerClusterer (pane: IPane, markers : Array, opts : MarkerClustererOptions = null)
 	{
+		_markers		= new Array();
 		clusters_ 		= new Array();
 		map_ 			= pane.map;
 		leftMarkers_ 	= new Array();
@@ -129,15 +131,17 @@ public class MarkerClusterer
 	
 	public function clearMarkers () : void 
 	{
-
-		for (var i:int = 0; i < clusters_.length; ++i)
-		{
+		for each(var cluster:Cluster in listCluster()){
+			cluster.clearMarkers();
+		}	
+	/* 
+		for (var i:int = 0; i < clusters_.length; ++i)	{
 			if (clusters_[i] != undefined && clusters_[i] != null)
 			{
 				clusters_[i].clearMarkers();
 			}
 		}
-		
+		 */
 		clusters_ 		= new Array();;
 		leftMarkers_ 	= new Array();
 	}
@@ -149,28 +153,28 @@ public class MarkerClusterer
 	
 	private function reAddMarkers_(markers : Array) : void
 	{
-		var len:int 		= markers.length;
+	//	var len:int 		= markers.length;
 		var clusters :Array	= new Array();
-		
+		var i:int = 0;
 	//	for (var i:int = len - 1; i >= 0; --i) {
 		for each(var marker:UnitMarker in markers){
 			addMarker(marker, true, marker.isAdded, clusters, true);
+			trace('...' + i);
+			i++;
 		}
 		
 		addLeftMarkers();
 	}
 	
-	public function addMarker (marker : UnitMarker, opt_isNodraw : Boolean,
-		isAdded : Boolean, clusters : Array, opt_isNoCheck : Boolean) : void
+	private function addMarker (marker : UnitMarker, 
+		opt_isNodraw : Boolean,
+		isAdded : Boolean, 
+		clusters : Array, 
+		opt_isNoCheck : Boolean) : void
 	{
-
-		var centrePoint	: Point;
-		var length		: Number;
-		var cluster 	: Cluster;
-		var center		: LatLng;
+		this._markers.push(marker);
 		
-		if (opt_isNoCheck != true)
-		{
+		if (opt_isNoCheck != true){
 			if (!isMarkerInViewport_(marker)) {
 				leftMarkers_.push(marker);
 				return;
@@ -178,23 +182,21 @@ public class MarkerClusterer
 		}
 		var pos	: Point= map_.fromLatLngToViewport(marker.getLatLng());
 		
-		if (clusters == null)
-		{
+		if (clusters == null){
 			clusters = clusters_;
 		}
 		
-		length 		= clusters.length;
-		cluster 	= null;
-		
-		for (var i:int = length - 1; i >= 0; i--)
-		{
-			cluster 	= clusters[i];
+//		length 		= clusters.length;
+//		cluster 	= null;
+		var centrePoint	: Point;
+		var center		: LatLng;
+		for each(var cluster:Cluster in clusters){
+//		for (var i:int = length - 1; i >= 0; i--) {
+//			cluster 	= clusters[i];
 			center 		= cluster.getCenter();
 			
-			if (center == null)
-			{
+			if (center == null)	
 				continue;
-			}
 		
 			centrePoint = map_.fromLatLngToViewport(center);
 			
@@ -216,9 +218,9 @@ public class MarkerClusterer
 		}
 		
 		// No cluster contain the marker, create a new cluster.
-		cluster 		= new Cluster(this, _pane);
+		var newCluster:Cluster 		= new Cluster(this, _pane);
 		marker.isAdded 	= isAdded;
-		cluster.addMarker(marker);
+		newCluster.addMarker(marker);
 		
 		if (!opt_isNodraw)
 		{
@@ -226,15 +228,15 @@ public class MarkerClusterer
 		}
 		
 		// Add this cluster both in clusters provided and clusters_
-		clusters.push(cluster);
+		clusters.push(newCluster);
 		
 		if (clusters != clusters_)
 		{
-			clusters_.push(cluster);
+			clusters_.push(newCluster);
 		}
 	}
 	
-	public function removeMarker (marker : UnitMarker)  : void
+/* 	private function removeMarker (marker : UnitMarker)  : void
 	{
 		
 		for (var i:int = 0; i < clusters_.length; ++i)
@@ -245,16 +247,22 @@ public class MarkerClusterer
 				return;
 			}
 		}
-	}
+	} */
 	
 	private function redraw_ () : void
 	{
-		for each(var cluster:Cluster in getClustersInViewport_()){
+		// @20100212
+		
+//		this._pane.clear();
+		for each(var cluster:Cluster in listClusterInViewport_()){
 			cluster.redraw(true);
 		}
 	}
 	
-	private function getClustersInViewport_ () : Array
+	private function listCluster():Array{
+		return this.clusters_;
+	}
+	private function listClusterInViewport_ () : Array
 	{
 		var clusters 	: Array = [];
 
@@ -264,9 +272,10 @@ public class MarkerClusterer
 		var rect:Rectangle = new Rectangle(nw.x, nw.y, se.x - nw.x, se.y - nw.y);				
 	
 		//for (i = 0; i < clusters_.length; i ++)
-		for each(var cluster:Cluster in this.clusters_){
-			if (cluster.isInBounds(curBounds))
+		for each(var cluster:Cluster in this.listCluster()){
+		//	if (cluster.isInBounds(curBounds))
 		//	if((clusters_[i] as Cluster).isInRectangle(rect))
+			if(cluster.isInRectangle(rect))
 			{
 				clusters.push(cluster);
 			}
@@ -278,67 +287,74 @@ public class MarkerClusterer
 	/**
 	 * This getter property is intented for Cluster use
 	 */
-	public function get maxZoom() : Number
+	internal function get maxZoom() : Number
 	{
 		return this.options.maxZoom;
 	}
 	/**
 	 * This getter property is intented for Cluster use
 	 */
-	public function get zoom():Number{
+	internal function get zoom():Number{
 		return map_.getZoom();
 	}
 	/**
 	 * This getter property is intented for Cluster use
 	 */
-	public function get maximumResolution():Number{
+	internal function get maximumResolution():Number{
 		return map_.getCurrentMapType().getMaximumResolution(); 
 	}
 	// this will be removed!!
 	// if cluster needs any info of map, this class should provide methods for it,
 	// not to provide whole map object. 
-	public function get map (): IMap
+/*  	internal function get map (): IMap
 	{
 		return map_;
-	}
+	}  */
 	/**
 	 * This getter property is intented for Cluster use
 	 */
-	public function get gridSize () : Number
+	internal function get gridSize () : Number
 	{
 		return this.options.gridSize;
 	}
-	
-	public function getTotalMarkers () : int
+	/* 
+	private function getTotalMarkers () : int
 	{
 		var result 	: int = 0;
 		for each(var cluster:Cluster in clusters_){
 			result += cluster.getTotalMarkers();
 		}
 		return result;
-	}
-	
-	public function getTotalClusters () : int
+	} */
+	/* 
+	private function getTotalClusters () : int
 	{
 		return clusters_.length;
 	}
+	 */
+	public function resetViewport (force:Boolean=false) : void{
+		// this new method will clear all markers, and then rebuild.
+		var tmpMarkers:Array = this._markers.concat();
+		this._pane.clear();
+		
+		this.clearMarkers();
+		clusters_ = new Array;
+		this._markers = new Array;
+		this.reAddMarkers_(tmpMarkers);
+	//	this.reAddMarkers_(this._markers);
+		this.redraw_();
+	}
 	
-	public function resetViewport (force:Boolean=false) : void
-	{
-		var clusters 	: Array = getClustersInViewport_();
+	public function resetViewport0 (force:Boolean=false) : void {
+		var clusters 	: Array = listClusterInViewport_();
 		var tmpMarkers 	: Array = [];
-		var removed 	: Number = 0;
+		var removed 	: int = 0;
 
 		for each(var cluster:Cluster in clusters)
 		{
 		//	cluster = clusters[i];
 			var oldZoom		: Number = cluster.getCurrentZoom();
-			
-			if (isNaN(oldZoom))
-			{
-				continue;
-			}
-			
+			if (isNaN(oldZoom))	continue;
 			var curZoom 	: Number = map_.getZoom();
 			
 			if (curZoom != oldZoom || force)
@@ -358,9 +374,11 @@ public class MarkerClusterer
 						clusters_.splice(j, 1);
 					}
 				}
-			}
+			} // for each previous cluster.
 		}
 		
+		// I am not sure what is the difference 
+		// between tmpMarkers and original markers in constructor.!!
 		reAddMarkers_(tmpMarkers);
 		redraw_();
 	}

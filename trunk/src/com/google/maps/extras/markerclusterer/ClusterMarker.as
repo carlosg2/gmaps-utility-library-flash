@@ -43,12 +43,13 @@
 package com.google.maps.extras.markerclusterer
 {
 import com.google.maps.LatLng;
-import com.google.maps.PaneId;
+import com.google.maps.MapEvent;
 import com.google.maps.interfaces.IMap;
 import com.google.maps.interfaces.IPane;
 import com.google.maps.interfaces.IPaneManager;
 import com.google.maps.overlays.OverlayBase;
 
+import flash.display.Bitmap;
 import flash.display.Loader;
 import flash.events.Event;
 import flash.geom.Point;
@@ -65,45 +66,58 @@ import flash.text.TextFormatAlign;
  * Later, it can be implemented with other possibilities.
  * 
  * 
- * Update: 2010-02-11
+ * Update: 
+ * 	2010-02-11
  * 		Now it works with Flash, that means it also works for Flex.
+ * 	2010-02-13
+ * 		Make it formal as overlay .e.g. create and destroy content as needed - 
+ * 			through MapEvent.OVERLAY_ADDED, and MapEvent.OVERLAY_REMOVED events.
  */  
 internal class ClusterMarker extends OverlayBase
 {
-	private var latlng_ 	: LatLng;
-
-	private var styles_ 	: Array;
-	private var text_ 		: String;
-	private var padding_	: Number;
+	private var _latlng 	: LatLng;
+	private var _count		: int;
+	private var _styles 	: Array;
+//	private var text_ 		: String;
+//	private var padding_	: Number;
 
 	
 //	private var imageLoader	: Image;
 //	private var label		: Label;
 	
+	public function ClusterMarker (latlng : LatLng, count:int , styles : Array, padding : Number)
+	{
+		_latlng	= latlng;
+		_styles = styles;
+		_count 	= count;
+		
+		this.addEventListener(MapEvent.OVERLAY_ADDED, onOverlayAdded);
+		this.addEventListener(MapEvent.OVERLAY_REMOVED, onOverlayRemoved);
+		
+	}
+	
 	private var _ld:Loader;
 	private var _tf:TextField;
 	
-	public function ClusterMarker (latlng : LatLng, count:int , styles : Array, padding : Number)
-	{
+	private function onOverlayAdded(event:MapEvent):void{
 		var index 	: int = 0;
-		var dv		: int = count;
+		var dv		: int = _count;
 
 		while (dv != 0) {
 			dv = dv / 10;
 			index ++;
 		}
 		
-		if (styles.length < index) {
-			index = styles.length;
+		if (_styles.length < index) {
+			index = _styles.length;
   		}
 		
-		var url_ 	:String						= styles[index - 1].url;
+		var url_ :String		= _styles[index - 1].url;
 //		textColor_ 						= styles[index - 1].opt_textColor;
 //		anchor_ 						= styles[index - 1].opt_anchor;
-		latlng_ 						= latlng;
-		styles_ 						= styles;
-		text_ 							= String(count);
-		padding_ 						= padding;
+
+		var text_:String 		= String(_count);
+//		padding_ 						= padding;
 /* 		
 		imageLoader						= new Image();
 		imageLoader.autoLoad            = true;
@@ -145,6 +159,14 @@ Previous code, for Flex only!
 		_tf.setTextFormat(format);
 		
 		this.addChild(_tf);
+	}
+	
+	private function onOverlayRemoved(event:MapEvent):void{
+		this.removeChild(_ld);
+		_ld = null;
+		
+		this.removeChild(_tf);
+		_tf = null;
 		
 	}
 	
@@ -152,8 +174,9 @@ Previous code, for Flex only!
 	{		
 	//	imageLoader.width = event.currentTarget.content.width;
 	//	imageLoader.height = event.currentTarget.content.height;	
-		_ld.width = event.currentTarget.content.width;
-		_ld.height = event.currentTarget.content.height;	
+		var content:Bitmap = event.currentTarget.content;
+		_ld.width = content.width;
+		_ld.height = content.height;	
 	
 	//	event.currentTarget.move(imageLoader.width/-2, imageLoader.height/-2);
 		_ld.x = _ld.width / -2;
@@ -173,12 +196,11 @@ Previous code, for Flex only!
 	
 	override public function getDefaultPane(map : IMap): IPane
 	{
-		var i 			: Number;
-		var paneManager	: IPaneManager;
-		
-		paneManager = map.getPaneManager();
+		var paneManager	: IPaneManager = map.getPaneManager();
 
-		return paneManager.getPaneById(PaneId.PANE_MARKER);
+//		return paneManager.getPaneById(PaneId.PANE_MARKER);
+		
+		return null;
 	}
 	
 	override public function positionOverlay(zoomChanged : Boolean): void
@@ -186,10 +208,10 @@ Previous code, for Flex only!
 		this.reposition();
 	}
 	
-	private function remove () : void
+/* 	private function remove () : void
 	{
 		parent.removeChild(this);
-	}
+	} */
 	/*
 	private function copy () : ClusterMarker
 	{
@@ -198,7 +220,8 @@ Previous code, for Flex only!
 	*/
 	/**
 	 * 
-	 * Developer should not call this function. It is managed by Cluster.
+	 * Developer should not call this function. 
+	 * It is managed by Cluster.
 	 */ 
 	internal function redraw (force:Boolean) : void
 	{
@@ -210,7 +233,7 @@ Previous code, for Flex only!
 	}
 	
 	private function reposition():void{
-		var pos : Point = this.pane.fromLatLngToPaneCoords(latlng_);
+		var pos : Point = this.pane.fromLatLngToPaneCoords(_latlng);
 		x = pos.x;
 		y = pos.y;
 	}

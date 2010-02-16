@@ -388,7 +388,8 @@ public class MarkerClusterer
 		for each(var marker:UnitMarker in markers){
 			this.addMarker(marker, true, false, new Array(), true);
 		}
-		redraw_();
+	//	redraw_();
+		this.resetViewport();
 	}
 }
 }

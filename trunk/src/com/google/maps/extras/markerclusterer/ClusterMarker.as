@@ -149,7 +149,7 @@ Previous code, for Flex only!
  */
 		var format :TextFormat = new TextFormat;
 		format.align = TextFormatAlign.CENTER;
-		format.color = 0xff90f0;
+		format.color = 0xFFFFFF;
 		format.font = 'Verdana';
 		format.bold = true;
 		

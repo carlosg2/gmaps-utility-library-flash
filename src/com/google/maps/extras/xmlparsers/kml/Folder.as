@@ -5,9 +5,6 @@
 */
 package com.google.maps.extras.xmlparsers.kml
 {
-    import com.google.maps.extras.xmlparsers.Namespaces;
-	import com.google.maps.extras.xmlparsers.ParsingTools;
-	import com.google.maps.extras.xmlparsers.XmlElement;
 
 	/**
 	*	Class that represents the &lt;Folder&gt; element.

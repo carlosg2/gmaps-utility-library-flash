@@ -2,37 +2,33 @@
 <index>
 	<title>Source of ArcGISLink</title>
 	<nodes>
-		<node label="[source path] src" icon="classpathIcon" expanded="true">
-			<node label="assets">
-			</node>
-			<node label="com">
-			</node>
-		</node>
-		<node label="src" icon="classpathIcon" expanded="true">
-			<node label="ArcGISOnline.mxml" icon="mxmlIcon" url="source/ArcGISOnline.mxml.html"/>
-			<node label="DynamicLayer.mxml" icon="mxmlIcon" url="source/DynamicLayer.mxml.html"/>
-			<node label="Find.mxml" icon="mxmlIcon" url="source/Find.mxml.html"/>
-			<node label="Flat.mxml" icon="mxmlIcon" url="source/Flat.mxml.html"/>
-			<node label="Geocode.mxml" icon="mxmlIcon" url="source/Geocode.mxml.html"/>
-			<node label="Geocode3D.mxml" icon="mxmlIcon" url="source/Geocode3D.mxml.html"/>
-			<node label="index.html" icon="htmlIcon" url="source/index.html"/>
-			<node label="LayerDefinition.mxml" icon="mxmlIcon" url="source/LayerDefinition.mxml.html"/>
-			<node label="LayerQuery.mxml" icon="mxmlIcon" url="source/LayerQuery.mxml.html"/>
-			<node label="LayerQuery3D.mxml" icon="mxmlIcon" url="source/LayerQuery3D.mxml.html"/>
-			<node label="LayerVisibility.mxml" icon="mxmlIcon" url="source/LayerVisibility.mxml.html"/>
-			<node label="MapClick.mxml" icon="mxmlIcon" url="source/MapClick.mxml.html"/>
-			<node label="MapClick3D.mxml" icon="mxmlIcon" url="source/MapClick3D.mxml.html"/>
-			<node selected="true" label="MultiService3D.mxml" icon="mxmlAppIcon" url="source/MultiService3D.mxml.html"/>
-			<node label="ReverseGeocode.mxml" icon="mxmlIcon" url="source/ReverseGeocode.mxml.html"/>
-			<node label="SimpleAdd.mxml" icon="mxmlIcon" url="source/SimpleAdd.mxml.html"/>
-			<node label="StatePlane.mxml" icon="mxmlIcon" url="source/StatePlane.mxml.html"/>
-			<node label="Test.mxml" icon="mxmlIcon" url="source/Test.mxml.html"/>
-			<node label="TileAndDynamic.mxml" icon="mxmlIcon" url="source/TileAndDynamic.mxml.html"/>
-			<node label="TileLayerAGO.mxml" icon="mxmlIcon" url="source/TileLayerAGO.mxml.html"/>
-			<node label="TileLayerMercator.mxml" icon="mxmlIcon" url="source/TileLayerMercator.mxml.html"/>
-			<node label="TileLayerOverlay.mxml" icon="mxmlIcon" url="source/TileLayerOverlay.mxml.html"/>
-			<node label="TileLayerOverlay3D.mxml" icon="mxmlIcon" url="source/TileLayerOverlay3D.mxml.html"/>
-			<node label="TileLayerPreConfig.mxml" icon="mxmlIcon" url="source/TileLayerPreConfig.mxml.html"/>
+		<node label="src">
+			<node icon="mxmlIcon" label="ArcGISOnline.mxml" url="source/ArcGISOnline.mxml.html"/>
+			<node icon="mxmlIcon" label="DonutHole.mxml" url="source/DonutHole.mxml.html"/>
+			<node icon="mxmlIcon" label="DynamicLayer.mxml" url="source/DynamicLayer.mxml.html"/>
+			<node icon="mxmlIcon" label="Find.mxml" url="source/Find.mxml.html"/>
+			<node icon="mxmlIcon" label="Flat.mxml" url="source/Flat.mxml.html"/>
+			<node icon="mxmlIcon" label="Geocode.mxml" url="source/Geocode.mxml.html"/>
+			<node icon="mxmlIcon" label="Geocode3D.mxml" url="source/Geocode3D.mxml.html"/>
+			<node icon="htmlIcon" label="index.html" url="source/index.html"/>
+			<node icon="mxmlIcon" label="LayerDefinition.mxml" url="source/LayerDefinition.mxml.html"/>
+			<node icon="mxmlIcon" label="LayerQuery.mxml" url="source/LayerQuery.mxml.html"/>
+			<node icon="mxmlIcon" label="LayerQuery3.mxml" url="source/LayerQuery3.mxml.html"/>
+			<node icon="mxmlIcon" label="LayerQuery3D.mxml" url="source/LayerQuery3D.mxml.html"/>
+			<node icon="mxmlIcon" label="LayerVisibility.mxml" url="source/LayerVisibility.mxml.html"/>
+			<node icon="mxmlIcon" label="MapClick.mxml" url="source/MapClick.mxml.html"/>
+			<node icon="mxmlAppIcon" selected="true" label="MultiService3D.mxml" url="source/MultiService3D.mxml.html"/>
+			<node icon="mxmlIcon" label="ReverseGeocode.mxml" url="source/ReverseGeocode.mxml.html"/>
+			<node icon="mxmlIcon" label="SimpleAdd.mxml" url="source/SimpleAdd.mxml.html"/>
+			<node icon="mxmlIcon" label="StatePlane.mxml" url="source/StatePlane.mxml.html"/>
+			<node icon="mxmlIcon" label="TileAndDynamic.mxml" url="source/TileAndDynamic.mxml.html"/>
+			<node icon="mxmlIcon" label="TileLayerMercator.mxml" url="source/TileLayerMercator.mxml.html"/>
+			<node icon="mxmlIcon" label="TileLayerOverlay.mxml" url="source/TileLayerOverlay.mxml.html"/>
+			<node icon="mxmlIcon" label="TileLayerOverlay3D.mxml" url="source/TileLayerOverlay3D.mxml.html"/>
 		</node>
 	</nodes>
+	<zipfile label="Download source (ZIP, 43K)" url="ArcGISLink.zip">
+	</zipfile>
+	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
+	</sdklink>
 </index>

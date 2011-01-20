@@ -12,8 +12,8 @@
               mapevent_mappreinitialize="onMapPreinitialize(event);"
               mapevent_mapready="onMapReady(event)" 
               width="100%"
-              height="100%" 
-              key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g"/>
+              height="100%" sensor="false"
+              key="ABQIAAAAGY8Xhrw1zw6Ia3dwUJVxKRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTxMd7f8tzuEeq7aWKejTn-XQrIA"/>
   </mx:Panel>
   <mx:Script>
     <![CDATA[
@@ -37,7 +37,7 @@
         map.addControl(new MapTypeControl());
         map.addControl(new NavigationControl());
         map.setMapType(MapType.PHYSICAL_MAP_TYPE);
-        var url:String='http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Portland/ESRI_LandBase_WebMercator/MapServer';
+        var url:String='http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer';
         tileLayer=new ArcGISTileLayer(url, new ArcGISTileLayerOptions({alpha: 0.5}));
         tileLayer.addEventListener(ServiceEvent.LOAD, function(event:Event):void {
           addOverlay();

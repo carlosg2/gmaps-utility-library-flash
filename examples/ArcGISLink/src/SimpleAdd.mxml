@@ -10,8 +10,8 @@
               id="map"
               mapevent_mapready="onMapReady(event)"
               width="100%"
-              height="100%"
-              key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g"/>
+              height="100%" sensor="false"
+              key="ABQIAAAAGY8Xhrw1zw6Ia3dwUJVxKRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTxMd7f8tzuEeq7aWKejTn-XQrIA"/>
 
   </mx:Panel>
 
@@ -37,7 +37,7 @@
         map.enableScrollWheelZoom();
         map.enableContinuousZoom();
         var base:String='http://sampleserver1.arcgisonline.com/ArcGIS/rest/services';
-        var tiled:String=base + '/Portland/Portland_ESRI_LandBase_AGO/MapServer';
+        var tiled:String='http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer';
         var dyna:String=base + '/Demographics/ESRI_Census_USA/MapServer';
         ArcGISUtil.addArcGISMap(map, tiled, function(res:ArcGISMapType):void{
           map.setMapType(res);

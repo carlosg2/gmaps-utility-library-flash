@@ -9,14 +9,14 @@
                  label="Hide Census"/>
       <mx:Button click="dynaOverlay.show()"
                  label="Show Census"/>
-      <mx:Text   id="msg" text="The last three map type are tiled map, with different projection and tile sizes. On top of all map types there is a dynamic map layer Census"  />
+      <mx:Text   id="msg" text="The last map type are tiled map, with different projection and tile sizes. On top of all map types there is a dynamic map layer Census"  />
     </mx:HBox>
     <maps:Map xmlns:maps="com.google.maps.*"
               id="map"
               mapevent_mapready="onMapReady(event)"
               width="100%"
-              height="100%"
-              key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g"/>
+              height="100%" sensor="false"
+              key="ABQIAAAAGY8Xhrw1zw6Ia3dwUJVxKRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTxMd7f8tzuEeq7aWKejTn-XQrIA"/>
   </mx:Panel>
   <mx:Script>
     <![CDATA[
@@ -42,19 +42,9 @@
         map.addControl(new NavigationControl());
 
         var baseUrl:String='http://sampleserver1.arcgisonline.com/ArcGIS/rest/services';
-        var wgs84Url:String=baseUrl + '/Portland/Portland_ESRI_LandBase_AGO/MapServer';
-        var webMercatorUrl:String=baseUrl + '/Portland/ESRI_LandBase_WebMercator/MapServer';
         var dynaUrl:String=baseUrl + '/Demographics/ESRI_Census_USA/MapServer';
         var agoUrl:String='http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer';
 
-        var wgs84:ArcGISTileLayer=new ArcGISTileLayer(wgs84Url);
-        wgs84.addEventListener(ServiceEvent.LOAD, function(evt:Event):void {
-            map.addMapType(new ArcGISMapType([wgs84]));
-          });
-        var webMercator:ArcGISTileLayer=new ArcGISTileLayer(webMercatorUrl);
-        webMercator.addEventListener(ServiceEvent.LOAD, function(s:Event):void {
-            map.addMapType(new ArcGISMapType([webMercator], new ArcGISMapTypeOptions({name: webMercator.getName().replace(/ /g, '\n')})));
-          });
         var ago:ArcGISTileLayer=new ArcGISTileLayer(agoUrl);
         ago.addEventListener(ServiceEvent.LOAD, function(e:Event):void {
             map.addMapType(new ArcGISMapType([ago], new ArcGISMapTypeOptions({name: 'AGO'})));

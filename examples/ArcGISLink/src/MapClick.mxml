@@ -13,43 +13,49 @@
               mapevent_mapready="onMapReady(event)"
               width="100%"
               height="100%"
-              key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g"/>
+			  sensor="false" key="ABQIAAAAGY8Xhrw1zw6Ia3dwUJVxKRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTxMd7f8tzuEeq7aWKejTn-XQrIA"/>
   </mx:Panel>
   <mx:Script>
     <![CDATA[
-      import com.google.maps.styles.FillStyle;
       import com.google.maps.InfoWindowOptions;
-      import mx.controls.Alert;
-      import com.google.maps.LatLngBounds;
-      import com.google.maps.MapOptions;
-      import com.google.maps.controls.NavigationControl;
-      import com.google.maps.controls.ZoomControl;
-      import com.google.maps.controls.MapTypeControl;
       import com.google.maps.LatLng;
+      import com.google.maps.LatLngBounds;
       import com.google.maps.Map;
       import com.google.maps.MapEvent;
-      import com.google.maps.MapType;
       import com.google.maps.MapMouseEvent;
-      import com.google.maps.interfaces.*;
+      import com.google.maps.MapOptions;
+      import com.google.maps.MapType;
+      import com.google.maps.controls.MapTypeControl;
+      import com.google.maps.controls.NavigationControl;
+      import com.google.maps.controls.ZoomControl;
       import com.google.maps.extras.arcgislink.*;
-
+      import com.google.maps.interfaces.*;
+      import com.google.maps.styles.FillStyle;
       
       import flash.display.*;
-      import mx.controls.*;
-      import mx.controls.dataGridClasses.*;
+      
       import mx.collections.*;
+      import mx.controls.*;
+      import mx.controls.Alert;
+      import mx.controls.dataGridClasses.*;
 
       private var _svc:MapService;
       private var _flag:Boolean;
-
+      private var _ov: ArcGISMapOverlay;
+      private var _ovs: Array = [];
+		
       private function onMapPreInitialize(event:Event):void {
-        var url:String='http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Portland/ESRI_LandBase_WebMercator/MapServer';
+        var url:String='http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/BloomfieldHillsMichigan/Parcels/MapServer';
         _svc=new MapService(url);
         _svc.addEventListener(ServiceEvent.ERROR, function(evt:ServiceEvent):void{
            Alert.show(evt.data.toString());
         });
-        var agsType:ArcGISMapType=new ArcGISMapType([new ArcGISTileLayer(_svc)], new ArcGISMapTypeOptions({minResolution:10, maxResolution:19}));
-        var opts:MapOptions=new MapOptions({mapTypes: [agsType], center: new LatLng(45.5, -122.7), zoom: 17});
+		_ov =new ArcGISMapOverlay(_svc, new ArcGISMapOverlayOptions({alpha: 0.5}));
+		_ov.addEventListener(ServiceEvent.LOAD, function (evt:ServiceEvent):void{
+			map.addOverlay(_ov);
+			
+		});
+		var opts:MapOptions=new MapOptions({center: new LatLng(42.58, -83.29), zoom: 17});
         map.setInitOptions(opts);
       }
 
@@ -61,8 +67,11 @@
       }
 
       private function doIdentify(evt:MapMouseEvent):void {
-        map.clearOverlays();
-        var latlng:LatLng=evt.latLng;
+		for (var i:int=0, c:int=_ovs.length; i < c; i++) {
+		  map.removeOverlay(_ovs[i]);
+		}
+		_ovs.length = 0;
+	    var latlng:LatLng=evt.latLng;
         var bnds:LatLngBounds=map.getLatLngBounds();
         var size:Point=map.getSize();
         var idParams:IdentifyParameters=new IdentifyParameters({
@@ -90,13 +99,14 @@
                 if (r.geometry && r.geometry.length>0){
                   for each (var ov:IOverlay in r.geometry){
                     map.addOverlay(ov);
+					_ovs.push(ov);
                   }
                 }
               }
               idResults.dataProvider=data;
               idResults.alpha = 0.5;
               map.openInfoWindow(latlng, new InfoWindowOptions({
-                  drawDefaultFrame: true, customContent: idWin
+                  drawDefaultFrame: false, customContent: idWin
                   , fillStyle:new FillStyle({alpha:0.2})
                   }));
             }

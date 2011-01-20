@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+                layout="absolute"
+                width="100%"
+                height="100%">
+  <mx:Panel title="Layer Query"
+            width="100%"
+            height="100%">
+	  <mx:HBox>
+		  <mx:Label text="Pick a date:"/>
+		  <mx:DateField width="135" id="date311" displayedMonth="8" displayedYear="2009" showToday="false" enabled="true" includeInLayout="true" selectedDate="{new Date (2009, 8, 9)}" toolTip="Select a date" editable="true"/>
+		  <mx:Button label="Load Incidents"  click="onLoadClick(event)"/>
+	  </mx:HBox>
+   
+     <maps:Map xmlns:maps="com.google.maps.*"
+              id="map"
+              mapevent_mapready="onMapReady(event)"
+              width="100%"
+              height="100%"
+              key="ABQIAAAAGY8Xhrw1zw6Ia3dwUJVxKRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTxMd7f8tzuEeq7aWKejTn-XQrIA" sensor="false"/>
+  </mx:Panel>
+
+  <mx:Script>
+    <![CDATA[
+      import com.google.maps.*;
+      import com.google.maps.controls.*;
+      import com.google.maps.extras.arcgislink.*;
+      import com.google.maps.interfaces.*;
+      import com.google.maps.overlays.*;
+      
+      import mx.controls.Alert;
+
+
+
+      private var layer:Layer;
+      
+      private function onMapReady(event:Event):void {
+        map.setCenter(new LatLng(37.76, -122.45), 13);
+        map.addControl(new com.google.maps.controls.MapTypeControl());
+        map.addControl(new NavigationControl());
+        map.enableScrollWheelZoom();
+        map.enableContinuousZoom();
+        layer=new Layer('http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/MapServer/0');
+        //layer.addEventListener(ServiceEvent.LOAD, initFunctionality);
+      }
+
+      private function loadFeatures():void {
+		var where:String = "req_date = '"+DateField.dateToString(this.date311.selectedDate, this.date311.formatString)+"'";
+        var params:QueryParameters=new QueryParameters({returnGeometry: true, where: where, outFields: ['*']});
+		map.clearOverlays();  
+		layer.query(params, processResultSet, handleError, null);
+      }
+
+      private function processResultSet(rs:ResultSet):void {
+		
+        var fs:Array=rs.features;
+        for (var i:int=0, c:int=fs.length; i < c; i++) {
+          var ovs:Array=createGMarkers(fs[i], rs.spatialReference);
+          for (var j:int=0; j < ovs.length; j++) {
+            map.addOverlay(ovs[j]);
+          }
+        }
+      }
+
+      private function createGMarkers(feat:Feature, sr:SpatialReference):Array {
+        var a:*=feat.attributes;
+        var ovs:Array=feat.geometry;
+		var html:String="<div id='iwdiv'>";
+		for (var x:String in a) {
+			if (a.hasOwnProperty(x)) {
+				var val:*=a[x];
+				val=(val === null || typeof val === 'undefined') ? '' : '' + val;
+				html +="<b>"+ x +"</b>: "+val+"<br/>";
+			}
+		}
+        html+="</div>";
+		var io:InfoWindowOptions = new InfoWindowOptions({contentHTML: html, pointOffset:new Point(2, -20)});
+        // note  it is possible each feature has more than one poly.
+        for (var j:int=0, jc:int=ovs.length; j < jc; j++) {
+          var ov:Marker=ovs[j] as Marker;
+          ov.addEventListener(MapMouseEvent.ROLL_OVER, function(event:MapMouseEvent):void {
+			  map.openInfoWindow(ov.getLatLng(), io);
+            });
+          ov.addEventListener(MapMouseEvent.ROLL_OUT, function(event:MapMouseEvent):void {
+			 // map.closeInfoWindow();
+            });
+          ov.addEventListener(MapMouseEvent.CLICK, function(event:MapMouseEvent):void {
+              map.openInfoWindow(event.latLng, io);
+            });
+        }
+        return ovs;
+      }
+		private function onLoadClick(event:Event):void{
+			loadFeatures();
+		}
+		
+
+      private function handleError(err:ServiceError):void {
+        mx.controls.Alert.show(err.toString());
+      }
+    ]]>
+  </mx:Script>
+</mx:Application>

@@ -12,12 +12,13 @@
               mapevent_mapready="onMapReady(event)"
               width="100%"
               height="100%"
-              key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g"/>
+              key="ABQIAAAAGY8Xhrw1zw6Ia3dwUJVxKRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTxMd7f8tzuEeq7aWKejTn-XQrIA" sensor="false"/>
 
   </mx:Panel>
 
   <mx:Script>
     <![CDATA[
+    //ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtx  KvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g
       import com.google.maps.controls.NavigationControl;
       import com.google.maps.controls.MapTypeControl;
 
@@ -31,11 +32,11 @@
       import com.google.maps.extras.arcgislink.*;
 
 
-      private var base:String='http://server.arcgisonline.com/ArcGIS/rest/services';
+      private var base:String='http://services.arcgisonline.com/ArcGIS/rest/services';
 
       private function onMapPreInitialize(event:Event):void {
-        var url:String=base + '/ESRI_StreetMap_World_2D/MapServer';
-        var agsType:ArcGISMapType=new ArcGISMapType(url, new ArcGISMapTypeOptions({projection: ArcGISTileConfig.ARCGIS_ONLINE}));
+        var url:String=base + '/World_Topo_Map/MapServer';
+        var agsType:ArcGISMapType=new ArcGISMapType(url, new ArcGISMapTypeOptions({projection: ArcGISTileConfig.GOOGLE_MAPS}));
         var opts:MapOptions=new MapOptions({mapTypes: [agsType], center: new LatLng(40, -95), zoom: 4});
         map.setInitOptions(opts);
       }
@@ -45,15 +46,12 @@
         map.addControl(new NavigationControl());
         map.enableScrollWheelZoom();
         map.enableContinuousZoom();
-        ArcGISUtil.addArcGISMap(map, base + "/ESRI_Imagery_World_2D/MapServer");
-        ArcGISUtil.addArcGISMap(map, base + "/ESRI_ShadedRelief_World_2D/MapServer");
-        ArcGISUtil.addArcGISMap(map, base + "/I3_Imagery_Prime_World_2D/MapServer");
-        ArcGISUtil.addArcGISMap(map, base + "/NGS_Topo_US_2D/MapServer");
-        ArcGISUtil.addArcGISMap(map, base + "/NPS_Physical_World_2D/MapServer");
-        ArcGISUtil.addArcGISMap(map, base + "/Demographics/ESRI_00-08PopGrwth_US_2D/MapServer");
-        ArcGISUtil.addArcGISMap(map, base + "/Demographics/ESRI_Diversity_US_2D/MapServer");
-        ArcGISUtil.addArcGISMap(map, base + "/Demographics/ESRI_MedianIncome_US_2D/MapServer");
-        ArcGISUtil.addArcGISMap(map, base + "/Specialty/EVC_Topo_World_2D/MapServer");
+		ArcGISUtil.addArcGISMap(map, base + "/World_Street_Map/MapServer");
+		ArcGISUtil.addArcGISMap(map, base + "/USA_Topo_Maps/MapServer");
+        ArcGISUtil.addArcGISMap(map, base + "/World_Imagery/MapServer");
+        ArcGISUtil.addArcGISMap(map, base + "/World_Physical_Map/MapServer");
+        ArcGISUtil.addArcGISMap(map, base + "/World_Shaded_Relief/MapServer");
+		ArcGISUtil.addArcGISMap(map, base + "/World_Terrain_Base/MapServer");
       }
     ]]>
   </mx:Script>

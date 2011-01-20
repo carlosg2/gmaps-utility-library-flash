@@ -14,6 +14,9 @@ package com.google.maps.extras.arcgislink {
     public var fieldAliases:*;
     public var geometryType:String;
     public var spatialReference:SpatialReference;
+	/* AGS 10 */
+	public var fields:Array=[];
+	
 
     public function ResultSet(params:*=null, ovOpts:OverlayOptions=null) {
       if (params) {
@@ -24,8 +27,11 @@ package com.google.maps.extras.arcgislink {
             features.push(new Feature(r, ovOpts,ArcGISUtil.getAttributeValue(r.attributes, params.displayFieldName)));
           }
         }
-        spatialReference = SpatialReferences.getSpatialReference(params.spatialReference.wkid)
-        ||new SpatialReference(params.spatialReference);
+		if (params.spatialReference && params.spatialReference.wkid){
+			spatialReference = SpatialReferences.getSpatialReference(params.spatialReference.wkid)
+				||new SpatialReference(params.spatialReference);
+		}
+      
         ArcGISUtil.augmentObject(params, this, false);
       }
     }

@@ -31,7 +31,7 @@ package com.google.maps.extras.arcgislink {
       this.tileInfo_=tileInfo;
       this.spatialReference_=SpatialReferences.getSpatialReference(tileInfo.spatialReference.wkid);
       if (!this.spatialReference_) {
-        throw new Error('unsupported Spatial Reference');
+        throw new Error('unsupported Spatial Reference: ' + tileInfo.spatialReference.wkid);
       }
       this.zoomOffset_=Math.floor(Math.log(this.spatialReference_.getCircumference() / this.tileInfo_.lods[0].resolution / 256) / Math.LN2 + 0.5);
       this.fullExtent_=opt_fullExtent;

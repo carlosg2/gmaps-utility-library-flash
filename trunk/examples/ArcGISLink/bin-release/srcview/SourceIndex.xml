@@ -4,7 +4,6 @@
 	<nodes>
 		<node label="src">
 			<node icon="mxmlIcon" label="ArcGISOnline.mxml" url="source/ArcGISOnline.mxml.html"/>
-			<node icon="mxmlIcon" label="DonutHole.mxml" url="source/DonutHole.mxml.html"/>
 			<node icon="mxmlIcon" label="DynamicLayer.mxml" url="source/DynamicLayer.mxml.html"/>
 			<node icon="mxmlIcon" label="Find.mxml" url="source/Find.mxml.html"/>
 			<node icon="mxmlIcon" label="Flat.mxml" url="source/Flat.mxml.html"/>
@@ -27,7 +26,7 @@
 			<node icon="mxmlIcon" label="TileLayerOverlay3D.mxml" url="source/TileLayerOverlay3D.mxml.html"/>
 		</node>
 	</nodes>
-	<zipfile label="Download source (ZIP, 43K)" url="ArcGISLink.zip">
+	<zipfile label="Download source (ZIP, 41K)" url="ArcGISLink.zip">
 	</zipfile>
 	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
 	</sdklink>

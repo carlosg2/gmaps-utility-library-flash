@@ -131,7 +131,11 @@ package com.google.maps.extras.arcgislink {
         this.spatialReference_=SpatialReferences.getSpatialReference(json.spatialReference.wkid);
         if (!this.spatialReference_) {
           var bbox:*=json.fullExtent;
-          ArcGISUtil.restRequest(this.url + '/export', {f: 'json', bbox: '' + bbox.xmin + ',' + bbox.ymin + ',' + bbox.xmax + ',' + bbox.ymax, bboxSR: json.spatialReference.wkid, size: '1,1', imageSR: 4326, layers: 'hide:' + ids.join(',')}, this, function(image:*):void {
+		  var params:* = {f: 'json', bbox: '' + bbox.xmin + ',' + bbox.ymin + ',' + bbox.xmax + ',' + bbox.ymax,  size: '1,1', imageSR: 4326, layers: 'hide:' + ids.join(',')};
+		  if (json.spatialReference.wkid){
+			  params.bboxSR =  json.spatialReference.wkid;
+		  }
+          ArcGISUtil.restRequest(this.url + '/export', params, this, function(image:*):void {
               var sr:FlatSpatialReference=new FlatSpatialReference({wkid: json.spatialReference.wkid, latlng: image.extent, coords: json.fullExtent});
               SpatialReferences.addSpatialReference(json.spatialReference.wkid, sr);
               me.spatialReference_=sr;

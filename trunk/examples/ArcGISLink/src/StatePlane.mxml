@@ -40,7 +40,7 @@
       public function onServiceLoad(event:ServiceEvent):void {
         // map should be constructed after service load instead from MXML, if you do not want load Google Tiles at all. 
         map=new Map();
-        map.key="ABQIAAAAGY8Xhrw1zw6Ia3dwUJVxKRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTxMd7f8tzuEeq7aWKejTn-XQrIA";
+        map.key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g";
         map.width=mapHolder.width;
         map.height=mapHolder.height;
 		map.sensor="false";

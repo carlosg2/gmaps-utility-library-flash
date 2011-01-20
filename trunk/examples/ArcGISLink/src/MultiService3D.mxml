@@ -81,7 +81,7 @@
 
       public function onServiceLoad(event:ServiceEvent):void {
         map=new Map3D();
-        map.key="ABQIAAAAGY8Xhrw1zw6Ia3dwUJVxKRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTxMd7f8tzuEeq7aWKejTn-XQrIA";
+        map.key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g";
         map.sensor="false";
 		map.width=mapHolder.width;
         map.height=mapHolder.height;

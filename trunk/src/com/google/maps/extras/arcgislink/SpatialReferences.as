@@ -22,11 +22,17 @@ package com.google.maps.extras.arcgislink
       central_meridian: 0,
       unit: 1
     });
-    
+	public static const WEB_MERCATOR_AUX:SpatialReference = new SphereMercator({
+		wkid: 102100,
+		semi_major: 6378137.0,
+		central_meridian: 0,
+		unit: 1
+	});
     private static var _srs:Object = {
       '4326': SpatialReferences.WGS84,
       '4269': SpatialReferences.NAD83,
-      '102113': SpatialReferences.WEB_MERCATOR
+      '102113': SpatialReferences.WEB_MERCATOR,
+	  '102100': SpatialReferences.WEB_MERCATOR_AUX
     };
     public static function addSpatialReference(wkid:int, wktOrSR:Object):SpatialReference
     {

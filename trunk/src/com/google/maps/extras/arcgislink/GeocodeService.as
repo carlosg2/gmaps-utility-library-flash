@@ -26,7 +26,7 @@ package com.google.maps.extras.arcgislink {
     public var intersectionCandidateFields:Array;
     public var spatialReference:SpatialReference;
     public var locatorProperties:*;
-
+    public var currentVersion:*;
     public function GeocodeService(url:String) {
       dispatcher_=new EventDispatcher(this);
       this.url=url;

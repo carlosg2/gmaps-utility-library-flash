@@ -54,6 +54,7 @@
       import mx.controls.*;
       import mx.controls.dataGridClasses.*;
       import mx.collections.*;
+		import mx.managers.*;
  
       private var map:Map3D;
       private var svc:MapService;
@@ -67,7 +68,7 @@
         svc.addEventListener(ServiceEvent.LOAD, onServiceLoad);
         svc.addEventListener(ServiceEvent.ERROR, function(evt:ServiceEvent):void {
             Alert.show(evt.data.toString());
-			mx.core.FlexGlobals.topLevelApplication.application.cursorManager.removeBusyCursor();
+			mx.managers.CursorManager.removeBusyCursor();
 			
           });
        
@@ -81,6 +82,8 @@
 
       public function onServiceLoad(event:ServiceEvent):void {
         map=new Map3D();
+		//local A BQIAAAAGY8Xhrw1zw6Ia3dwUJVxKRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTxMd7f8tzuEeq7aWKejTn-XQrIA
+		// util: A BQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g
         map.key="ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g";
         map.sensor="false";
 		map.width=mapHolder.width;
@@ -129,9 +132,9 @@
         var bnds:LatLngBounds=new LatLngBounds(sw, ne);
 
         var idParams:IdentifyParameters=new IdentifyParameters({geometry: latlng, layerOption: 'top', tolerance: 5, bounds: bnds, width: size.x, height: size.y, dpi: 96, returnGeometry: true});
-		mx.core.FlexGlobals.topLevelApplication.application.cursorManager.setBusyCursor();
+		mx.managers.CursorManager.setBusyCursor();
         svc.identify(idParams, function (res:IdentifyResults):void {
-			mx.core.FlexGlobals.topLevelApplication.application.cursorManager.removeBusyCursor();
+			mx.managers.CursorManager.removeBusyCursor();
             if (res.results && res.results.length > 0) {
               idWin.visible=true;
 
@@ -168,9 +171,9 @@
         map.clearOverlays();
         map.closeInfoWindow();
         var params:GeocodeParameters=new GeocodeParameters({inputs: {Street: addr, outFields:['Ref_ID']}});
-		mx.core.FlexGlobals.topLevelApplication.application.cursorManager.setBusyCursor();
+		mx.managers.CursorManager.setBusyCursor();
         gc.findAddressCandidates(params, function(gcRes:GeocodeResults):void {
-			mx.core.FlexGlobals.topLevelApplication.application.cursorManager.removeBusyCursor();
+			mx.managers.CursorManager.removeBusyCursor();
             if (gcRes.candidates && gcRes.candidates.length > 0) {
               // for simplicity just take the first candidate
               var res:GeocodeResult=gcRes.candidates[0];
@@ -193,9 +196,9 @@
          var params:QueryParameters=new QueryParameters({
          returnGeometry: false, 
          where: "OBJECTID = "+objectid, outFields:['*']});
-         
+		 mx.managers.CursorManager.setBusyCursor();
          layer.query(params, function(rs:ResultSet):void {
-			 mx.core.FlexGlobals.topLevelApplication.application.cursorManager.removeBusyCursor();
+			 mx.managers.CursorManager.removeBusyCursor();
            var fs:Array=rs.features;
            if (fs && fs.length>0){
               idWin.visible=true;

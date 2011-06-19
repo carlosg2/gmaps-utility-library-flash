@@ -43,5 +43,23 @@ package com.google.maps.extras.xmlparsers
 	{
 		public static var ATOM_NS:Namespace = new Namespace("http://www.w3.org/2005/Atom");
 		public static var KML_NS:Namespace = new Namespace("http://earth.google.com/kml/2.2");
+		public static var OGC_KML_NS:Namespace = new Namespace("http://www.opengis.net/kml/2.2");
+		
+		
+		public static function determineNamespace(x:XML):Namespace
+		{
+			var _ns:Namespace;
+			switch (x.namespace().toString())
+			{
+				case Namespaces.OGC_KML_NS.uri:
+					_ns = Namespaces.OGC_KML_NS;
+					break;
+				
+				case Namespaces.KML_NS.uri:
+				default:
+					_ns = Namespaces.KML_NS;
+			}
+			return _ns;
+		}
 	}
 }

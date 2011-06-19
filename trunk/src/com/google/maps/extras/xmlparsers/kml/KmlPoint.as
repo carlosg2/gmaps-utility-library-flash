@@ -26,9 +26,6 @@ package com.google.maps.extras.xmlparsers.kml
 		public function KmlPoint(x:XMLList)
 		{
 			super(x);
-			trace("t");
-			trace(this.x);
-			trace("e");
 			if (ParsingTools.nullCheck(this.x.kml::coordinates) != null) {
 				this._coordinates = new Coordinates(ParsingTools.nullCheck(this.x.kml::coordinates));
 			}

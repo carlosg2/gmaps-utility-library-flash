@@ -29,6 +29,7 @@ package com.google.maps.extras.xmlparsers.kml
 		{
 			super();
 			parse(xmlStr);
+			kml = Namespaces.determineNamespace(this.x);
 			// todo support other features
 			if (ParsingTools.nullCheck(this.x.kml::Placemark)) {
 				this._feature = new Placemark(this.x.kml::Placemark);

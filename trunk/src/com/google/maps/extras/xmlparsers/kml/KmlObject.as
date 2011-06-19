@@ -28,8 +28,10 @@ package com.google.maps.extras.xmlparsers.kml
 		public function KmlObject(x:XMLList)
 		{
 			super(x);
+			kml = Namespaces.determineNamespace(x[0]);
 			var idQN:QName = new QName(kml, "id");
-            this._id = ParsingTools.nullCheck(this.x.attribute(idQN));		}
+            this._id = ParsingTools.nullCheck(this.x.attribute(idQN));
+		}
 
 		/**
 		*	Represents the id attribute of the element.

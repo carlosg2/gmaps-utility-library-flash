@@ -20,7 +20,7 @@ package com.google.maps.extras.xmlparsers.kml
 		private var atom:Namespace = Namespaces.ATOM_NS;
 		
 		private var _name:String;
-		private var _link: com.google.maps.extras.xmlparsers.atom.Link::Link;
+		private var _link: com.google.maps.extras.xmlparsers.atom.Link;
 		private var _visibility:Boolean = true;
 		private var _open:Boolean = false;
 		private var _author:Author;
@@ -45,7 +45,7 @@ package com.google.maps.extras.xmlparsers.kml
 			this._styleUrl = ParsingTools.nullCheck(this.x.attribute(styleUrlQN));
 			
 			if (ParsingTools.nullCheck(this.x.atom::link) != null) {
-				this._link = new com.google.maps.extras.xmlparsers.atom.Link::Link(this.x.atom::link);
+				this._link = new com.google.maps.extras.xmlparsers.atom.Link(this.x.atom::link);
 			}
 
 			if (ParsingTools.nullCheck(this.x.atom::author) != null) {

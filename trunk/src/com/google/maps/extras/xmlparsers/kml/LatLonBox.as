@@ -28,7 +28,7 @@ package com.google.maps.extras.xmlparsers.kml
 		public function LatLonBox(x:XMLList)
 		{
 			super(x);
-			this._rotation  = ParsingTools.nanCheck(this.x.kml::west);
+			this._rotation  = ParsingTools.nanCheck(this.x.kml::rotation);
 		}
 	 	
 	 	
